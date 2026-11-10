@@ -1,0 +1,208 @@
+{
+  "lot_id": "LOT_0043",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash → gemini-3.6-flash",
+  "bundle": {
+    "lot_id": "LOT_0043",
+    "replay_cycle": 43,
+    "process_date": "2023-02-12",
+    "technology_node": "14nm",
+    "product_type": "ASIC",
+    "wafers": 25,
+    "equipment": {
+      "etch_tool": "ETCH_04",
+      "litho_tool": "LITHO_04",
+      "deposition_tool": "DEP_01",
+      "implant_tool": "IMP_01"
+    },
+    "detector_alerts": [
+      {
+        "kind": "process_anomaly",
+        "scope": "lot",
+        "wafers": "",
+        "flagged_sensors": "etch_rate|focus_offset|deposition_rate|thickness_uniformity|critical_dimension|defect_count|defect_density|leakage_current|yield",
+        "cause_sensors": "etch_rate|focus_offset|deposition_rate",
+        "cause_equipment": "ETCH_04(etch_rate)|LITHO_04(focus_offset)|DEP_01(deposition_rate)",
+        "cause_status": "candidate",
+        "recurring_equipment": "ETCH_04:etch_rate:6로트|LITHO_04:focus_offset:5로트|DEP_01:deposition_rate:5로트",
+        "max_abs_z": 11.89,
+        "evidence": "로트 평균 etch_rate z=+11.9, critical_dimension z=+11.3, yield z=-9.7, leakage_current z=+6.2, defect_density z=+6.1, focus_offset z=+5.9, thickness_uniformity z=+5.9, defect_count z=+5.6, deposition_rate z=-5.1"
+      }
+    ],
+    "lot_mean_z_abs_ge_2_5": {
+      "etch_rate": 11.9,
+      "pressure": 2.6,
+      "temperature": 3.1,
+      "focus_offset": 5.9,
+      "deposition_rate": -5.1,
+      "thickness_uniformity": 5.9,
+      "critical_dimension": 11.3,
+      "oxide_thickness": -2.7,
+      "defect_count": 5.6,
+      "defect_density": 6.1,
+      "leakage_current": 6.2,
+      "yield": -9.7
+    },
+    "recent_alerts": [
+      {
+        "lot_id": "LOT_0034",
+        "replay_cycle": 34,
+        "cause_sensors": [
+          "focus_offset",
+          "deposition_rate"
+        ],
+        "cause_equipment": [
+          "LITHO_04(focus_offset)",
+          "DEP_01(deposition_rate)"
+        ],
+        "evidence": "로트 평균 focus_offset z=+4.4, leakage_current z=+3.9, deposition_rate z=-3.7"
+      },
+      {
+        "lot_id": "LOT_0035",
+        "replay_cycle": 35,
+        "cause_sensors": [
+          "focus_offset",
+          "deposition_rate"
+        ],
+        "cause_equipment": [
+          "LITHO_01(focus_offset)",
+          "DEP_03(deposition_rate)"
+        ],
+        "evidence": "로트 평균 defect_density z=+21.4, defect_count z=+19.1, yield z=-6.9"
+      },
+      {
+        "lot_id": "LOT_0036",
+        "replay_cycle": 36,
+        "cause_sensors": [
+          "etch_rate",
+          "focus_offset"
+        ],
+        "cause_equipment": [
+          "ETCH_04(etch_rate)",
+          "LITHO_04(focus_offset)"
+        ],
+        "evidence": "로트 평균 critical_dimension z=+5.4, etch_rate z=+4.9, yield z=-4.8, focus_offset z=+4.2, defect_density z=+3.8, thickness_uniformity z=+3.7"
+      },
+      {
+        "lot_id": "LOT_0037",
+        "replay_cycle": 37,
+        "cause_sensors": [
+          "etch_rate"
+        ],
+        "cause_equipment": [
+          "ETCH_04(etch_rate)"
+        ],
+        "evidence": "로트 평균 etch_rate z=+6.3, yield z=-5.8, defect_count z=+5.3, defect_density z=+4.9, thickness_uniformity z=+4.8"
+      },
+      {
+        "lot_id": "LOT_0038",
+        "replay_cycle": 38,
+        "cause_sensors": [
+          "focus_offset"
+        ],
+        "cause_equipment": [
+          "LITHO_04(focus_offset)"
+        ],
+        "evidence": "로트 평균 defect_density z=+5.3, focus_offset z=+5.3, thickness_uniformity z=+5.2, defect_count z=+4.7, leakage_current z=+4.3"
+      },
+      {
+        "lot_id": "LOT_0039",
+        "replay_cycle": 39,
+        "cause_sensors": [
+          "etch_rate",
+          "deposition_rate"
+        ],
+        "cause_equipment": [
+          "ETCH_04(etch_rate)",
+          "DEP_01(deposition_rate)"
+        ],
+        "evidence": "로트 평균 etch_rate z=+7.3, yield z=-6.2, critical_dimension z=+6.1, leakage_current z=+4.8, deposition_rate z=-4.3, defect_density z=+3.9, thickness_uniformity z=+3.9"
+      },
+      {
+        "lot_id": "LOT_0040",
+        "replay_cycle": 40,
+        "cause_sensors": [],
+        "cause_equipment": [],
+        "evidence": "웨이퍼 3장 평균 defect_count z=+3.8, defect_density z=+3.3, thickness_uniformity z=+3.3"
+      },
+      {
+        "lot_id": "LOT_0040",
+        "replay_cycle": 40,
+        "cause_sensors": [
+          "deposition_rate"
+        ],
+        "cause_equipment": [
+          "DEP_01(deposition_rate)"
+        ],
+        "evidence": "로트 평균 leakage_current z=+6.1, deposition_rate z=-4.0"
+      },
+      {
+        "lot_id": "LOT_0041",
+        "replay_cycle": 41,
+        "cause_sensors": [
+          "etch_rate",
+          "deposition_rate",
+          "focus_offset",
+          "pressure"
+        ],
+        "cause_equipment": [
+          "ETCH_04(etch_rate)",
+          "DEP_01(deposition_rate)",
+          "LITHO_04(focus_offset)",
+          "ETCH_04(pressure)"
+        ],
+        "evidence": "로트 평균 etch_rate z=+9.8, critical_dimension z=+9.4, yield z=-8.2, defect_density z=+5.2, thickness_uniformity z=+5.1, deposition_rate z=-5.0, defect_count z=+4.9, focus_offset z=+4.3, pressure z=+3.5"
+      },
+      {
+        "lot_id": "LOT_0042",
+        "replay_cycle": 42,
+        "cause_sensors": [
+          "etch_rate"
+        ],
+        "cause_equipment": [
+          "ETCH_04(etch_rate)"
+        ],
+        "evidence": "로트 평균 etch_rate z=+10.7, critical_dimension z=+7.9, yield z=-7.7"
+      }
+    ],
+    "notes": [
+      "공정 센서: etch_rate, pressure, temperature(식각), exposure_time, focus_offset, dose(노광), deposition_rate(증착), implant_energy, tilt_angle(이온 주입)",
+      "계측 값과 yield는 결과 값이라 원인이 아닌 영향으로 봅니다."
+    ]
+  },
+  "analysis": {
+    "verdict": "cause_candidate",
+    "cause_sensors": [
+      "etch_rate",
+      "focus_offset",
+      "deposition_rate"
+    ],
+    "cause_equipment": [
+      "ETCH_04",
+      "LITHO_04",
+      "DEP_01"
+    ],
+    "confidence": "high",
+    "title": "LOT_0043 식각·노광·증착 장비 센서 이상 및 수율 저하 분석",
+    "body_markdown": "LOT_0043(14nm ASIC, 25장 웨이퍼) 공정 수행 중 공정 이상 알림이 발생하였습니다. 탐지기 분석 결과 주요 원인 후보 센서는 ETCH_04 장비의 etch_rate(z=+11.9), LITHO_04 장비의 focus_offset(z=+5.9), DEP_01 장비의 deposition_rate(z=-5.1)입니다. 또한 식각 공정 센서인 temperature(z=+3.1)와 pressure(z=+2.6)도 표준편차 2.5배 이상의 이상 편차를 보였습니다. 이러한 공정 이상으로 인해 결과 지표인 critical_dimension(z=+11.3), leakage_current(z=+6.2), defect_density(z=+6.1), thickness_uniformity(z=+5.9), defect_count(z=+5.6)가 악화되었으며 yield(z=-9.7)의 급격한 하락을 초래했습니다. 특히 해당 장비들은 최근 알림에서도 반복하여 원인 후보로 지정되고 있습니다. ETCH_04:etch_rate는 6로트, LITHO_04:focus_offset 및 DEP_01:deposition_rate는 각각 5로트째 이상이 반복 감지되었으므로 해당 장비들에 대한 즉각적인 점검이 필요합니다.",
+    "evidence_cited": [
+      "etch_rate z=+11.9",
+      "focus_offset z=+5.9",
+      "deposition_rate z=-5.1",
+      "temperature z=+3.1",
+      "pressure z=+2.6",
+      "critical_dimension z=+11.3",
+      "leakage_current z=+6.2",
+      "defect_density z=+6.1",
+      "thickness_uniformity z=+5.9",
+      "defect_count z=+5.6",
+      "yield z=-9.7"
+    ],
+    "next_checks": [
+      "ETCH_04 장비의 etch_rate, temperature, pressure 센서 하드웨어 및 설정값 점검",
+      "LITHO_04 장비의 focus_offset 설정 및 정렬 상태 점검",
+      "DEP_01 장비의 deposition_rate 관련 모듈 점검"
+    ]
+  },
+  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"etch_rate\",\n    \"focus_offset\",\n    \"deposition_rate\"\n  ],\n  \"cause_equipment\": [\n    \"ETCH_04\",\n    \"LITHO_04\",\n    \"DEP_01\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"LOT_0043 식각·노광·증착 장비 센서 이상 및 수율 저하 분석\",\n  \"body_markdown\": \"LOT_0043(14nm ASIC, 25장 웨이퍼) 공정 수행 중 공정 이상 알림이 발생하였습니다. 탐지기 분석 결과 주요 원인 후보 센서는 ETCH_04 장비의 etch_rate(z=+11.9), LITHO_04 장비의 focus_offset(z=+5.9), DEP_01 장비의 deposition_rate(z=-5.1)입니다. 또한 식각 공정 센서인 temperature(z=+3.1)와 pressure(z=+2.6)도 표준편차 2.5배 이상의 이상 편차를 보였습니다. 이러한 공정 이상으로 인해 결과 지표인 critical_dimension(z=+11.3), leakage_current(z=+6.2), defect_density(z=+6.1), thickness_uniformity(z=+5.9), defect_count(z=+5.6)가 악화되었으며 yield(z=-9.7)의 급격한 하락을 초래했습니다. 특히 해당 장비들은 최근 알림에서도 반복하여 원인 후보로 지정되고 있습니다. ETCH_04:etch_rate는 6로트, LITHO_04:focus_offset 및 DEP_01:deposition_rate는 각각 5로트째 이상이 반복 감지되었으므로 해당 장비들에 대한 즉각적인 점검이 필요합니다.\",\n  \"evidence_cited\": [\n    \"etch_rate z=+11.9\",\n    \"focus_offset z=+5.9\",\n    \"deposition_rate z=-5.1\",\n    \"temperature z=+3.1\",\n    \"pressure z=+2.6\",\n    \"critical_dimension z=+11.3\",\n    \"leakage_current z=+6.2\",\n    \"defect_density z=+6.1\",\n    \"thickness_uniformity z=+5.9\",\n    \"defect_count z=+5.6\",\n    \"yield z=-9.7\"\n  ],\n  \"next_checks\": [\n    \"ETCH_04 장비의 etch_rate, temperature, pressure 센서 하드웨어 및 설정값 점검\",\n    \"LITHO_04 장비의 focus_offset 설정 및 정렬 상태 점검\",\n    \"DEP_01 장비의 deposition_rate 관련 모듈 점검\"\n  ]\n}"
+}

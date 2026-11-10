@@ -1,0 +1,76 @@
+{
+  "lot_id": "LOT_0031",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash → gemini-3.6-flash",
+  "bundle": {
+    "lot_id": "LOT_0031",
+    "replay_cycle": 31,
+    "process_date": "2023-01-31",
+    "technology_node": "28nm",
+    "product_type": "GPU",
+    "wafers": 25,
+    "equipment": {
+      "etch_tool": "ETCH_02",
+      "litho_tool": "LITHO_01",
+      "deposition_tool": "DEP_01",
+      "implant_tool": "IMP_03"
+    },
+    "detector_alerts": [
+      {
+        "kind": "process_anomaly",
+        "scope": "lot",
+        "wafers": "",
+        "flagged_sensors": "temperature|oxide_thickness|yield",
+        "cause_sensors": "temperature",
+        "cause_equipment": "ETCH_02(temperature)",
+        "cause_status": "candidate",
+        "recurring_equipment": "",
+        "max_abs_z": 16.07,
+        "evidence": "로트 평균 temperature z=+16.1, oxide_thickness z=+14.5, yield z=-8.9"
+      }
+    ],
+    "lot_mean_z_abs_ge_2_5": {
+      "etch_rate": 3.5,
+      "pressure": 2.6,
+      "temperature": 16.1,
+      "thickness_uniformity": 3.0,
+      "oxide_thickness": 14.5,
+      "defect_count": 2.7,
+      "defect_density": 3.0,
+      "leakage_current": 3.1,
+      "yield": -8.9
+    },
+    "recent_alerts": [],
+    "notes": [
+      "공정 센서: etch_rate, pressure, temperature(식각), exposure_time, focus_offset, dose(노광), deposition_rate(증착), implant_energy, tilt_angle(이온 주입)",
+      "계측 값과 yield는 결과 값이라 원인이 아닌 영향으로 봅니다."
+    ]
+  },
+  "analysis": {
+    "verdict": "cause_candidate",
+    "cause_sensors": [
+      "temperature",
+      "etch_rate",
+      "pressure"
+    ],
+    "cause_equipment": [
+      "ETCH_02"
+    ],
+    "confidence": "high",
+    "title": "ETCH_02 장비의 temperature 센서 이상으로 인한 수율 저하 분석 (LOT_0031)",
+    "body_markdown": "2023-01-31에 진행된 28nm GPU 제품 로트 LOT_0031에서 공정 이상 알림이 발생했습니다. 탐지기 분석 결과 식각 장비 ETCH_02의 temperature 센서가 주요 원인 후보로 확인되었습니다. temperature 센서는 평소 대비 로트 평균 z=+16.1로 매우 심각한 상승을 보였습니다. 동일 식각 장비의 다른 공정 센서인 etch_rate(z=+3.5)와 pressure(z=+2.6)에서도 표준편차 2.5 배 이상의 유의미한 이상 변동이 감지되었습니다. 이에 따른 공정 영향으로 결과 계측값인 oxide_thickness(z=+14.5), defect_density(z=+3.0), defect_count(z=+2.7), thickness_uniformity(z=+3.0), leakage_current(z=+3.1)가 대폭 악화되었으며, 최종 yield는 z=-8.9로 크게 하락했습니다. 최근 알림 이력 확인 결과, 해당 장비의 최근 반복 이상 기록은 없습니다. ETCH_02 장비의 온도 제어 부품 및 내부 챔버 상태 조치가 필요합니다.",
+    "evidence_cited": [
+      "temperature z=+16.1",
+      "oxide_thickness z=+14.5",
+      "yield z=-8.9",
+      "etch_rate z=+3.5",
+      "pressure z=+2.6"
+    ],
+    "next_checks": [
+      "ETCH_02 장비의 temperature 센서 및 온도 제어 발열체 모듈 점검",
+      "ETCH_02 장비의 챔버 압력(pressure) 및 식각율(etch_rate) 관련 설비 점검",
+      "LOT_0031 산화막 두께(oxide_thickness) 이상 웨이퍼에 대한 세부 계측 확인"
+    ]
+  },
+  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"temperature\",\n    \"etch_rate\",\n    \"pressure\"\n  ],\n  \"cause_equipment\": [\n    \"ETCH_02\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"ETCH_02 장비의 temperature 센서 이상으로 인한 수율 저하 분석 (LOT_0031)\",\n  \"body_markdown\": \"2023-01-31에 진행된 28nm GPU 제품 로트 LOT_0031에서 공정 이상 알림이 발생했습니다. 탐지기 분석 결과 식각 장비 ETCH_02의 temperature 센서가 주요 원인 후보로 확인되었습니다. temperature 센서는 평소 대비 로트 평균 z=+16.1로 매우 심각한 상승을 보였습니다. 동일 식각 장비의 다른 공정 센서인 etch_rate(z=+3.5)와 pressure(z=+2.6)에서도 표준편차 2.5 배 이상의 유의미한 이상 변동이 감지되었습니다. 이에 따른 공정 영향으로 결과 계측값인 oxide_thickness(z=+14.5), defect_density(z=+3.0), defect_count(z=+2.7), thickness_uniformity(z=+3.0), leakage_current(z=+3.1)가 대폭 악화되었으며, 최종 yield는 z=-8.9로 크게 하락했습니다. 최근 알림 이력 확인 결과, 해당 장비의 최근 반복 이상 기록은 없습니다. ETCH_02 장비의 온도 제어 부품 및 내부 챔버 상태 조치가 필요합니다.\",\n  \"evidence_cited\": [\n    \"temperature z=+16.1\",\n    \"oxide_thickness z=+14.5\",\n    \"yield z=-8.9\",\n    \"etch_rate z=+3.5\",\n    \"pressure z=+2.6\"\n  ],\n  \"next_checks\": [\n    \"ETCH_02 장비의 temperature 센서 및 온도 제어 발열체 모듈 점검\",\n    \"ETCH_02 장비의 챔버 압력(pressure) 및 식각율(etch_rate) 관련 설비 점검\",\n    \"LOT_0031 산화막 두께(oxide_thickness) 이상 웨이퍼에 대한 세부 계측 확인\"\n  ]\n}"
+}

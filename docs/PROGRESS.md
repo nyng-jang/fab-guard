@@ -2,6 +2,22 @@
 
 지금까지 한 일. 가장 최근 항목이 위에 있습니다.
 
+## 2026-11-10 · Gemini 분석글 실제 실행과 채점
+
+**한 일**
+- `GEMINI_API_KEY`가 있는 새 클라우드 환경에서 `write_analysis.py` → `score_analysis.py` 실행(기본 로트 LOT_0031·0035·0036·0043).
+- 모델 변경: `gemini-2.5-flash`는 "신규 사용자에게 더 이상 제공 안 함"(404). `gemini-3.8-flash`·`3.7-flash`·`flash-latest`는 혼잡(503)이라 응답하는 `gemini-3.5-flash`를 기본값으로 바꿈. 실제 응답 모델은 `gemini-3.6-flash`로 와서, 분석글에 "요청 → 실제" 모델을 함께 적게 함.
+- `write_analysis.py` 재시도 보강: 타임아웃 300초, 연결 끊김·타임아웃도 재시도, 최대 6회.
+
+**결과 수치**
+- 추세 걷어낸 데이터(reports/score_analysis_gemini.md): 판정 4/4 맞음, 원인 센서 1순위 3/3 맞음, 원인 장비(E1) 2/2 맞음, 근거 밖 주장 0개. E6(LOT_0035)은 "원인 불명"이라고 씀.
+- 추세를 남긴 데이터(reports/score_analysis_gemini_keep_trend.md): 판정 3/4. E6에서 탐지기가 붙인 가짜 근거(focus_offset z=+3.2, deposition_rate z=-2.8)를 그대로 원인으로 쓰고 확신 high. E1 로트에도 focus_offset 등 추세 센서가 2·3순위로 붙음.
+- 해석: AI는 근거 밖 주장을 하지 않았고(0개), 틀린 분석글은 탐지기 근거가 틀린 탓. 분석글 품질은 탐지기 근거 품질을 넘지 못함 → 이동 기준(v2)이 먼저.
+
+**산출물**
+- `results/analyses/gemini/`(분석글 4개 .json·.md, score.json), `reports/score_analysis_gemini.md`
+- `results/analyses_keep_trend/gemini/`, `reports/score_analysis_gemini_keep_trend.md`
+
 ## 2026-11-10 · 분석글 스크립트와 분석글 채점
 
 **한 일**

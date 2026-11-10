@@ -1,0 +1,114 @@
+{
+  "lot_id": "LOT_0036",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash → gemini-3.6-flash",
+  "bundle": {
+    "lot_id": "LOT_0036",
+    "replay_cycle": 36,
+    "process_date": "2023-02-05",
+    "technology_node": "22nm",
+    "product_type": "Memory",
+    "wafers": 25,
+    "equipment": {
+      "etch_tool": "ETCH_04",
+      "litho_tool": "LITHO_04",
+      "deposition_tool": "DEP_03",
+      "implant_tool": "IMP_01"
+    },
+    "detector_alerts": [
+      {
+        "kind": "process_anomaly",
+        "scope": "lot",
+        "wafers": "",
+        "flagged_sensors": "etch_rate|focus_offset|thickness_uniformity|critical_dimension|defect_density|yield",
+        "cause_sensors": "etch_rate|focus_offset",
+        "cause_equipment": "ETCH_04(etch_rate)|LITHO_04(focus_offset)",
+        "cause_status": "candidate",
+        "recurring_equipment": "LITHO_04:focus_offset:2로트",
+        "max_abs_z": 5.37,
+        "evidence": "로트 평균 critical_dimension z=+5.4, etch_rate z=+4.9, yield z=-4.8, focus_offset z=+4.2, defect_density z=+3.8, thickness_uniformity z=+3.7"
+      }
+    ],
+    "lot_mean_z_abs_ge_2_5": {
+      "etch_rate": 4.9,
+      "focus_offset": 4.2,
+      "thickness_uniformity": 3.7,
+      "critical_dimension": 5.4,
+      "defect_count": 3.5,
+      "defect_density": 3.8,
+      "vth": 2.5,
+      "yield": -4.8
+    },
+    "recent_alerts": [
+      {
+        "lot_id": "LOT_0031",
+        "replay_cycle": 31,
+        "cause_sensors": [
+          "temperature"
+        ],
+        "cause_equipment": [
+          "ETCH_02(temperature)"
+        ],
+        "evidence": "로트 평균 temperature z=+16.1, oxide_thickness z=+14.5, yield z=-8.9"
+      },
+      {
+        "lot_id": "LOT_0034",
+        "replay_cycle": 34,
+        "cause_sensors": [
+          "focus_offset",
+          "deposition_rate"
+        ],
+        "cause_equipment": [
+          "LITHO_04(focus_offset)",
+          "DEP_01(deposition_rate)"
+        ],
+        "evidence": "로트 평균 focus_offset z=+4.4, leakage_current z=+3.9, deposition_rate z=-3.7"
+      },
+      {
+        "lot_id": "LOT_0035",
+        "replay_cycle": 35,
+        "cause_sensors": [
+          "focus_offset",
+          "deposition_rate"
+        ],
+        "cause_equipment": [
+          "LITHO_01(focus_offset)",
+          "DEP_03(deposition_rate)"
+        ],
+        "evidence": "로트 평균 defect_density z=+21.4, defect_count z=+19.1, yield z=-6.9"
+      }
+    ],
+    "notes": [
+      "공정 센서: etch_rate, pressure, temperature(식각), exposure_time, focus_offset, dose(노광), deposition_rate(증착), implant_energy, tilt_angle(이온 주입)",
+      "계측 값과 yield는 결과 값이라 원인이 아닌 영향으로 봅니다."
+    ]
+  },
+  "analysis": {
+    "verdict": "cause_candidate",
+    "cause_sensors": [
+      "etch_rate",
+      "focus_offset"
+    ],
+    "cause_equipment": [
+      "ETCH_04",
+      "LITHO_04"
+    ],
+    "confidence": "high",
+    "title": "LOT_0036 공정 이상 분석: ETCH_04 식각율 및 LITHO_04 초점 변위 이상",
+    "body_markdown": "2023-02-05에 진행된 22nm Memory 제품 LOT_0036(25 wafers)에서 공정 이상 알림이 발생했습니다. 분석 결과, 식각 공정 센서인 etch_rate(z=+4.9)와 노광 공정 센서인 focus_offset(z=+4.2)이 평소 대비 큰 표준편차 배수를 보여 주요 원인 후보로 지정되었습니다. 이에 따라 식각 장비 ETCH_04와 노광 장비 LITHO_04가 원인 후보 장비로 분류되었습니다. 이 공정 변동의 영향으로 결과 계측 지표인 critical_dimension(z=+5.4), defect_density(z=+3.8), thickness_uniformity(z=+3.7)가 악화되었으며 yield(z=-4.8)는 크게 저하되었습니다. 특히 노광 장비 LITHO_04의 focus_offset 문제는 이전 LOT_0034 알림에 이어 2로트째 원인 후보로 지정되며 반복 발생하는 경향을 보이고 있습니다.",
+    "evidence_cited": [
+      "etch_rate z=+4.9",
+      "focus_offset z=+4.2",
+      "critical_dimension z=+5.4",
+      "yield z=-4.8",
+      "defect_density z=+3.8",
+      "thickness_uniformity z=+3.7"
+    ],
+    "next_checks": [
+      "LITHO_04 장비의 focus_offset 반복 발생 원인 및 노광 파라미터 점검",
+      "ETCH_04 장비의 etch_rate 상승 관련 식각 챔버 조건 검증",
+      "critical_dimension 제어 및 yield 하락 웨이퍼 계측 데이터 확인"
+    ]
+  },
+  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"etch_rate\",\n    \"focus_offset\"\n  ],\n  \"cause_equipment\": [\n    \"ETCH_04\",\n    \"LITHO_04\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"LOT_0036 공정 이상 분석: ETCH_04 식각율 및 LITHO_04 초점 변위 이상\",\n  \"body_markdown\": \"2023-02-05에 진행된 22nm Memory 제품 LOT_0036(25 wafers)에서 공정 이상 알림이 발생했습니다. 분석 결과, 식각 공정 센서인 etch_rate(z=+4.9)와 노광 공정 센서인 focus_offset(z=+4.2)이 평소 대비 큰 표준편차 배수를 보여 주요 원인 후보로 지정되었습니다. 이에 따라 식각 장비 ETCH_04와 노광 장비 LITHO_04가 원인 후보 장비로 분류되었습니다. 이 공정 변동의 영향으로 결과 계측 지표인 critical_dimension(z=+5.4), defect_density(z=+3.8), thickness_uniformity(z=+3.7)가 악화되었으며 yield(z=-4.8)는 크게 저하되었습니다. 특히 노광 장비 LITHO_04의 focus_offset 문제는 이전 LOT_0034 알림에 이어 2로트째 원인 후보로 지정되며 반복 발생하는 경향을 보이고 있습니다.\",\n  \"evidence_cited\": [\n    \"etch_rate z=+4.9\",\n    \"focus_offset z=+4.2\",\n    \"critical_dimension z=+5.4\",\n    \"yield z=-4.8\",\n    \"defect_density z=+3.8\",\n    \"thickness_uniformity z=+3.7\"\n  ],\n  \"next_checks\": [\n    \"LITHO_04 장비의 focus_offset 반복 발생 원인 및 노광 파라미터 점검\",\n    \"ETCH_04 장비의 etch_rate 상승 관련 식각 챔버 조건 검증\",\n    \"critical_dimension 제어 및 yield 하락 웨이퍼 계측 데이터 확인\"\n  ]\n}"
+}

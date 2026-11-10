@@ -1,0 +1,97 @@
+{
+  "lot_id": "LOT_0035",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash → gemini-3.6-flash",
+  "bundle": {
+    "lot_id": "LOT_0035",
+    "replay_cycle": 35,
+    "process_date": "2023-02-04",
+    "technology_node": "10nm",
+    "product_type": "ASIC",
+    "wafers": 25,
+    "equipment": {
+      "etch_tool": "ETCH_01",
+      "litho_tool": "LITHO_01",
+      "deposition_tool": "DEP_03",
+      "implant_tool": "IMP_02"
+    },
+    "detector_alerts": [
+      {
+        "kind": "process_anomaly",
+        "scope": "lot",
+        "wafers": "",
+        "flagged_sensors": "defect_count|defect_density|yield",
+        "cause_sensors": "focus_offset|deposition_rate",
+        "cause_equipment": "LITHO_01(focus_offset)|DEP_03(deposition_rate)",
+        "cause_status": "candidate",
+        "recurring_equipment": "",
+        "max_abs_z": 21.39,
+        "evidence": "로트 평균 defect_density z=+21.4, defect_count z=+19.1, yield z=-6.9"
+      }
+    ],
+    "lot_mean_z_abs_ge_2_5": {
+      "focus_offset": 3.2,
+      "deposition_rate": -2.8,
+      "thickness_uniformity": 3.3,
+      "defect_count": 19.1,
+      "defect_density": 21.4,
+      "yield": -6.9
+    },
+    "recent_alerts": [
+      {
+        "lot_id": "LOT_0031",
+        "replay_cycle": 31,
+        "cause_sensors": [
+          "temperature"
+        ],
+        "cause_equipment": [
+          "ETCH_02(temperature)"
+        ],
+        "evidence": "로트 평균 temperature z=+16.1, oxide_thickness z=+14.5, yield z=-8.9"
+      },
+      {
+        "lot_id": "LOT_0034",
+        "replay_cycle": 34,
+        "cause_sensors": [
+          "focus_offset",
+          "deposition_rate"
+        ],
+        "cause_equipment": [
+          "LITHO_04(focus_offset)",
+          "DEP_01(deposition_rate)"
+        ],
+        "evidence": "로트 평균 focus_offset z=+4.4, leakage_current z=+3.9, deposition_rate z=-3.7"
+      }
+    ],
+    "notes": [
+      "공정 센서: etch_rate, pressure, temperature(식각), exposure_time, focus_offset, dose(노광), deposition_rate(증착), implant_energy, tilt_angle(이온 주입)",
+      "계측 값과 yield는 결과 값이라 원인이 아닌 영향으로 봅니다."
+    ]
+  },
+  "analysis": {
+    "verdict": "cause_candidate",
+    "cause_sensors": [
+      "focus_offset",
+      "deposition_rate"
+    ],
+    "cause_equipment": [
+      "LITHO_01",
+      "DEP_03"
+    ],
+    "confidence": "high",
+    "title": "LOT_0035 결함 급증 및 수율 저하 분석 (LITHO_01, DEP_03 공정 센서 변동)",
+    "body_markdown": "LOT_0035 공정 진행 결과 로트 평균 defect_density z=+21.4, defect_count z=+19.1로 결함 지표가 급증하였으며, yield z=-6.9로 수율 저하가 탐지되었습니다.\n\n탐지기 분석에 따라 공정 원인 후보로 노광 장비 LITHO_01과 증착 장비 DEP_03이 지정되었습니다.\n\n공정 센서 확인 결과, LITHO_01의 focus_offset z=+3.2 및 DEP_03의 deposition_rate z=-2.8로 평소(앞 25로트) 대비 |z| 2.5 이상의 유의미한 변동이 확인되었습니다.\n\n최근 LOT_0034에서도 focus_offset과 deposition_rate 센서 이상이 보고되었으나, 당시 영향 장비는 LITHO_04 및 DEP_01이었으므로 이번 LITHO_01 및 DEP_03 장비의 최근 알림 반복 여부는 해당하지 않습니다.\n\n따라서 LITHO_01의 초점 이탈(focus_offset)과 DEP_03의 증착 속도(deposition_rate) 저하가 이번 로트의 결함 급증 및 수율 감소를 유발한 주요 원인 후보로 분석됩니다.",
+    "evidence_cited": [
+      "focus_offset z=+3.2",
+      "deposition_rate z=-2.8",
+      "defect_density z=+21.4",
+      "defect_count z=+19.1",
+      "yield z=-6.9"
+    ],
+    "next_checks": [
+      "LITHO_01 장비의 focus_offset 파라미터 및 노광 초점 상태 점검",
+      "DEP_03 장비의 deposition_rate 하강 원인 및 증착 공정 조건 확인"
+    ]
+  },
+  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"focus_offset\",\n    \"deposition_rate\"\n  ],\n  \"cause_equipment\": [\n    \"LITHO_01\",\n    \"DEP_03\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"LOT_0035 결함 급증 및 수율 저하 분석 (LITHO_01, DEP_03 공정 센서 변동)\",\n  \"body_markdown\": \"LOT_0035 공정 진행 결과 로트 평균 defect_density z=+21.4, defect_count z=+19.1로 결함 지표가 급증하였으며, yield z=-6.9로 수율 저하가 탐지되었습니다.\\n\\n탐지기 분석에 따라 공정 원인 후보로 노광 장비 LITHO_01과 증착 장비 DEP_03이 지정되었습니다.\\n\\n공정 센서 확인 결과, LITHO_01의 focus_offset z=+3.2 및 DEP_03의 deposition_rate z=-2.8로 평소(앞 25로트) 대비 |z| 2.5 이상의 유의미한 변동이 확인되었습니다.\\n\\n최근 LOT_0034에서도 focus_offset과 deposition_rate 센서 이상이 보고되었으나, 당시 영향 장비는 LITHO_04 및 DEP_01이었으므로 이번 LITHO_01 및 DEP_03 장비의 최근 알림 반복 여부는 해당하지 않습니다.\\n\\n따라서 LITHO_01의 초점 이탈(focus_offset)과 DEP_03의 증착 속도(deposition_rate) 저하가 이번 로트의 결함 급증 및 수율 감소를 유발한 주요 원인 후보로 분석됩니다.\",\n  \"evidence_cited\": [\n    \"focus_offset z=+3.2\",\n    \"deposition_rate z=-2.8\",\n    \"defect_density z=+21.4\",\n    \"defect_count z=+19.1\",\n    \"yield z=-6.9\"\n  ],\n  \"next_checks\": [\n    \"LITHO_01 장비의 focus_offset 파라미터 및 노광 초점 상태 점검\",\n    \"DEP_03 장비의 deposition_rate 하강 원인 및 증착 공정 조건 확인\"\n  ]\n}"
+}

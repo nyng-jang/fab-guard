@@ -1,0 +1,89 @@
+[
+  {
+    "lot_id": "LOT_0031",
+    "provider": "gemini",
+    "model": "gemini-3.5-flash → gemini-3.6-flash",
+    "verdict": "cause_candidate",
+    "confidence": "high",
+    "cause_sensors": [
+      "temperature",
+      "etch_rate",
+      "pressure"
+    ],
+    "cause_equipment": [
+      "ETCH_02"
+    ],
+    "outside_evidence": [],
+    "event_id": "E2",
+    "expected_verdict": "cause_candidate",
+    "verdict_ok": true,
+    "sensor_top1_ok": true,
+    "sensor_any_ok": true
+  },
+  {
+    "lot_id": "LOT_0035",
+    "provider": "gemini",
+    "model": "gemini-3.5-flash → gemini-3.6-flash",
+    "verdict": "cause_candidate",
+    "confidence": "high",
+    "cause_sensors": [
+      "focus_offset",
+      "deposition_rate"
+    ],
+    "cause_equipment": [
+      "LITHO_01",
+      "DEP_03"
+    ],
+    "outside_evidence": [],
+    "event_id": "E6",
+    "expected_verdict": "unexplained",
+    "verdict_ok": false,
+    "said_unexplained": false
+  },
+  {
+    "lot_id": "LOT_0036",
+    "provider": "gemini",
+    "model": "gemini-3.5-flash → gemini-3.6-flash",
+    "verdict": "cause_candidate",
+    "confidence": "high",
+    "cause_sensors": [
+      "etch_rate",
+      "focus_offset"
+    ],
+    "cause_equipment": [
+      "ETCH_04",
+      "LITHO_04"
+    ],
+    "outside_evidence": [],
+    "event_id": "E1",
+    "expected_verdict": "cause_candidate",
+    "verdict_ok": true,
+    "sensor_top1_ok": true,
+    "sensor_any_ok": true,
+    "equipment_ok": true
+  },
+  {
+    "lot_id": "LOT_0043",
+    "provider": "gemini",
+    "model": "gemini-3.5-flash → gemini-3.6-flash",
+    "verdict": "cause_candidate",
+    "confidence": "high",
+    "cause_sensors": [
+      "etch_rate",
+      "focus_offset",
+      "deposition_rate"
+    ],
+    "cause_equipment": [
+      "ETCH_04",
+      "LITHO_04",
+      "DEP_01"
+    ],
+    "outside_evidence": [],
+    "event_id": "E1",
+    "expected_verdict": "cause_candidate",
+    "verdict_ok": true,
+    "sensor_top1_ok": true,
+    "sensor_any_ok": true,
+    "equipment_ok": true
+  }
+]
