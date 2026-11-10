@@ -35,9 +35,12 @@ fab-guard/
     validate_injection.py       기준선 탐지기로 더미데이터 점검
     detect.py                   탐지기 v1 (wafer_injected.csv만 읽음)
     score_detector.py           탐지기 결과를 정답지와 비교해 채점
+    write_analysis.py           알림 근거 묶음으로 분석글 작성 (gemini 기본 / claude / template)
+    score_analysis.py           분석글의 판정·원인·근거 밖 주장 채점
   results/
     detector_v1/                탐지 결과: alerts.csv, alerts.json(분석글용 근거), score.json
     detector_v1_keep_trend/     같은 탐지기, 추세를 남긴 데이터
+    analyses/                   분석글: prompts/(AI에 넘기는 프롬프트), template/, gemini/ ...
   reports/
     validation_report.md        점검 결과 (injected)
     validation_report_keep_trend.md  점검 결과 (injected_keep_trend)
@@ -105,3 +108,16 @@ python scripts/score_detector.py --data data/injected_keep_trend --results resul
 ```
 
 탐지기 v1 결과(추세 걷어낸 데이터): 사건 7개 모두 기대한 분류로 탐지, 웨이퍼 탐지율 86.0%, 깨끗한 로트 34개 중 오탐 2개. 규칙은 [ADR 0012](docs/adr/0012-detector-v1-rules.md).
+
+## 분석글 쓰고 채점하기
+
+AI는 탐지기가 만든 근거 묶음만 받아 글을 씁니다. 근거가 없으면 "원인 불명"이라고 쓰게 하고, 그대로 했는지 채점합니다([ADR 0013](docs/adr/0013-llm-provider-switchable-gemini-default.md)).
+
+```bash
+python scripts/write_analysis.py --dry-run               # 호출 없이 프롬프트만 results/analyses/prompts/ 에 저장
+python scripts/write_analysis.py --provider template     # AI 없이 탐지기 결과를 문장에 채운 기준선
+GEMINI_API_KEY=... python scripts/write_analysis.py      # Gemini (모델은 GEMINI_MODEL, 기본 gemini-2.5-flash)
+python scripts/score_analysis.py --provider gemini       # reports/score_analysis_gemini.md 생성
+```
+
+기본으로 LOT_0031(E2), LOT_0035(E6), LOT_0036·LOT_0043(E1 첫 탐지와 마지막)의 분석글을 씁니다. `--lots`, `--all`로 바꿀 수 있습니다. Claude로 쓰려면 `--provider claude`와 `ANTHROPIC_API_KEY`를 씁니다.
