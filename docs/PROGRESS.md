@@ -2,6 +2,30 @@
 
 지금까지 한 일. 가장 최근 항목이 위에 있습니다.
 
+## 2026-11-10 · v1 범위 축소, 탐지기 v1과 채점 스크립트
+
+**한 일**
+- v1 범위를 탐지기 → 채점 → Claude API 분석글(E1, E2, E6) → 정적 페이지로 줄임(ADR 0010). Supabase, 매시간 실행, 메일, 1시간 이관, pgvector, SECOM은 v2.
+- Supabase 무료 플랜 프로젝트 한도가 차서 v1은 저장소 안의 파일로 저장하기로 함(ADR 0011). ADR 0007은 저장 부분만 대체됨.
+- `scripts/detect.py`: 탐지기 v1. 수신 오류 분리, 센서 의심, 일부 웨이퍼, 원인 후보 센서·장비, 원인 불명, 반복 장비 표시(ADR 0012). 정답지는 읽지 않음.
+- `scripts/score_detector.py`: 웨이퍼·로트·사건 단위 채점.
+
+**결과 수치** (reports/score_detector_v1.md, 추세 걷어낸 데이터)
+- 사건 7개 모두 탐지, 7개 모두 기대한 분류(센서 의심·수신 오류·일부 웨이퍼·원인 불명 포함).
+- 웨이퍼 단위 탐지율 86.0%(307/357), 정밀도 81.6%, 깨끗한 웨이퍼 오탐 69/893장(대부분 로트 알림이 로트 전체를 짚어서 생김).
+- 로트 단위: 이상 로트 14/16개 알림(놓친 2개는 E1의 0.5σ, 1σ 로트), 깨끗한 로트 오탐 2/34(LOT_0034, LOT_0040, 기준선 점검 때와 같음).
+- E1 드리프트: 3번째 로트(1.5σ)부터 잡고 원인 1순위 etch_rate·ETCH_04 100%, 4번째부터 반복 장비 표시.
+- E5: 원인 장비 LITHO_01 100%, 두 번째 로트부터 반복 장비 표시. E7: W020~W025 6장 정확히 짚음(기준선 점검은 5장). E6: "원인 불명".
+
+**추세를 남긴 데이터** (reports/score_detector_v1_keep_trend.md)
+- 깨끗한 로트 오탐 5/34, 웨이퍼 정밀도 71.1%. E6은 추세 때문에 focus_offset·deposition_rate가 근거로 붙어 "원인 불명"을 놓침 → 이동 기준은 v2.
+
+**산출물**
+- `scripts/detect.py`, `scripts/score_detector.py`
+- `results/detector_v1/`(alerts.csv, alerts.json, wafer_flags.csv, lot_z.csv, score.json), `results/detector_v1_keep_trend/`
+- `reports/score_detector_v1.md`, `reports/score_detector_v1_keep_trend.md`
+- ADR 0010, 0011, 0012
+
 ## 2026-11-10 · GitHub 저장소로 이전
 
 - 프로젝트 파일 폴더에 있던 작업물을 https://github.com/nyng-jang/fab-guard 로 옮김. 이제부터는 저장소가 원본.
