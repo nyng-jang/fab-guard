@@ -2,13 +2,11 @@
   {
     "lot_id": "LOT_0031",
     "provider": "gemini",
-    "model": "gemini-3.5-flash → gemini-3.6-flash",
+    "model": "gemini-3.1-flash-lite",
     "verdict": "cause_candidate",
     "confidence": "high",
     "cause_sensors": [
-      "temperature",
-      "etch_rate",
-      "pressure"
+      "temperature"
     ],
     "cause_equipment": [
       "ETCH_02"
@@ -23,7 +21,7 @@
   {
     "lot_id": "LOT_0035",
     "provider": "gemini",
-    "model": "gemini-3.5-flash → gemini-3.6-flash",
+    "model": "gemini-3.1-flash-lite",
     "verdict": "cause_candidate",
     "confidence": "high",
     "cause_sensors": [
@@ -43,7 +41,7 @@
   {
     "lot_id": "LOT_0036",
     "provider": "gemini",
-    "model": "gemini-3.5-flash → gemini-3.6-flash",
+    "model": "gemini-3.1-flash-lite",
     "verdict": "cause_candidate",
     "confidence": "high",
     "cause_sensors": [
@@ -65,7 +63,7 @@
   {
     "lot_id": "LOT_0043",
     "provider": "gemini",
-    "model": "gemini-3.5-flash → gemini-3.6-flash",
+    "model": "gemini-3.1-flash-lite",
     "verdict": "cause_candidate",
     "confidence": "high",
     "cause_sensors": [

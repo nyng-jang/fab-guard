@@ -4,7 +4,7 @@ AI는 글만 쓴다. 이상 여부와 원인 후보 계산은 탐지기(scripts/
 AI에게는 그 결과와 수치(근거 묶음)만 넘긴다. 정답지는 읽지 않는다.
 
 제공자 (환경 변수 LLM_PROVIDER 또는 --provider)
-  gemini    기본값. GEMINI_API_KEY 필요, 모델은 GEMINI_MODEL (기본 gemini-3.5-flash)
+  gemini    기본값. GEMINI_API_KEY 필요, 모델은 GEMINI_MODEL (기본 gemini-3.1-flash-lite)
   claude    ANTHROPIC_API_KEY 필요, 모델은 CLAUDE_MODEL (기본 claude-sonnet-5-5)
   template  AI 없이 탐지기 결과를 정해진 문장에 채워 넣는 기준선. 키 없이 돌아가고, AI 분석글과 비교하는 용도
 
@@ -127,16 +127,19 @@ def call_gemini(system: str, user: str) -> tuple[str, str]:
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         raise SystemExit("GEMINI_API_KEY 환경 변수가 없습니다. --provider template 또는 --dry-run 으로 먼저 확인할 수 있습니다.")
-    model = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash")
+    model = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
     body = {
         "system_instruction": {"parts": [{"text": system}]},
         "contents": [{"role": "user", "parts": [{"text": user}]}],
-        "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"},
+        "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json",
+                             "thinkingConfig": {"thinkingLevel": "minimal"}},  # 토큰 절약: 생각 단계 최소
     }
     r = http_json(url, body, {"x-goog-api-key": key})
     text = "".join(p.get("text", "") for p in r["candidates"][0]["content"]["parts"])
     served = r.get("modelVersion")
+    u = r.get("usageMetadata", {})
+    print(f"  토큰: 입력 {u.get('promptTokenCount')} · 출력 {u.get('candidatesTokenCount')} · 생각 {u.get('thoughtsTokenCount', 0)} · 합계 {u.get('totalTokenCount')}", flush=True)
     return text, (f"{model} → {served}" if served and served != model else model)
 
 

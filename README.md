@@ -116,7 +116,7 @@ AI는 탐지기가 만든 근거 묶음만 받아 글을 씁니다. 근거가 �
 ```bash
 python scripts/write_analysis.py --dry-run               # 호출 없이 프롬프트만 results/analyses/prompts/ 에 저장
 python scripts/write_analysis.py --provider template     # AI 없이 탐지기 결과를 문장에 채운 기준선
-GEMINI_API_KEY=... python scripts/write_analysis.py      # Gemini (모델은 GEMINI_MODEL, 기본 gemini-3.5-flash)
+GEMINI_API_KEY=... python scripts/write_analysis.py      # Gemini (모델은 GEMINI_MODEL, 기본 gemini-3.1-flash-lite)
 python scripts/score_analysis.py --provider gemini       # reports/score_analysis_gemini.md 생성
 ```
 

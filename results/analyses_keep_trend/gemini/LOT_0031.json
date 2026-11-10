@@ -1,7 +1,7 @@
 {
   "lot_id": "LOT_0031",
   "provider": "gemini",
-  "model": "gemini-3.5-flash → gemini-3.6-flash",
+  "model": "gemini-3.1-flash-lite",
   "bundle": {
     "lot_id": "LOT_0031",
     "replay_cycle": 31,
@@ -49,28 +49,27 @@
   "analysis": {
     "verdict": "cause_candidate",
     "cause_sensors": [
-      "temperature",
-      "etch_rate",
-      "pressure"
+      "temperature"
     ],
     "cause_equipment": [
       "ETCH_02"
     ],
     "confidence": "high",
-    "title": "ETCH_02 장비의 temperature 센서 이상으로 인한 수율 저하 분석 (LOT_0031)",
-    "body_markdown": "2023-01-31에 진행된 28nm GPU 제품 로트 LOT_0031에서 공정 이상 알림이 발생했습니다. 탐지기 분석 결과 식각 장비 ETCH_02의 temperature 센서가 주요 원인 후보로 확인되었습니다. temperature 센서는 평소 대비 로트 평균 z=+16.1로 매우 심각한 상승을 보였습니다. 동일 식각 장비의 다른 공정 센서인 etch_rate(z=+3.5)와 pressure(z=+2.6)에서도 표준편차 2.5 배 이상의 유의미한 이상 변동이 감지되었습니다. 이에 따른 공정 영향으로 결과 계측값인 oxide_thickness(z=+14.5), defect_density(z=+3.0), defect_count(z=+2.7), thickness_uniformity(z=+3.0), leakage_current(z=+3.1)가 대폭 악화되었으며, 최종 yield는 z=-8.9로 크게 하락했습니다. 최근 알림 이력 확인 결과, 해당 장비의 최근 반복 이상 기록은 없습니다. ETCH_02 장비의 온도 제어 부품 및 내부 챔버 상태 조치가 필요합니다.",
+    "title": "ETCH_02 장비 온도 이상으로 인한 수율 저하 발생",
+    "body_markdown": "LOT_0031 공정 진행 중 ETCH_02 장비의 온도 센서에서 심각한 이상이 탐지되었습니다. 로트 평균 temperature z=+16.1로 평소 대비 매우 높은 수치를 보였으며, 이로 인해 oxide_thickness z=+14.5 및 yield z=-8.9 등 후속 계측 결과와 최종 수율에 악영향을 미쳤습니다. 또한 etch_rate z=3.5, pressure z=2.6, thickness_uniformity z=3.0 등 식각 공정 관련 센서들에서도 유의미한 편차가 확인되었습니다. 해당 장비는 이번 로트에서 처음으로 이상이 탐지되었습니다. 온도 제어 시스템의 오작동 가능성이 높으므로 즉각적인 점검이 필요합니다.",
     "evidence_cited": [
       "temperature z=+16.1",
       "oxide_thickness z=+14.5",
       "yield z=-8.9",
-      "etch_rate z=+3.5",
-      "pressure z=+2.6"
+      "etch_rate z=3.5",
+      "pressure z=2.6",
+      "thickness_uniformity z=3.0"
     ],
     "next_checks": [
-      "ETCH_02 장비의 temperature 센서 및 온도 제어 발열체 모듈 점검",
-      "ETCH_02 장비의 챔버 압력(pressure) 및 식각율(etch_rate) 관련 설비 점검",
-      "LOT_0031 산화막 두께(oxide_thickness) 이상 웨이퍼에 대한 세부 계측 확인"
+      "ETCH_02 장비의 온도 제어 시스템(Chiller 등) 하드웨어 점검",
+      "온도 센서 데이터 로그 상세 분석 및 교정 상태 확인",
+      "식각 공정 레시피 설정값과 실제 출력값 비교"
     ]
   },
-  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"temperature\",\n    \"etch_rate\",\n    \"pressure\"\n  ],\n  \"cause_equipment\": [\n    \"ETCH_02\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"ETCH_02 장비의 temperature 센서 이상으로 인한 수율 저하 분석 (LOT_0031)\",\n  \"body_markdown\": \"2023-01-31에 진행된 28nm GPU 제품 로트 LOT_0031에서 공정 이상 알림이 발생했습니다. 탐지기 분석 결과 식각 장비 ETCH_02의 temperature 센서가 주요 원인 후보로 확인되었습니다. temperature 센서는 평소 대비 로트 평균 z=+16.1로 매우 심각한 상승을 보였습니다. 동일 식각 장비의 다른 공정 센서인 etch_rate(z=+3.5)와 pressure(z=+2.6)에서도 표준편차 2.5 배 이상의 유의미한 이상 변동이 감지되었습니다. 이에 따른 공정 영향으로 결과 계측값인 oxide_thickness(z=+14.5), defect_density(z=+3.0), defect_count(z=+2.7), thickness_uniformity(z=+3.0), leakage_current(z=+3.1)가 대폭 악화되었으며, 최종 yield는 z=-8.9로 크게 하락했습니다. 최근 알림 이력 확인 결과, 해당 장비의 최근 반복 이상 기록은 없습니다. ETCH_02 장비의 온도 제어 부품 및 내부 챔버 상태 조치가 필요합니다.\",\n  \"evidence_cited\": [\n    \"temperature z=+16.1\",\n    \"oxide_thickness z=+14.5\",\n    \"yield z=-8.9\",\n    \"etch_rate z=+3.5\",\n    \"pressure z=+2.6\"\n  ],\n  \"next_checks\": [\n    \"ETCH_02 장비의 temperature 센서 및 온도 제어 발열체 모듈 점검\",\n    \"ETCH_02 장비의 챔버 압력(pressure) 및 식각율(etch_rate) 관련 설비 점검\",\n    \"LOT_0031 산화막 두께(oxide_thickness) 이상 웨이퍼에 대한 세부 계측 확인\"\n  ]\n}"
+  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"temperature\"\n  ],\n  \"cause_equipment\": [\n    \"ETCH_02\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"ETCH_02 장비 온도 이상으로 인한 수율 저하 발생\",\n  \"body_markdown\": \"LOT_0031 공정 진행 중 ETCH_02 장비의 온도 센서에서 심각한 이상이 탐지되었습니다. 로트 평균 temperature z=+16.1로 평소 대비 매우 높은 수치를 보였으며, 이로 인해 oxide_thickness z=+14.5 및 yield z=-8.9 등 후속 계측 결과와 최종 수율에 악영향을 미쳤습니다. 또한 etch_rate z=3.5, pressure z=2.6, thickness_uniformity z=3.0 등 식각 공정 관련 센서들에서도 유의미한 편차가 확인되었습니다. 해당 장비는 이번 로트에서 처음으로 이상이 탐지되었습니다. 온도 제어 시스템의 오작동 가능성이 높으므로 즉각적인 점검이 필요합니다.\",\n  \"evidence_cited\": [\n    \"temperature z=+16.1\",\n    \"oxide_thickness z=+14.5\",\n    \"yield z=-8.9\",\n    \"etch_rate z=3.5\",\n    \"pressure z=2.6\",\n    \"thickness_uniformity z=3.0\"\n  ],\n  \"next_checks\": [\n    \"ETCH_02 장비의 온도 제어 시스템(Chiller 등) 하드웨어 점검\",\n    \"온도 센서 데이터 로그 상세 분석 및 교정 상태 확인\",\n    \"식각 공정 레시피 설정값과 실제 출력값 비교\"\n  ]\n}"
 }

@@ -1,7 +1,7 @@
 {
   "lot_id": "LOT_0036",
   "provider": "gemini",
-  "model": "gemini-3.5-flash → gemini-3.6-flash",
+  "model": "gemini-3.1-flash-lite",
   "bundle": {
     "lot_id": "LOT_0036",
     "replay_cycle": 36,
@@ -94,21 +94,21 @@
       "LITHO_04"
     ],
     "confidence": "high",
-    "title": "LOT_0036 공정 이상 분석: ETCH_04 식각율 및 LITHO_04 초점 변위 이상",
-    "body_markdown": "2023-02-05에 진행된 22nm Memory 제품 LOT_0036(25 wafers)에서 공정 이상 알림이 발생했습니다. 분석 결과, 식각 공정 센서인 etch_rate(z=+4.9)와 노광 공정 센서인 focus_offset(z=+4.2)이 평소 대비 큰 표준편차 배수를 보여 주요 원인 후보로 지정되었습니다. 이에 따라 식각 장비 ETCH_04와 노광 장비 LITHO_04가 원인 후보 장비로 분류되었습니다. 이 공정 변동의 영향으로 결과 계측 지표인 critical_dimension(z=+5.4), defect_density(z=+3.8), thickness_uniformity(z=+3.7)가 악화되었으며 yield(z=-4.8)는 크게 저하되었습니다. 특히 노광 장비 LITHO_04의 focus_offset 문제는 이전 LOT_0034 알림에 이어 2로트째 원인 후보로 지정되며 반복 발생하는 경향을 보이고 있습니다.",
+    "title": "ETCH_04 및 LITHO_04 공정 이상에 따른 수율 저하 분석",
+    "body_markdown": "LOT_0036 공정 진행 중 etch_rate와 focus_offset 센서에서 이상치가 탐지되어 수율 저하가 발생했습니다. ETCH_04 장비의 etch_rate(z=+4.9)와 LITHO_04 장비의 focus_offset(z=+4.2)이 주요 원인으로 분석되었습니다. 이로 인해 critical_dimension(z=+5.4), defect_density(z=+3.8), thickness_uniformity(z=+3.7) 등 계측 값의 변동이 확인되었으며, 최종적으로 yield(z=-4.8)가 감소했습니다. 특히 LITHO_04 장비의 focus_offset 문제는 최근 2로트 내에서 반복적으로 발생하고 있어 장비 상태에 대한 정밀 점검이 필요합니다. 공정 센서 이상이 수율 저하의 직접적인 원인으로 판단됩니다.",
     "evidence_cited": [
       "etch_rate z=+4.9",
       "focus_offset z=+4.2",
       "critical_dimension z=+5.4",
-      "yield z=-4.8",
       "defect_density z=+3.8",
-      "thickness_uniformity z=+3.7"
+      "thickness_uniformity z=+3.7",
+      "yield z=-4.8"
     ],
     "next_checks": [
-      "LITHO_04 장비의 focus_offset 반복 발생 원인 및 노광 파라미터 점검",
-      "ETCH_04 장비의 etch_rate 상승 관련 식각 챔버 조건 검증",
-      "critical_dimension 제어 및 yield 하락 웨이퍼 계측 데이터 확인"
+      "ETCH_04 장비의 식각 속도 제어 시스템 점검",
+      "LITHO_04 장비의 포커스 정렬 상태 및 반복 이슈 확인",
+      "최근 공정 데이터와 연계된 웨이퍼 계측 결과 상세 분석"
     ]
   },
-  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"etch_rate\",\n    \"focus_offset\"\n  ],\n  \"cause_equipment\": [\n    \"ETCH_04\",\n    \"LITHO_04\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"LOT_0036 공정 이상 분석: ETCH_04 식각율 및 LITHO_04 초점 변위 이상\",\n  \"body_markdown\": \"2023-02-05에 진행된 22nm Memory 제품 LOT_0036(25 wafers)에서 공정 이상 알림이 발생했습니다. 분석 결과, 식각 공정 센서인 etch_rate(z=+4.9)와 노광 공정 센서인 focus_offset(z=+4.2)이 평소 대비 큰 표준편차 배수를 보여 주요 원인 후보로 지정되었습니다. 이에 따라 식각 장비 ETCH_04와 노광 장비 LITHO_04가 원인 후보 장비로 분류되었습니다. 이 공정 변동의 영향으로 결과 계측 지표인 critical_dimension(z=+5.4), defect_density(z=+3.8), thickness_uniformity(z=+3.7)가 악화되었으며 yield(z=-4.8)는 크게 저하되었습니다. 특히 노광 장비 LITHO_04의 focus_offset 문제는 이전 LOT_0034 알림에 이어 2로트째 원인 후보로 지정되며 반복 발생하는 경향을 보이고 있습니다.\",\n  \"evidence_cited\": [\n    \"etch_rate z=+4.9\",\n    \"focus_offset z=+4.2\",\n    \"critical_dimension z=+5.4\",\n    \"yield z=-4.8\",\n    \"defect_density z=+3.8\",\n    \"thickness_uniformity z=+3.7\"\n  ],\n  \"next_checks\": [\n    \"LITHO_04 장비의 focus_offset 반복 발생 원인 및 노광 파라미터 점검\",\n    \"ETCH_04 장비의 etch_rate 상승 관련 식각 챔버 조건 검증\",\n    \"critical_dimension 제어 및 yield 하락 웨이퍼 계측 데이터 확인\"\n  ]\n}"
+  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"etch_rate\",\n    \"focus_offset\"\n  ],\n  \"cause_equipment\": [\n    \"ETCH_04\",\n    \"LITHO_04\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"ETCH_04 및 LITHO_04 공정 이상에 따른 수율 저하 분석\",\n  \"body_markdown\": \"LOT_0036 공정 진행 중 etch_rate와 focus_offset 센서에서 이상치가 탐지되어 수율 저하가 발생했습니다. ETCH_04 장비의 etch_rate(z=+4.9)와 LITHO_04 장비의 focus_offset(z=+4.2)이 주요 원인으로 분석되었습니다. 이로 인해 critical_dimension(z=+5.4), defect_density(z=+3.8), thickness_uniformity(z=+3.7) 등 계측 값의 변동이 확인되었으며, 최종적으로 yield(z=-4.8)가 감소했습니다. 특히 LITHO_04 장비의 focus_offset 문제는 최근 2로트 내에서 반복적으로 발생하고 있어 장비 상태에 대한 정밀 점검이 필요합니다. 공정 센서 이상이 수율 저하의 직접적인 원인으로 판단됩니다.\",\n  \"evidence_cited\": [\n    \"etch_rate z=+4.9\",\n    \"focus_offset z=+4.2\",\n    \"critical_dimension z=+5.4\",\n    \"defect_density z=+3.8\",\n    \"thickness_uniformity z=+3.7\",\n    \"yield z=-4.8\"\n  ],\n  \"next_checks\": [\n    \"ETCH_04 장비의 식각 속도 제어 시스템 점검\",\n    \"LITHO_04 장비의 포커스 정렬 상태 및 반복 이슈 확인\",\n    \"최근 공정 데이터와 연계된 웨이퍼 계측 결과 상세 분석\"\n  ]\n}"
 }
