@@ -1,6 +1,6 @@
 # 0007. 스택: Supabase + Python 혼합
 
-- 상태: 대체됨(→ 0011, 저장 부분). Python·Vercel·Claude API는 유지
+- 상태: 대체됨(→ 0011 저장 부분, → 0013 분석글 AI). Python·Vercel은 유지
 - 날짜: 2026-11-10 (제안 후 사용자 확인)
 
 ## 맥락
