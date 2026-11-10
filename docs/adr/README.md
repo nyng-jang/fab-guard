@@ -14,6 +14,9 @@
 | [0004](0004-genai-only-for-writing.md) | 생성형 AI는 분석글과 리포트 초안에만 사용 | 확정 |
 | [0005](0005-email-alert-1h-escalation.md) | 알림은 메일, 미확인 1시간 후 이관 | 확정 |
 | [0006](0006-defer-login.md) | 로그인 보류 | 확정 |
-| [0007](0007-stack-supabase-plus-python.md) | 스택: Supabase + Python 혼합 | 확정 |
+| [0007](0007-stack-supabase-plus-python.md) | 스택: Supabase + Python 혼합 | 대체됨(→ 0011, 저장 부분) |
 | [0008](0008-baseline-definition.md) | 평소 기준: 앞 25로트, 공정 값 공통·계측 값 노드별 | 확정 |
 | [0009](0009-remove-background-trend.md) | 원본의 시간 추세: 걷어낸 버전과 남긴 버전을 둘 다 만듦 | 확정 |
+| [0010](0010-v1-scope-reduction.md) | v1 범위 축소: 탐지 → 채점 → 분석글 → 정적 페이지 | 확정 |
+| [0011](0011-v1-local-file-storage.md) | v1 저장은 저장소 안의 파일, v2 저장소는 나중에 고름 | 확정 |
+| [0012](0012-detector-v1-rules.md) | 탐지기 v1 규칙 | 확정 |

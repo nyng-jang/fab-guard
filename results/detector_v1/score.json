@@ -1,0 +1,144 @@
+{
+  "wafer": {
+    "tp": 307,
+    "fp": 69,
+    "fn": 50,
+    "tn": 824,
+    "recall": 0.8599439775910365,
+    "precision": 0.8164893617021277,
+    "false_positive_rate": 0.07726763717805152
+  },
+  "lot": {
+    "anomaly_lots": 16,
+    "anomaly_lots_alerted": 14,
+    "clean_lots": 34,
+    "clean_lots_baseline": 25,
+    "clean_lots_late": 9,
+    "false_alert_lots": [
+      "LOT_0034",
+      "LOT_0040"
+    ],
+    "false_alerts": [
+      {
+        "lot_id": "LOT_0034",
+        "kind": "process_anomaly",
+        "evidence": "로트 평균 pressure z=-3.6"
+      },
+      {
+        "lot_id": "LOT_0040",
+        "kind": "process_anomaly",
+        "evidence": "로트 평균 leakage_current z=+4.4"
+      }
+    ]
+  },
+  "events": [
+    {
+      "event_id": "E1",
+      "type": "drift",
+      "name_ko": "서서히 변함(드리프트)",
+      "lots": 8,
+      "lots_detected": 6,
+      "detected": true,
+      "classified_ok": true,
+      "cause_sensor_top1": 1.0,
+      "cause_sensor_any": 1.0,
+      "cause_equipment_hit": 1.0,
+      "recurring_flag_from": "LOT_0037",
+      "first_detected": {
+        "order": 3,
+        "lot_id": "LOT_0036",
+        "shift_sigma": 1.5
+      }
+    },
+    {
+      "event_id": "E2",
+      "type": "step_change",
+      "name_ko": "급변",
+      "lots": 1,
+      "lots_detected": 1,
+      "detected": true,
+      "classified_ok": true,
+      "cause_sensor_top1": 1.0,
+      "cause_sensor_any": 1.0
+    },
+    {
+      "event_id": "E3",
+      "type": "sensor_spike",
+      "name_ko": "센서 튐",
+      "lots": 1,
+      "lots_detected": 1,
+      "detected": true,
+      "classified_ok": true,
+      "cause_sensor_top1": 1.0,
+      "cause_sensor_any": 1.0
+    },
+    {
+      "event_id": "E4",
+      "type": "ingestion_error",
+      "name_ko": "수신 오류",
+      "lots": 1,
+      "lots_detected": 1,
+      "detected": true,
+      "classified_ok": true,
+      "cause_sensor_top1": 1.0,
+      "cause_sensor_any": 1.0
+    },
+    {
+      "event_id": "E5",
+      "type": "shared_equipment",
+      "name_ko": "장비 공통 문제",
+      "lots": 3,
+      "lots_detected": 3,
+      "detected": true,
+      "classified_ok": true,
+      "cause_sensor_top1": 1.0,
+      "cause_sensor_any": 1.0,
+      "cause_equipment_hit": 1.0,
+      "recurring_flag_from": "LOT_0046"
+    },
+    {
+      "event_id": "E6",
+      "type": "unexplained_defect",
+      "name_ko": "원인 불명 결함",
+      "lots": 1,
+      "lots_detected": 1,
+      "detected": true,
+      "classified_ok": true,
+      "cause_sensor_top1": null,
+      "cause_sensor_any": null,
+      "said_unexplained": true
+    },
+    {
+      "event_id": "E7",
+      "type": "partial_wafer",
+      "name_ko": "일부 웨이퍼만",
+      "lots": 1,
+      "lots_detected": 1,
+      "detected": true,
+      "classified_ok": true,
+      "cause_sensor_top1": 1.0,
+      "cause_sensor_any": 1.0,
+      "wafers_true": [
+        "W020",
+        "W021",
+        "W022",
+        "W023",
+        "W024",
+        "W025"
+      ],
+      "wafers_pred": [
+        "W020",
+        "W021",
+        "W022",
+        "W023",
+        "W024",
+        "W025"
+      ],
+      "wafer_recall": 1.0,
+      "wafer_precision": 1.0,
+      "other_alerts_same_lot": [
+        "process_anomaly/lot: 로트 평균 focus_offset z=-4.3, deposition_rate z=+3.7"
+      ]
+    }
+  ]
+}
