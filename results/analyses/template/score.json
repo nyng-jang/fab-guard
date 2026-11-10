@@ -1,0 +1,75 @@
+[
+  {
+    "lot_id": "LOT_0031",
+    "provider": "template",
+    "model": "-",
+    "verdict": "cause_candidate",
+    "confidence": "medium",
+    "cause_sensors": [
+      "temperature"
+    ],
+    "cause_equipment": [
+      "ETCH_02"
+    ],
+    "outside_evidence": [],
+    "event_id": "E2",
+    "expected_verdict": "cause_candidate",
+    "verdict_ok": true,
+    "sensor_top1_ok": true,
+    "sensor_any_ok": true
+  },
+  {
+    "lot_id": "LOT_0035",
+    "provider": "template",
+    "model": "-",
+    "verdict": "unexplained",
+    "confidence": "medium",
+    "cause_sensors": [],
+    "cause_equipment": [],
+    "outside_evidence": [],
+    "event_id": "E6",
+    "expected_verdict": "unexplained",
+    "verdict_ok": true,
+    "said_unexplained": true
+  },
+  {
+    "lot_id": "LOT_0036",
+    "provider": "template",
+    "model": "-",
+    "verdict": "cause_candidate",
+    "confidence": "medium",
+    "cause_sensors": [
+      "etch_rate"
+    ],
+    "cause_equipment": [
+      "ETCH_04"
+    ],
+    "outside_evidence": [],
+    "event_id": "E1",
+    "expected_verdict": "cause_candidate",
+    "verdict_ok": true,
+    "sensor_top1_ok": true,
+    "sensor_any_ok": true,
+    "equipment_ok": true
+  },
+  {
+    "lot_id": "LOT_0043",
+    "provider": "template",
+    "model": "-",
+    "verdict": "cause_candidate",
+    "confidence": "medium",
+    "cause_sensors": [
+      "etch_rate"
+    ],
+    "cause_equipment": [
+      "ETCH_04"
+    ],
+    "outside_evidence": [],
+    "event_id": "E1",
+    "expected_verdict": "cause_candidate",
+    "verdict_ok": true,
+    "sensor_top1_ok": true,
+    "sensor_any_ok": true,
+    "equipment_ok": true
+  }
+]

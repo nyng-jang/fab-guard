@@ -1,0 +1,150 @@
+당신은 반도체 공정 이상 알림의 분석글을 쓰는 보조자입니다.
+규칙:
+1. 아래 [근거 묶음]에 있는 숫자와 사실만 씁니다. 묶음에 없는 센서, 장비, 수치, 공정 지식을 원인으로 내세우지 않습니다.
+2. z는 평소(앞 25로트) 대비 표준편차 배수입니다. 공정 센서의 |z|가 2.5보다 작으면 원인 근거로 쓰지 않습니다.
+3. 계측 값(결함 수, CD 등)이나 yield만 나빠지고 공정 센서에 근거가 없으면 verdict를 "unexplained"로 하고 본문에 "원인 불명"이라고 분명히 씁니다. 추측으로 원인을 만들지 않습니다.
+4. 탐지기가 센서 의심이나 수신 오류로 분류했으면 공정 원인을 찾지 말고 그 분류를 설명합니다.
+5. 같은 장비가 최근 다른 알림에도 원인 후보였으면 반복 여부를 언급합니다.
+6. 한국어로, 담당 엔지니어가 3분 안에 읽을 분량(본문 5~10문장)으로 씁니다.
+
+출력은 JSON 하나만 씁니다. 다른 글은 쓰지 않습니다.
+{
+  "verdict": "cause_candidate" | "unexplained" | "sensor_suspect" | "ingestion_error",
+  "cause_sensors": ["원인 후보 공정 센서, 강한 순서, 없으면 빈 목록"],
+  "cause_equipment": ["원인 후보 장비 ID, 없으면 빈 목록"],
+  "confidence": "high" | "medium" | "low",
+  "title": "한 줄 제목",
+  "body_markdown": "본문 (Markdown)",
+  "evidence_cited": ["본문에서 근거로 쓴 수치, 예: temperature z=+18.7"],
+  "next_checks": ["담당자가 확인할 것 1~3개"]
+}
+
+---
+
+[근거 묶음]
+{
+  "lot_id": "LOT_0043",
+  "replay_cycle": 43,
+  "process_date": "2023-02-12",
+  "technology_node": "14nm",
+  "product_type": "ASIC",
+  "wafers": 25,
+  "equipment": {
+    "etch_tool": "ETCH_04",
+    "litho_tool": "LITHO_04",
+    "deposition_tool": "DEP_01",
+    "implant_tool": "IMP_01"
+  },
+  "detector_alerts": [
+    {
+      "kind": "process_anomaly",
+      "scope": "lot",
+      "wafers": "",
+      "flagged_sensors": "etch_rate|critical_dimension|yield",
+      "cause_sensors": "etch_rate",
+      "cause_equipment": "ETCH_04(etch_rate)",
+      "cause_status": "candidate",
+      "recurring_equipment": "ETCH_04:etch_rate:6로트",
+      "max_abs_z": 12.89,
+      "evidence": "로트 평균 etch_rate z=+12.9, critical_dimension z=+11.3, yield z=-9.7"
+    }
+  ],
+  "lot_mean_z_abs_ge_2_5": {
+    "etch_rate": 12.9,
+    "deposition_rate": -2.5,
+    "critical_dimension": 11.3,
+    "oxide_thickness": -2.7,
+    "leakage_current": 3.4,
+    "yield": -9.7
+  },
+  "recent_alerts": [
+    {
+      "lot_id": "LOT_0034",
+      "replay_cycle": 34,
+      "cause_sensors": [
+        "pressure"
+      ],
+      "cause_equipment": [
+        "ETCH_05(pressure)"
+      ],
+      "evidence": "로트 평균 pressure z=-3.6"
+    },
+    {
+      "lot_id": "LOT_0035",
+      "replay_cycle": 35,
+      "cause_sensors": [],
+      "cause_equipment": [],
+      "evidence": "로트 평균 defect_density z=+21.5, defect_count z=+18.7, yield z=-6.9"
+    },
+    {
+      "lot_id": "LOT_0036",
+      "replay_cycle": 36,
+      "cause_sensors": [
+        "etch_rate"
+      ],
+      "cause_equipment": [
+        "ETCH_04(etch_rate)"
+      ],
+      "evidence": "로트 평균 critical_dimension z=+5.4, yield z=-4.8, etch_rate z=+4.2"
+    },
+    {
+      "lot_id": "LOT_0037",
+      "replay_cycle": 37,
+      "cause_sensors": [
+        "etch_rate"
+      ],
+      "cause_equipment": [
+        "ETCH_04(etch_rate)"
+      ],
+      "evidence": "로트 평균 etch_rate z=+5.9, yield z=-5.8"
+    },
+    {
+      "lot_id": "LOT_0039",
+      "replay_cycle": 39,
+      "cause_sensors": [
+        "etch_rate"
+      ],
+      "cause_equipment": [
+        "ETCH_04(etch_rate)"
+      ],
+      "evidence": "로트 평균 etch_rate z=+7.1, yield z=-6.2, critical_dimension z=+6.1"
+    },
+    {
+      "lot_id": "LOT_0040",
+      "replay_cycle": 40,
+      "cause_sensors": [],
+      "cause_equipment": [],
+      "evidence": "로트 평균 leakage_current z=+4.4"
+    },
+    {
+      "lot_id": "LOT_0041",
+      "replay_cycle": 41,
+      "cause_sensors": [
+        "etch_rate"
+      ],
+      "cause_equipment": [
+        "ETCH_04(etch_rate)"
+      ],
+      "evidence": "로트 평균 etch_rate z=+10.4, critical_dimension z=+9.4, yield z=-8.2"
+    },
+    {
+      "lot_id": "LOT_0042",
+      "replay_cycle": 42,
+      "cause_sensors": [
+        "etch_rate",
+        "deposition_rate"
+      ],
+      "cause_equipment": [
+        "ETCH_04(etch_rate)",
+        "DEP_02(deposition_rate)"
+      ],
+      "evidence": "로트 평균 etch_rate z=+11.4, critical_dimension z=+7.9, yield z=-7.7, deposition_rate z=+4.8"
+    }
+  ],
+  "notes": [
+    "공정 센서: etch_rate, pressure, temperature(식각), exposure_time, focus_offset, dose(노광), deposition_rate(증착), implant_energy, tilt_angle(이온 주입)",
+    "계측 값과 yield는 결과 값이라 원인이 아닌 영향으로 봅니다."
+  ]
+}
+
+위 규칙대로 이 알림의 분석글을 JSON으로 써 주세요.

@@ -2,6 +2,22 @@
 
 지금까지 한 일. 가장 최근 항목이 위에 있습니다.
 
+## 2026-11-10 · 분석글 스크립트와 분석글 채점
+
+**한 일**
+- `scripts/write_analysis.py`: 알림마다 근거 묶음(탐지기 알림, 로트 평균 |z|≥2.5 값, 그 로트의 장비, 최근 10주기 알림)을 만들어 AI에 넘기고 JSON(판정, 원인 센서·장비, 본문, 인용 근거)으로 받음. 제공자는 gemini(기본) / claude / template. `--dry-run`은 프롬프트만 저장.
+- template 제공자: AI 없이 탐지기 결과를 문장에 채운 기준선. 키 없이 파이프라인을 끝까지 확인하고, 나중에 AI 분석글과 비교하는 용도.
+- `scripts/score_analysis.py`: 판정(E6은 unexplained), 원인 센서 1순위, 원인 장비, 근거 밖 주장(근거 묶음에서 |z|<2.5인 센서나 그 로트에 없는 장비를 원인으로 씀), E6 본문의 "원인 불명" 여부를 채점.
+
+**결과 수치**
+- template 기준선(reports/score_analysis_template.md): 4개 중 판정 4개 맞음, 근거 밖 주장 0개. AI 결과가 아님.
+- Gemini 실행은 아직. `GEMINI_API_KEY`가 환경에 없음.
+
+**산출물**
+- `scripts/write_analysis.py`, `scripts/score_analysis.py`
+- `results/analyses/prompts/`(AI에 넘기는 프롬프트 4개), `results/analyses/template/`
+- `reports/score_analysis_template.md`
+
 ## 2026-11-10 · 분석글 AI를 Gemini 기본으로 변경
 
 - 나영 선택: 분석글 AI는 바꿔 끼울 수 있게 하고 기본값은 Gemini(ADR 0013). ADR 0007·0010의 Claude API 부분은 대체됨.

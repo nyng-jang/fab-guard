@@ -3,7 +3,8 @@
 작업을 시작할 때와 끝낼 때 갱신합니다. 범위는 ADR 0010(v1 축소)을 따릅니다.
 
 ## 지금
-- [ ] AI 분석글 (E1, E2, E6, ADR 0013): 제공자 연결부(gemini 기본 / claude) 먼저. Gemini API 키 필요(환경 변수). `results/detector_v1/alerts.json`의 근거 묶음만 넘기고, 근거가 없으면 "원인 불명"이라고 쓰게 하기. 원인 후보가 정답 센서·장비를 맞히는지 채점에 추가
+- [ ] Gemini로 분석글 실제 실행과 채점: `GEMINI_API_KEY`를 클라우드 환경 변수로 넣은 뒤 `write_analysis.py` → `score_analysis.py`. 스크립트와 template 기준선은 완료
+- [ ] 추세를 남긴 데이터에서 E6(LOT_0035)에 가짜 공정 근거(focus_offset 등)가 붙을 때 AI가 그대로 따라 쓰는지 시험 (면접 이야기거리) `results/detector_v1/alerts.json`의 근거 묶음만 넘기고, 근거가 없으면 "원인 불명"이라고 쓰게 하기. 원인 후보가 정답 센서·장비를 맞히는지 채점에 추가
 
 ## 다음: v1 (약 16h 중 남은 부분)
 - [ ] 정적 결과 페이지 하나 (Vercel): 채점 요약, 사건별 표, 분석글. `results/`, `reports/` 파일만 읽음
@@ -29,6 +30,7 @@
 - [ ] 사건이 겹치는 더미데이터 변형 (ADR 0002)
 
 ## 완료
+- [x] 분석글 스크립트(`write_analysis.py`, gemini/claude/template)와 분석글 채점(`score_analysis.py`) (2026-11-10)
 - [x] 분석글 AI 결정: 바꿔 끼울 수 있게, 기본 Gemini (2026-11-10, ADR 0013)
 - [x] 탐지기 v1 `scripts/detect.py` (2026-11-10, ADR 0012)
 - [x] 채점 스크립트 `scripts/score_detector.py` (2026-11-10)
