@@ -1,0 +1,10 @@
+sensor,scale,slope_per_lot,lot_mean_corr_with_day,change_over_50_lots_in_sigma
+etch_rate,linear,0.003285854562878753,0.745,1.61
+pressure,linear,0.09001516752621141,0.713,0.86
+temperature,linear,0.05260127491146852,0.744,1.17
+focus_offset,linear,0.0002769998998775584,0.877,2.03
+deposition_rate,linear,-0.0036282849827797697,-0.863,-1.53
+thickness_uniformity,linear,0.008332074035080536,0.91,1.72
+defect_count,linear,2.999871308523402,0.899,1.68
+defect_density,linear,0.004304536967479043,0.913,1.76
+leakage_current,log,0.007567857651783217,0.649,0.67

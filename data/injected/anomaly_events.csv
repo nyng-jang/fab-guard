@@ -1,0 +1,8 @@
+event_id,anomaly_type,name_ko,lots,wafers,start_date,end_date,injected_sensors,coupled_sensors,cause_equipment,magnitude,intended_severity,expected_response
+E1,drift,서서히 변함(드리프트),LOT_0027|LOT_0029|LOT_0036|LOT_0037|LOT_0039|LOT_0041|LOT_0042|LOT_0043,ALL,2023-01-27,2023-02-12,etch_rate,critical_dimension|yield,ETCH_04,0.5σ→4.0σ,warning_to_urgent,"몇 번째 로트부터 잡는지 측정, 원인 후보 ETCH_04 / etch_rate"
+E2,step_change,급변,LOT_0031,ALL,2023-01-31,2023-01-31,temperature,oxide_thickness|yield,,+5.0σ,urgent,"긴급 후보, 원인 후보 temperature"
+E3,sensor_spike,센서 튐,LOT_0033,W019,2023-02-02,2023-02-02,pressure,,,x10,sensor_suspect,공정 이상이 아니라 센서 의심으로 분류(함께 변한 값 없음)
+E4,ingestion_error,수신 오류,LOT_0038,ALL,2023-02-07,2023-02-07,deposition_rate,,,missing,ingestion_error,"'수신 오류' 별도 알림, 나머지 센서 분석은 계속"
+E5,shared_equipment,장비 공통 문제,LOT_0044|LOT_0046|LOT_0048,ALL,2023-02-13,2023-02-17,focus_offset|exposure_time,critical_dimension|yield,LITHO_01,"focus_offset +3.0σ, exposure_time +2.5σ",urgent,여러 로트의 공통 장비 LITHO_01을 원인 후보로
+E6,unexplained_defect,원인 불명 결함,LOT_0035,ALL,2023-02-04,2023-02-04,defect_count|defect_density,yield,,+5.0σ,warning,공정 값 근거가 없으면 '원인 불명'이라고 말하는지
+E7,partial_wafer,일부 웨이퍼만,LOT_0049,W020|W021|W022|W023|W024|W025,2023-02-18,2023-02-18,implant_energy,vth|yield,,+4.0σ,warning,로트 전체가 아니라 웨이퍼 W020~W025만 짚는지
