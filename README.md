@@ -2,11 +2,11 @@
 
 웨이퍼 공정 센서 데이터를 주기적으로 받아 이상을 찾고, 원인 후보와 근거를 담은 분석글을 담당자에게 보내며, 담당자가 버튼 하나로 리포트를 만들게 하는 서비스입니다. 개인 포트폴리오 프로젝트입니다.
 
-지금은 범위를 줄인 v1을 만들고 있습니다: 탐지기 → 채점 → Claude API 분석글 → 정적 결과 페이지. Supabase 저장, 매시간 실행, 메일 알림은 v2입니다([ADR 0010](docs/adr/0010-v1-scope-reduction.md), [ADR 0011](docs/adr/0011-v1-local-file-storage.md)).
+지금은 범위를 줄인 v1을 만들고 있습니다: 탐지기 → 채점 → AI 분석글(기본 Gemini, Claude로 바꿔 끼울 수 있음) → 정적 결과 페이지. Supabase 저장, 매시간 실행, 메일 알림은 v2입니다([ADR 0010](docs/adr/0010-v1-scope-reduction.md), [ADR 0011](docs/adr/0011-v1-local-file-storage.md), [ADR 0013](docs/adr/0013-llm-provider-switchable-gemini-default.md)).
 
 검증 순서는 두 단계입니다. 먼저 합성 데이터(archive.zip)에 정답을 아는 이상을 직접 심어 에이전트 로직을 검증하고, 같은 로직을 공개 실데이터(UCI SECOM)에 적용합니다. 자세한 이유는 [ADR 0001](docs/adr/0001-synthetic-first-then-secom.md)에 있습니다.
 
-> **보안 메모**: 이 프로젝트는 합성·공개 데이터만 쓰므로 외부 클라우드(Supabase, Vercel)와 외부 AI(Claude API)를 사용합니다. 실제 공장 데이터에 적용하려면 저장소와 AI 호출을 사내 서버로 옮겨야 합니다. ([ADR 0003](docs/adr/0003-external-cloud-and-ai.md))
+> **보안 메모**: 이 프로젝트는 합성·공개 데이터만 쓰므로 외부 클라우드(Supabase, Vercel)와 외부 AI(Gemini API, 선택 시 Claude API)를 사용합니다. 실제 공장 데이터에 적용하려면 저장소와 AI 호출을 사내 서버로 옮겨야 합니다. ([ADR 0003](docs/adr/0003-external-cloud-and-ai.md))
 
 ## 처음 읽는 순서
 
