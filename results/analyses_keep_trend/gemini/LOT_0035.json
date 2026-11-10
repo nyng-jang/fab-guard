@@ -1,0 +1,99 @@
+{
+  "lot_id": "LOT_0035",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "bundle": {
+    "lot_id": "LOT_0035",
+    "replay_cycle": 35,
+    "process_date": "2023-02-04",
+    "technology_node": "10nm",
+    "product_type": "ASIC",
+    "wafers": 25,
+    "equipment": {
+      "etch_tool": "ETCH_01",
+      "litho_tool": "LITHO_01",
+      "deposition_tool": "DEP_03",
+      "implant_tool": "IMP_02"
+    },
+    "detector_alerts": [
+      {
+        "kind": "process_anomaly",
+        "scope": "lot",
+        "wafers": "",
+        "flagged_sensors": "defect_count|defect_density|yield",
+        "cause_sensors": "focus_offset|deposition_rate",
+        "cause_equipment": "LITHO_01(focus_offset)|DEP_03(deposition_rate)",
+        "cause_status": "candidate",
+        "recurring_equipment": "",
+        "max_abs_z": 21.39,
+        "evidence": "로트 평균 defect_density z=+21.4, defect_count z=+19.1, yield z=-6.9"
+      }
+    ],
+    "lot_mean_z_abs_ge_2_5": {
+      "focus_offset": 3.2,
+      "deposition_rate": -2.8,
+      "thickness_uniformity": 3.3,
+      "defect_count": 19.1,
+      "defect_density": 21.4,
+      "yield": -6.9
+    },
+    "recent_alerts": [
+      {
+        "lot_id": "LOT_0031",
+        "replay_cycle": 31,
+        "cause_sensors": [
+          "temperature"
+        ],
+        "cause_equipment": [
+          "ETCH_02(temperature)"
+        ],
+        "evidence": "로트 평균 temperature z=+16.1, oxide_thickness z=+14.5, yield z=-8.9"
+      },
+      {
+        "lot_id": "LOT_0034",
+        "replay_cycle": 34,
+        "cause_sensors": [
+          "focus_offset",
+          "deposition_rate"
+        ],
+        "cause_equipment": [
+          "LITHO_04(focus_offset)",
+          "DEP_01(deposition_rate)"
+        ],
+        "evidence": "로트 평균 focus_offset z=+4.4, leakage_current z=+3.9, deposition_rate z=-3.7"
+      }
+    ],
+    "notes": [
+      "공정 센서: etch_rate, pressure, temperature(식각), exposure_time, focus_offset, dose(노광), deposition_rate(증착), implant_energy, tilt_angle(이온 주입)",
+      "계측 값과 yield는 결과 값이라 원인이 아닌 영향으로 봅니다."
+    ]
+  },
+  "analysis": {
+    "verdict": "cause_candidate",
+    "cause_sensors": [
+      "focus_offset",
+      "deposition_rate"
+    ],
+    "cause_equipment": [
+      "LITHO_01",
+      "DEP_03"
+    ],
+    "confidence": "high",
+    "title": "LOT_0035 공정 이상: LITHO_01 및 DEP_03 센서 변동에 따른 수율 저하",
+    "body_markdown": "LOT_0035 공정 진행 중 결함 수와 밀도가 급격히 증가하고 수율이 저하되는 현상이 발생했습니다. 분석 결과, LITHO_01 장비의 focus_offset(z=+3.2)과 DEP_03 장비의 deposition_rate(z=-2.8)에서 평소 대비 유의미한 변동이 확인되었습니다. 또한 thickness_uniformity(z=+3.3) 센서에서도 이상치가 관찰되었습니다. 해당 장비들은 최근 LOT_0034에서도 동일 센서 항목으로 알림이 발생한 바 있어, 설비의 반복적인 공정 편차 가능성을 염두에 두어야 합니다. 계측 결과인 defect_density(z=+21.4), defect_count(z=+19.1), yield(z=-6.9) 수치는 공정 이상에 따른 직접적인 영향으로 판단됩니다.",
+    "evidence_cited": [
+      "focus_offset z=+3.2",
+      "deposition_rate z=-2.8",
+      "thickness_uniformity z=+3.3",
+      "defect_density z=+21.4",
+      "defect_count z=+19.1",
+      "yield z=-6.9"
+    ],
+    "next_checks": [
+      "LITHO_01 장비의 포커스 보정 상태 및 광학계 점검",
+      "DEP_03 장비의 증착 속도 제어 루프 및 가스 유량 확인",
+      "최근 동일 장비에서 발생한 알림과 연계하여 설비 파트 교체 주기 재검토"
+    ]
+  },
+  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"focus_offset\",\n    \"deposition_rate\"\n  ],\n  \"cause_equipment\": [\n    \"LITHO_01\",\n    \"DEP_03\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"LOT_0035 공정 이상: LITHO_01 및 DEP_03 센서 변동에 따른 수율 저하\",\n  \"body_markdown\": \"LOT_0035 공정 진행 중 결함 수와 밀도가 급격히 증가하고 수율이 저하되는 현상이 발생했습니다. 분석 결과, LITHO_01 장비의 focus_offset(z=+3.2)과 DEP_03 장비의 deposition_rate(z=-2.8)에서 평소 대비 유의미한 변동이 확인되었습니다. 또한 thickness_uniformity(z=+3.3) 센서에서도 이상치가 관찰되었습니다. 해당 장비들은 최근 LOT_0034에서도 동일 센서 항목으로 알림이 발생한 바 있어, 설비의 반복적인 공정 편차 가능성을 염두에 두어야 합니다. 계측 결과인 defect_density(z=+21.4), defect_count(z=+19.1), yield(z=-6.9) 수치는 공정 이상에 따른 직접적인 영향으로 판단됩니다.\",\n  \"evidence_cited\": [\n    \"focus_offset z=+3.2\",\n    \"deposition_rate z=-2.8\",\n    \"thickness_uniformity z=+3.3\",\n    \"defect_density z=+21.4\",\n    \"defect_count z=+19.1\",\n    \"yield z=-6.9\"\n  ],\n  \"next_checks\": [\n    \"LITHO_01 장비의 포커스 보정 상태 및 광학계 점검\",\n    \"DEP_03 장비의 증착 속도 제어 루프 및 가스 유량 확인\",\n    \"최근 동일 장비에서 발생한 알림과 연계하여 설비 파트 교체 주기 재검토\"\n  ]\n}"
+}

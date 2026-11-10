@@ -1,0 +1,75 @@
+{
+  "lot_id": "LOT_0031",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "bundle": {
+    "lot_id": "LOT_0031",
+    "replay_cycle": 31,
+    "process_date": "2023-01-31",
+    "technology_node": "28nm",
+    "product_type": "GPU",
+    "wafers": 25,
+    "equipment": {
+      "etch_tool": "ETCH_02",
+      "litho_tool": "LITHO_01",
+      "deposition_tool": "DEP_01",
+      "implant_tool": "IMP_03"
+    },
+    "detector_alerts": [
+      {
+        "kind": "process_anomaly",
+        "scope": "lot",
+        "wafers": "",
+        "flagged_sensors": "temperature|oxide_thickness|yield",
+        "cause_sensors": "temperature",
+        "cause_equipment": "ETCH_02(temperature)",
+        "cause_status": "candidate",
+        "recurring_equipment": "",
+        "max_abs_z": 16.07,
+        "evidence": "로트 평균 temperature z=+16.1, oxide_thickness z=+14.5, yield z=-8.9"
+      }
+    ],
+    "lot_mean_z_abs_ge_2_5": {
+      "etch_rate": 3.5,
+      "pressure": 2.6,
+      "temperature": 16.1,
+      "thickness_uniformity": 3.0,
+      "oxide_thickness": 14.5,
+      "defect_count": 2.7,
+      "defect_density": 3.0,
+      "leakage_current": 3.1,
+      "yield": -8.9
+    },
+    "recent_alerts": [],
+    "notes": [
+      "공정 센서: etch_rate, pressure, temperature(식각), exposure_time, focus_offset, dose(노광), deposition_rate(증착), implant_energy, tilt_angle(이온 주입)",
+      "계측 값과 yield는 결과 값이라 원인이 아닌 영향으로 봅니다."
+    ]
+  },
+  "analysis": {
+    "verdict": "cause_candidate",
+    "cause_sensors": [
+      "temperature"
+    ],
+    "cause_equipment": [
+      "ETCH_02"
+    ],
+    "confidence": "high",
+    "title": "ETCH_02 장비 온도 이상으로 인한 수율 저하 발생",
+    "body_markdown": "LOT_0031 공정 진행 중 ETCH_02 장비의 온도 센서에서 심각한 이상이 탐지되었습니다. 로트 평균 temperature z=+16.1로 평소 대비 매우 높은 수치를 보였으며, 이로 인해 oxide_thickness z=+14.5 및 yield z=-8.9 등 후속 계측 결과와 최종 수율에 악영향을 미쳤습니다. 또한 etch_rate z=3.5, pressure z=2.6, thickness_uniformity z=3.0 등 식각 공정 관련 센서들에서도 유의미한 편차가 확인되었습니다. 해당 장비는 이번 로트에서 처음으로 이상이 탐지되었습니다. 온도 제어 시스템의 오작동 가능성이 높으므로 즉각적인 점검이 필요합니다.",
+    "evidence_cited": [
+      "temperature z=+16.1",
+      "oxide_thickness z=+14.5",
+      "yield z=-8.9",
+      "etch_rate z=3.5",
+      "pressure z=2.6",
+      "thickness_uniformity z=3.0"
+    ],
+    "next_checks": [
+      "ETCH_02 장비의 온도 제어 시스템(Chiller 등) 하드웨어 점검",
+      "온도 센서 데이터 로그 상세 분석 및 교정 상태 확인",
+      "식각 공정 레시피 설정값과 실제 출력값 비교"
+    ]
+  },
+  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"temperature\"\n  ],\n  \"cause_equipment\": [\n    \"ETCH_02\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"ETCH_02 장비 온도 이상으로 인한 수율 저하 발생\",\n  \"body_markdown\": \"LOT_0031 공정 진행 중 ETCH_02 장비의 온도 센서에서 심각한 이상이 탐지되었습니다. 로트 평균 temperature z=+16.1로 평소 대비 매우 높은 수치를 보였으며, 이로 인해 oxide_thickness z=+14.5 및 yield z=-8.9 등 후속 계측 결과와 최종 수율에 악영향을 미쳤습니다. 또한 etch_rate z=3.5, pressure z=2.6, thickness_uniformity z=3.0 등 식각 공정 관련 센서들에서도 유의미한 편차가 확인되었습니다. 해당 장비는 이번 로트에서 처음으로 이상이 탐지되었습니다. 온도 제어 시스템의 오작동 가능성이 높으므로 즉각적인 점검이 필요합니다.\",\n  \"evidence_cited\": [\n    \"temperature z=+16.1\",\n    \"oxide_thickness z=+14.5\",\n    \"yield z=-8.9\",\n    \"etch_rate z=3.5\",\n    \"pressure z=2.6\",\n    \"thickness_uniformity z=3.0\"\n  ],\n  \"next_checks\": [\n    \"ETCH_02 장비의 온도 제어 시스템(Chiller 등) 하드웨어 점검\",\n    \"온도 센서 데이터 로그 상세 분석 및 교정 상태 확인\",\n    \"식각 공정 레시피 설정값과 실제 출력값 비교\"\n  ]\n}"
+}

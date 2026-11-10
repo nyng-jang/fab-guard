@@ -1,0 +1,85 @@
+{
+  "lot_id": "LOT_0035",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "bundle": {
+    "lot_id": "LOT_0035",
+    "replay_cycle": 35,
+    "process_date": "2023-02-04",
+    "technology_node": "10nm",
+    "product_type": "ASIC",
+    "wafers": 25,
+    "equipment": {
+      "etch_tool": "ETCH_01",
+      "litho_tool": "LITHO_01",
+      "deposition_tool": "DEP_03",
+      "implant_tool": "IMP_02"
+    },
+    "detector_alerts": [
+      {
+        "kind": "process_anomaly",
+        "scope": "lot",
+        "wafers": "",
+        "flagged_sensors": "defect_count|defect_density|yield",
+        "cause_sensors": "",
+        "cause_equipment": "",
+        "cause_status": "unexplained",
+        "recurring_equipment": "",
+        "max_abs_z": 21.49,
+        "evidence": "로트 평균 defect_density z=+21.5, defect_count z=+18.7, yield z=-6.9"
+      }
+    ],
+    "lot_mean_z_abs_ge_2_5": {
+      "defect_count": 18.7,
+      "defect_density": 21.5,
+      "yield": -6.9
+    },
+    "recent_alerts": [
+      {
+        "lot_id": "LOT_0031",
+        "replay_cycle": 31,
+        "cause_sensors": [
+          "temperature"
+        ],
+        "cause_equipment": [
+          "ETCH_02(temperature)"
+        ],
+        "evidence": "로트 평균 temperature z=+18.7, oxide_thickness z=+14.5, yield z=-8.9"
+      },
+      {
+        "lot_id": "LOT_0034",
+        "replay_cycle": 34,
+        "cause_sensors": [
+          "pressure"
+        ],
+        "cause_equipment": [
+          "ETCH_05(pressure)"
+        ],
+        "evidence": "로트 평균 pressure z=-3.6"
+      }
+    ],
+    "notes": [
+      "공정 센서: etch_rate, pressure, temperature(식각), exposure_time, focus_offset, dose(노광), deposition_rate(증착), implant_energy, tilt_angle(이온 주입)",
+      "계측 값과 yield는 결과 값이라 원인이 아닌 영향으로 봅니다."
+    ]
+  },
+  "analysis": {
+    "verdict": "unexplained",
+    "cause_sensors": [],
+    "cause_equipment": [],
+    "confidence": "high",
+    "title": "LOT_0035 결함 증가 및 수율 저하에 따른 원인 불명 알림",
+    "body_markdown": "LOT_0035 공정 진행 결과, 결함 수와 결함 밀도가 급격히 증가하고 수율이 저하되는 현상이 확인되었습니다. 로트 평균 기준 defect_density z=+21.5, defect_count z=+18.7, yield z=-6.9로 유의미한 수치 변화가 관찰되었습니다. 그러나 본 알림과 관련된 공정 센서 데이터에서는 |z|가 2.5를 초과하는 이상치가 발견되지 않았습니다. 따라서 현재 데이터만으로는 결함 발생의 직접적인 공정 원인을 특정할 수 없는 '원인 불명' 상태입니다. 계측 값의 변화는 공정 결과에 따른 영향으로 판단되며, 공정 센서상의 이상 징후가 없어 추가적인 정밀 분석이 필요합니다.",
+    "evidence_cited": [
+      "defect_density z=+21.5",
+      "defect_count z=+18.7",
+      "yield z=-6.9"
+    ],
+    "next_checks": [
+      "최근 공정 이력 및 설비 유지보수 기록 확인",
+      "계측 장비의 측정 정밀도 및 이상 여부 점검",
+      "동일 제품군(ASIC)의 이전 로트와 공정 파라미터 상세 비교"
+    ]
+  },
+  "raw_response": "{\n  \"verdict\": \"unexplained\",\n  \"cause_sensors\": [],\n  \"cause_equipment\": [],\n  \"confidence\": \"high\",\n  \"title\": \"LOT_0035 결함 증가 및 수율 저하에 따른 원인 불명 알림\",\n  \"body_markdown\": \"LOT_0035 공정 진행 결과, 결함 수와 결함 밀도가 급격히 증가하고 수율이 저하되는 현상이 확인되었습니다. 로트 평균 기준 defect_density z=+21.5, defect_count z=+18.7, yield z=-6.9로 유의미한 수치 변화가 관찰되었습니다. 그러나 본 알림과 관련된 공정 센서 데이터에서는 |z|가 2.5를 초과하는 이상치가 발견되지 않았습니다. 따라서 현재 데이터만으로는 결함 발생의 직접적인 공정 원인을 특정할 수 없는 '원인 불명' 상태입니다. 계측 값의 변화는 공정 결과에 따른 영향으로 판단되며, 공정 센서상의 이상 징후가 없어 추가적인 정밀 분석이 필요합니다.\",\n  \"evidence_cited\": [\n    \"defect_density z=+21.5\",\n    \"defect_count z=+18.7\",\n    \"yield z=-6.9\"\n  ],\n  \"next_checks\": [\n    \"최근 공정 이력 및 설비 유지보수 기록 확인\",\n    \"계측 장비의 측정 정밀도 및 이상 여부 점검\",\n    \"동일 제품군(ASIC)의 이전 로트와 공정 파라미터 상세 비교\"\n  ]\n}"
+}

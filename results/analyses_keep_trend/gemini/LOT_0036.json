@@ -1,0 +1,114 @@
+{
+  "lot_id": "LOT_0036",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "bundle": {
+    "lot_id": "LOT_0036",
+    "replay_cycle": 36,
+    "process_date": "2023-02-05",
+    "technology_node": "22nm",
+    "product_type": "Memory",
+    "wafers": 25,
+    "equipment": {
+      "etch_tool": "ETCH_04",
+      "litho_tool": "LITHO_04",
+      "deposition_tool": "DEP_03",
+      "implant_tool": "IMP_01"
+    },
+    "detector_alerts": [
+      {
+        "kind": "process_anomaly",
+        "scope": "lot",
+        "wafers": "",
+        "flagged_sensors": "etch_rate|focus_offset|thickness_uniformity|critical_dimension|defect_density|yield",
+        "cause_sensors": "etch_rate|focus_offset",
+        "cause_equipment": "ETCH_04(etch_rate)|LITHO_04(focus_offset)",
+        "cause_status": "candidate",
+        "recurring_equipment": "LITHO_04:focus_offset:2로트",
+        "max_abs_z": 5.37,
+        "evidence": "로트 평균 critical_dimension z=+5.4, etch_rate z=+4.9, yield z=-4.8, focus_offset z=+4.2, defect_density z=+3.8, thickness_uniformity z=+3.7"
+      }
+    ],
+    "lot_mean_z_abs_ge_2_5": {
+      "etch_rate": 4.9,
+      "focus_offset": 4.2,
+      "thickness_uniformity": 3.7,
+      "critical_dimension": 5.4,
+      "defect_count": 3.5,
+      "defect_density": 3.8,
+      "vth": 2.5,
+      "yield": -4.8
+    },
+    "recent_alerts": [
+      {
+        "lot_id": "LOT_0031",
+        "replay_cycle": 31,
+        "cause_sensors": [
+          "temperature"
+        ],
+        "cause_equipment": [
+          "ETCH_02(temperature)"
+        ],
+        "evidence": "로트 평균 temperature z=+16.1, oxide_thickness z=+14.5, yield z=-8.9"
+      },
+      {
+        "lot_id": "LOT_0034",
+        "replay_cycle": 34,
+        "cause_sensors": [
+          "focus_offset",
+          "deposition_rate"
+        ],
+        "cause_equipment": [
+          "LITHO_04(focus_offset)",
+          "DEP_01(deposition_rate)"
+        ],
+        "evidence": "로트 평균 focus_offset z=+4.4, leakage_current z=+3.9, deposition_rate z=-3.7"
+      },
+      {
+        "lot_id": "LOT_0035",
+        "replay_cycle": 35,
+        "cause_sensors": [
+          "focus_offset",
+          "deposition_rate"
+        ],
+        "cause_equipment": [
+          "LITHO_01(focus_offset)",
+          "DEP_03(deposition_rate)"
+        ],
+        "evidence": "로트 평균 defect_density z=+21.4, defect_count z=+19.1, yield z=-6.9"
+      }
+    ],
+    "notes": [
+      "공정 센서: etch_rate, pressure, temperature(식각), exposure_time, focus_offset, dose(노광), deposition_rate(증착), implant_energy, tilt_angle(이온 주입)",
+      "계측 값과 yield는 결과 값이라 원인이 아닌 영향으로 봅니다."
+    ]
+  },
+  "analysis": {
+    "verdict": "cause_candidate",
+    "cause_sensors": [
+      "etch_rate",
+      "focus_offset"
+    ],
+    "cause_equipment": [
+      "ETCH_04",
+      "LITHO_04"
+    ],
+    "confidence": "high",
+    "title": "ETCH_04 및 LITHO_04 공정 이상에 따른 수율 저하 분석",
+    "body_markdown": "LOT_0036 공정 진행 중 etch_rate와 focus_offset 센서에서 이상치가 탐지되어 수율 저하가 발생했습니다. ETCH_04 장비의 etch_rate(z=+4.9)와 LITHO_04 장비의 focus_offset(z=+4.2)이 주요 원인으로 분석되었습니다. 이로 인해 critical_dimension(z=+5.4), defect_density(z=+3.8), thickness_uniformity(z=+3.7) 등 계측 값의 변동이 확인되었으며, 최종적으로 yield(z=-4.8)가 감소했습니다. 특히 LITHO_04 장비의 focus_offset 문제는 최근 2로트 내에서 반복적으로 발생하고 있어 장비 상태에 대한 정밀 점검이 필요합니다. 공정 센서 이상이 수율 저하의 직접적인 원인으로 판단됩니다.",
+    "evidence_cited": [
+      "etch_rate z=+4.9",
+      "focus_offset z=+4.2",
+      "critical_dimension z=+5.4",
+      "defect_density z=+3.8",
+      "thickness_uniformity z=+3.7",
+      "yield z=-4.8"
+    ],
+    "next_checks": [
+      "ETCH_04 장비의 식각 속도 제어 시스템 점검",
+      "LITHO_04 장비의 포커스 정렬 상태 및 반복 이슈 확인",
+      "최근 공정 데이터와 연계된 웨이퍼 계측 결과 상세 분석"
+    ]
+  },
+  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"etch_rate\",\n    \"focus_offset\"\n  ],\n  \"cause_equipment\": [\n    \"ETCH_04\",\n    \"LITHO_04\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"ETCH_04 및 LITHO_04 공정 이상에 따른 수율 저하 분석\",\n  \"body_markdown\": \"LOT_0036 공정 진행 중 etch_rate와 focus_offset 센서에서 이상치가 탐지되어 수율 저하가 발생했습니다. ETCH_04 장비의 etch_rate(z=+4.9)와 LITHO_04 장비의 focus_offset(z=+4.2)이 주요 원인으로 분석되었습니다. 이로 인해 critical_dimension(z=+5.4), defect_density(z=+3.8), thickness_uniformity(z=+3.7) 등 계측 값의 변동이 확인되었으며, 최종적으로 yield(z=-4.8)가 감소했습니다. 특히 LITHO_04 장비의 focus_offset 문제는 최근 2로트 내에서 반복적으로 발생하고 있어 장비 상태에 대한 정밀 점검이 필요합니다. 공정 센서 이상이 수율 저하의 직접적인 원인으로 판단됩니다.\",\n  \"evidence_cited\": [\n    \"etch_rate z=+4.9\",\n    \"focus_offset z=+4.2\",\n    \"critical_dimension z=+5.4\",\n    \"defect_density z=+3.8\",\n    \"thickness_uniformity z=+3.7\",\n    \"yield z=-4.8\"\n  ],\n  \"next_checks\": [\n    \"ETCH_04 장비의 식각 속도 제어 시스템 점검\",\n    \"LITHO_04 장비의 포커스 정렬 상태 및 반복 이슈 확인\",\n    \"최근 공정 데이터와 연계된 웨이퍼 계측 결과 상세 분석\"\n  ]\n}"
+}

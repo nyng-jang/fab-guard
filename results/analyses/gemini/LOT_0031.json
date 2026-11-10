@@ -1,0 +1,67 @@
+{
+  "lot_id": "LOT_0031",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "bundle": {
+    "lot_id": "LOT_0031",
+    "replay_cycle": 31,
+    "process_date": "2023-01-31",
+    "technology_node": "28nm",
+    "product_type": "GPU",
+    "wafers": 25,
+    "equipment": {
+      "etch_tool": "ETCH_02",
+      "litho_tool": "LITHO_01",
+      "deposition_tool": "DEP_01",
+      "implant_tool": "IMP_03"
+    },
+    "detector_alerts": [
+      {
+        "kind": "process_anomaly",
+        "scope": "lot",
+        "wafers": "",
+        "flagged_sensors": "temperature|oxide_thickness|yield",
+        "cause_sensors": "temperature",
+        "cause_equipment": "ETCH_02(temperature)",
+        "cause_status": "candidate",
+        "recurring_equipment": "",
+        "max_abs_z": 18.73,
+        "evidence": "로트 평균 temperature z=+18.7, oxide_thickness z=+14.5, yield z=-8.9"
+      }
+    ],
+    "lot_mean_z_abs_ge_2_5": {
+      "etch_rate": 3.0,
+      "temperature": 18.7,
+      "oxide_thickness": 14.5,
+      "yield": -8.9
+    },
+    "recent_alerts": [],
+    "notes": [
+      "공정 센서: etch_rate, pressure, temperature(식각), exposure_time, focus_offset, dose(노광), deposition_rate(증착), implant_energy, tilt_angle(이온 주입)",
+      "계측 값과 yield는 결과 값이라 원인이 아닌 영향으로 봅니다."
+    ]
+  },
+  "analysis": {
+    "verdict": "cause_candidate",
+    "cause_sensors": [
+      "temperature"
+    ],
+    "cause_equipment": [
+      "ETCH_02"
+    ],
+    "confidence": "high",
+    "title": "ETCH_02 장비 온도 이상으로 인한 공정 품질 저하",
+    "body_markdown": "LOT_0031 공정 진행 중 ETCH_02 장비에서 온도 이상이 감지되었습니다. 분석 결과, 해당 로트의 temperature z값이 +18.7로 평소 대비 매우 높게 나타났습니다. 이로 인해 oxide_thickness z=+14.5의 변화가 발생하였으며, 최종적으로 yield가 z=-8.9 수준으로 크게 하락했습니다. 해당 장비는 최근 알림 이력이 없는 장비입니다. 온도 제어 시스템의 이상이 공정 결과에 직접적인 영향을 미친 것으로 판단됩니다.",
+    "evidence_cited": [
+      "temperature z=+18.7",
+      "oxide_thickness z=+14.5",
+      "yield z=-8.9"
+    ],
+    "next_checks": [
+      "ETCH_02 장비의 온도 제어 루프 및 히터 상태 점검",
+      "온도 센서 데이터의 실시간 로그 확인",
+      "최근 진행된 로트의 온도 데이터 추이 분석"
+    ]
+  },
+  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"temperature\"\n  ],\n  \"cause_equipment\": [\n    \"ETCH_02\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"ETCH_02 장비 온도 이상으로 인한 공정 품질 저하\",\n  \"body_markdown\": \"LOT_0031 공정 진행 중 ETCH_02 장비에서 온도 이상이 감지되었습니다. 분석 결과, 해당 로트의 temperature z값이 +18.7로 평소 대비 매우 높게 나타났습니다. 이로 인해 oxide_thickness z=+14.5의 변화가 발생하였으며, 최종적으로 yield가 z=-8.9 수준으로 크게 하락했습니다. 해당 장비는 최근 알림 이력이 없는 장비입니다. 온도 제어 시스템의 이상이 공정 결과에 직접적인 영향을 미친 것으로 판단됩니다.\",\n  \"evidence_cited\": [\n    \"temperature z=+18.7\",\n    \"oxide_thickness z=+14.5\",\n    \"yield z=-8.9\"\n  ],\n  \"next_checks\": [\n    \"ETCH_02 장비의 온도 제어 루프 및 히터 상태 점검\",\n    \"온도 센서 데이터의 실시간 로그 확인\",\n    \"최근 진행된 로트의 온도 데이터 추이 분석\"\n  ]\n}"
+}

@@ -1,0 +1,155 @@
+{
+  "lot_id": "LOT_0043",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "bundle": {
+    "lot_id": "LOT_0043",
+    "replay_cycle": 43,
+    "process_date": "2023-02-12",
+    "technology_node": "14nm",
+    "product_type": "ASIC",
+    "wafers": 25,
+    "equipment": {
+      "etch_tool": "ETCH_04",
+      "litho_tool": "LITHO_04",
+      "deposition_tool": "DEP_01",
+      "implant_tool": "IMP_01"
+    },
+    "detector_alerts": [
+      {
+        "kind": "process_anomaly",
+        "scope": "lot",
+        "wafers": "",
+        "flagged_sensors": "etch_rate|critical_dimension|yield",
+        "cause_sensors": "etch_rate",
+        "cause_equipment": "ETCH_04(etch_rate)",
+        "cause_status": "candidate",
+        "recurring_equipment": "ETCH_04:etch_rate:6로트",
+        "max_abs_z": 12.89,
+        "evidence": "로트 평균 etch_rate z=+12.9, critical_dimension z=+11.3, yield z=-9.7"
+      }
+    ],
+    "lot_mean_z_abs_ge_2_5": {
+      "etch_rate": 12.9,
+      "deposition_rate": -2.5,
+      "critical_dimension": 11.3,
+      "oxide_thickness": -2.7,
+      "leakage_current": 3.4,
+      "yield": -9.7
+    },
+    "recent_alerts": [
+      {
+        "lot_id": "LOT_0034",
+        "replay_cycle": 34,
+        "cause_sensors": [
+          "pressure"
+        ],
+        "cause_equipment": [
+          "ETCH_05(pressure)"
+        ],
+        "evidence": "로트 평균 pressure z=-3.6"
+      },
+      {
+        "lot_id": "LOT_0035",
+        "replay_cycle": 35,
+        "cause_sensors": [],
+        "cause_equipment": [],
+        "evidence": "로트 평균 defect_density z=+21.5, defect_count z=+18.7, yield z=-6.9"
+      },
+      {
+        "lot_id": "LOT_0036",
+        "replay_cycle": 36,
+        "cause_sensors": [
+          "etch_rate"
+        ],
+        "cause_equipment": [
+          "ETCH_04(etch_rate)"
+        ],
+        "evidence": "로트 평균 critical_dimension z=+5.4, yield z=-4.8, etch_rate z=+4.2"
+      },
+      {
+        "lot_id": "LOT_0037",
+        "replay_cycle": 37,
+        "cause_sensors": [
+          "etch_rate"
+        ],
+        "cause_equipment": [
+          "ETCH_04(etch_rate)"
+        ],
+        "evidence": "로트 평균 etch_rate z=+5.9, yield z=-5.8"
+      },
+      {
+        "lot_id": "LOT_0039",
+        "replay_cycle": 39,
+        "cause_sensors": [
+          "etch_rate"
+        ],
+        "cause_equipment": [
+          "ETCH_04(etch_rate)"
+        ],
+        "evidence": "로트 평균 etch_rate z=+7.1, yield z=-6.2, critical_dimension z=+6.1"
+      },
+      {
+        "lot_id": "LOT_0040",
+        "replay_cycle": 40,
+        "cause_sensors": [],
+        "cause_equipment": [],
+        "evidence": "로트 평균 leakage_current z=+4.4"
+      },
+      {
+        "lot_id": "LOT_0041",
+        "replay_cycle": 41,
+        "cause_sensors": [
+          "etch_rate"
+        ],
+        "cause_equipment": [
+          "ETCH_04(etch_rate)"
+        ],
+        "evidence": "로트 평균 etch_rate z=+10.4, critical_dimension z=+9.4, yield z=-8.2"
+      },
+      {
+        "lot_id": "LOT_0042",
+        "replay_cycle": 42,
+        "cause_sensors": [
+          "etch_rate",
+          "deposition_rate"
+        ],
+        "cause_equipment": [
+          "ETCH_04(etch_rate)",
+          "DEP_02(deposition_rate)"
+        ],
+        "evidence": "로트 평균 etch_rate z=+11.4, critical_dimension z=+7.9, yield z=-7.7, deposition_rate z=+4.8"
+      }
+    ],
+    "notes": [
+      "공정 센서: etch_rate, pressure, temperature(식각), exposure_time, focus_offset, dose(노광), deposition_rate(증착), implant_energy, tilt_angle(이온 주입)",
+      "계측 값과 yield는 결과 값이라 원인이 아닌 영향으로 봅니다."
+    ]
+  },
+  "analysis": {
+    "verdict": "cause_candidate",
+    "cause_sensors": [
+      "etch_rate"
+    ],
+    "cause_equipment": [
+      "ETCH_04"
+    ],
+    "confidence": "high",
+    "title": "ETCH_04 장비 etch_rate 이상으로 인한 수율 저하",
+    "body_markdown": "LOT_0043 공정 진행 중 ETCH_04 장비의 etch_rate 센서에서 z=+12.9의 큰 편차가 발생하여 수율 저하(z=-9.7)가 확인되었습니다. 이로 인해 critical_dimension(z=+11.3) 또한 정상 범위를 크게 벗어났습니다. 해당 장비는 최근 6개 로트에서 동일한 etch_rate 이상이 반복적으로 보고되고 있어, 장비의 공정 안정성에 심각한 문제가 있는 것으로 판단됩니다. 그 외 oxide_thickness(z=-2.7), deposition_rate(z=-2.5), leakage_current(z=+3.4)에서도 이상이 감지되었으나, etch_rate의 z값이 가장 압도적으로 높습니다. 지속적인 반복 알림이 발생하고 있으므로 즉각적인 장비 점검이 필요합니다.",
+    "evidence_cited": [
+      "etch_rate z=+12.9",
+      "critical_dimension z=+11.3",
+      "yield z=-9.7",
+      "oxide_thickness z=-2.7",
+      "deposition_rate z=-2.5",
+      "leakage_current z=+3.4"
+    ],
+    "next_checks": [
+      "ETCH_04 장비의 etch_rate 관련 하드웨어(MFC, 챔버 압력 제어 등) 정밀 점검",
+      "최근 6개 로트 간 etch_rate 데이터 추이 분석 및 상관관계 확인",
+      "동일 장비에서 발생한 oxide_thickness 및 leakage_current 이상과의 연관성 조사"
+    ]
+  },
+  "raw_response": "{\n  \"verdict\": \"cause_candidate\",\n  \"cause_sensors\": [\n    \"etch_rate\"\n  ],\n  \"cause_equipment\": [\n    \"ETCH_04\"\n  ],\n  \"confidence\": \"high\",\n  \"title\": \"ETCH_04 장비 etch_rate 이상으로 인한 수율 저하\",\n  \"body_markdown\": \"LOT_0043 공정 진행 중 ETCH_04 장비의 etch_rate 센서에서 z=+12.9의 큰 편차가 발생하여 수율 저하(z=-9.7)가 확인되었습니다. 이로 인해 critical_dimension(z=+11.3) 또한 정상 범위를 크게 벗어났습니다. 해당 장비는 최근 6개 로트에서 동일한 etch_rate 이상이 반복적으로 보고되고 있어, 장비의 공정 안정성에 심각한 문제가 있는 것으로 판단됩니다. 그 외 oxide_thickness(z=-2.7), deposition_rate(z=-2.5), leakage_current(z=+3.4)에서도 이상이 감지되었으나, etch_rate의 z값이 가장 압도적으로 높습니다. 지속적인 반복 알림이 발생하고 있으므로 즉각적인 장비 점검이 필요합니다.\",\n  \"evidence_cited\": [\n    \"etch_rate z=+12.9\",\n    \"critical_dimension z=+11.3\",\n    \"yield z=-9.7\",\n    \"oxide_thickness z=-2.7\",\n    \"deposition_rate z=-2.5\",\n    \"leakage_current z=+3.4\"\n  ],\n  \"next_checks\": [\n    \"ETCH_04 장비의 etch_rate 관련 하드웨어(MFC, 챔버 압력 제어 등) 정밀 점검\",\n    \"최근 6개 로트 간 etch_rate 데이터 추이 분석 및 상관관계 확인\",\n    \"동일 장비에서 발생한 oxide_thickness 및 leakage_current 이상과의 연관성 조사\"\n  ]\n}"
+}
