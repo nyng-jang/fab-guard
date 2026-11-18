@@ -12,6 +12,10 @@
   --go1:#3ba6f1; --go2:#3ba6f1; --go-ink:#3398e1; --go-tint:#c1e1f7;
   --crit:#3ba6f1; --crit-tint:#c1e1f7; --warn:#8ec9f5; --warn-tint:#f5f5f4;
   --sens:#78716c; --sens-tint:#f5f5f4; --miss:#78716c; --miss-tint:#f5f5f4;
+  /* severity: the one sanctioned exception to the single-accent rule (ADR 0016) — muted, always paired with shape + word */
+  --sev-crit:#c2362b; --sev-crit-bg:#fdeeec; --sev-crit-line:#f4c7c2;
+  --sev-warn:#9a6205; --sev-warn-bg:#fdf4e1; --sev-warn-line:#f1d9a6;
+  --sev-sens:#4b5bb8; --sev-sens-bg:#eef0fb; --sev-sens-line:#cfd5f3;
   --band:rgba(193,225,247,.38); --grid:#f0efee;
   --shadow:rgba(0,0,0,.05) 0 4px 16px 0; --shadow-knob:rgba(0,0,0,.05) 0 1px 2px 0; --shadow-xl:rgba(17,12,46,.12) 0 12px 45px 0;
   --r-panel:16px; --r-card:10px; --r-row:10px; --r-item:6px;
@@ -78,9 +82,9 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 /* severity badge: shape + word, never color alone */
 .sev{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px 0 8px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;border:1px solid transparent}
 .sev svg{width:12px;height:12px}
-.sev.crit{background:var(--soot);color:#fff}
-.sev.warn{background:var(--surface);color:var(--ink);border-color:var(--ink)}
-.sev.sens{background:var(--fill);color:var(--ink-2);border-color:var(--muted)}
+.sev.crit{background:var(--sev-crit-bg);color:var(--sev-crit);border-color:var(--sev-crit-line)}
+.sev.warn{background:var(--sev-warn-bg);color:var(--sev-warn);border-color:var(--sev-warn-line)}
+.sev.sens{background:var(--sev-sens-bg);color:var(--sev-sens);border-color:var(--sev-sens-line)}
 .sev.miss{background:var(--surface);color:var(--ink-2);border:1px dashed var(--ink-3)}
 .ok{display:inline-flex;align-items:center;gap:4px;color:var(--accent-edge);font-weight:500}
 
@@ -382,7 +386,7 @@ function renderList(){
 function ring(e){
   const ack=state.acked[e.id], r=24, c=2*Math.PI*r, frac=ack?1:e.mins/30;
   return `<div class="ring"><svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="${r}" fill="none" stroke="var(--fill-strong)" stroke-width="6"/>
-  <circle cx="28" cy="28" r="${r}" fill="none" stroke="${ack?'var(--accent)':(e.mins<10?'var(--accent)':'var(--ink)')}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c*frac} ${c}" transform="rotate(-90 28 28)"/>
+  <circle cx="28" cy="28" r="${r}" fill="none" stroke="${ack?'var(--accent)':(e.mins<10?'var(--sev-crit)':'var(--ink)')}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c*frac} ${c}" transform="rotate(-90 28 28)"/>
   <text x="28" y="33" text-anchor="middle" font-size="14" font-weight="500" fill="var(--ink)">${ack?'✓':e.mins}</text></svg>
   <span class="l">${ack?'<b>확인했어요</b><span>다른 담당자에게 넘기지 않아요</span>':`<b>${e.mins}분 남음</b><span>확인이 없으면 다음 담당자에게 넘겨요</span>`}</span></div>`;
 }
