@@ -23,4 +23,5 @@
 | [0013](0013-llm-provider-switchable-gemini-default.md) | 분석글 AI는 바꿔 끼울 수 있게, 기본값은 Gemini | 확정 |
 | [0014](0014-escalation-30min.md) | 미확인 알림 이관 시간을 30분으로 줄임 | 확정 |
 | [0015](0015-report-format.md) | 리포트는 개조식 정식 보고서 양식 | 확정 |
-| [0016](0016-ui-design-system.md) | 화면 디자인은 docs/design/DESIGN.md를 따름 | 확정 |
+| [0016](0016-ui-design-system.md) | 화면 디자인은 docs/design/DESIGN.md를 따름 | 일부 대체됨(→ 0017, 색상만) |
+| [0017](0017-sk-color-palette.md) | 화면 색은 SK 색상 체계로 다시 구성 | 확정 |

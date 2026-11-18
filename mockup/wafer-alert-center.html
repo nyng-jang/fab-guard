@@ -7,12 +7,18 @@
    Portfolio validation screens live in a separate mode. DESIGN.md (Seline) tokens; light only; severity colors are the one exception (ADR 0016). */
 :root{
   --bg:#fafaf9; --surface:#ffffff; --fill:#f5f5f4; --fill-strong:#e7e5e4; --line:#e8e6e5; --muted:#d6d3d1;
-  --ink:#0c0a09; --ink-2:#78716c; --ink-3:#a8a29e; --soot:#1c1917;
-  --accent:#3ba6f1; --accent-edge:#3398e1; --wash:#c1e1f7;
-  --sev-crit:#c2362b; --sev-crit-bg:#fdeeec; --sev-crit-line:#f4c7c2;
-  --sev-warn:#9a6205; --sev-warn-bg:#fdf4e1; --sev-warn-line:#f1d9a6;
-  --sev-sens:#4b5bb8; --sev-sens-bg:#eef0fb; --sev-sens-line:#cfd5f3;
-  --band:rgba(193,225,247,.42); --grid:#efedec;
+  --ink:#0c0a09; --ink-2:#78716c; --ink-3:#a8a29e; --soot:#0E306D;
+  /* SK palette (ADR 0017): Red = action & urgent, Orange = abnormal data, Teal = normal/done, Blue = info, Navy = selected/dark, Yellow = caution, Purple = sensor */
+  --sk-red:#EA002C; --sk-orange:#F47725; --sk-yellow:#FBBC05; --sk-green:#B3CF0A; --sk-teal:#009A93; --sk-blue:#0072C6; --sk-navy:#0E306D; --sk-purple:#68127A;
+  --cta:var(--sk-red); --cta-hover:#c80025;
+  --hot:var(--sk-orange); --hot-ink:#b4500e; --hot-tint:#fdebdd;
+  --ok:var(--sk-teal); --ok-ink:#007a74; --ok-tint:#e0f3f2;
+  --info:var(--sk-blue); --info-tint:#eaf3fb; --info-line:#bcd8f0;
+  --accent:var(--hot); --accent-edge:var(--ok-ink); --wash:var(--ok-tint);
+  --sev-crit:#d10027; --sev-crit-bg:#fde7eb; --sev-crit-line:#f7b9c5;
+  --sev-warn:#8a6100; --sev-warn-bg:#fff6d9; --sev-warn-line:#fbe08f;
+  --sev-sens:var(--sk-purple); --sev-sens-bg:#f4e9f6; --sev-sens-line:#dfc3e5;
+  --band:rgba(0,154,147,.10); --grid:#efedec;
   --shadow:rgba(0,0,0,.05) 0 4px 16px 0; --shadow-knob:rgba(0,0,0,.06) 0 1px 2px 0; --shadow-up:rgba(0,0,0,.08) 0 -6px 20px -6px;
   --r-panel:16px; --r-card:10px;
   --font:"Inter","Noto Sans KR",ui-sans-serif,system-ui,sans-serif;
@@ -28,14 +34,14 @@ h1,h2,h3{margin:0;text-wrap:balance;line-height:1.3;font-family:var(--display);f
 p{margin:0}
 .num{font-variant-numeric:tabular-nums}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
-:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+:focus-visible{outline:2px solid var(--sk-navy);outline-offset:2px}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 
 /* top bar */
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px}
-.logo{width:28px;height:28px;display:grid;place-items:center}
+.logo{width:28px;height:28px;display:grid;place-items:center;color:var(--cta)}
 .logo svg{width:20px;height:20px}
 .brand h1{font-size:19px;font-weight:500}
 .brand .mock{font-size:11.5px;font-weight:500;padding:2px 9px;border-radius:999px;background:var(--fill);color:var(--ink-2);border:1px solid var(--line)}
@@ -69,8 +75,8 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 /* buttons */
 .btn{height:40px;padding:0 18px;border-radius:999px;font-weight:500;font-size:14px;border:1px solid var(--line);background:var(--surface);display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;transition:transform .4s var(--spring),background .2s}
 .btn:active{transform:scale(.96)}
-.btn.pri{background:var(--accent);color:#fff;border-color:var(--accent-edge)}
-.btn.pri:hover{background:var(--accent-edge)}
+.btn.pri{background:var(--cta);color:#fff;border-color:var(--cta)}
+.btn.pri:hover{background:var(--cta-hover);border-color:var(--cta-hover)}
 .btn.soft{background:var(--fill);border-color:transparent}
 .btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2);padding:0 10px}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
@@ -149,7 +155,7 @@ details.set[open] summary::after{transform:rotate(180deg)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .lg-n{width:7px;height:7px;border-radius:50%;background:var(--ink-3)}
 .lg-a{width:9px;height:9px;border-radius:50%;background:var(--accent)}
-.lg-b{width:16px;height:10px;border-radius:3px;background:var(--band);border:1px dashed var(--accent-edge)}
+.lg-b{width:16px;height:10px;border-radius:3px;background:var(--band);border:1px dashed var(--ok)}
 .moved{display:flex;gap:6px;flex-wrap:wrap}
 .mv{display:inline-flex;gap:6px;align-items:center;padding:5px 11px;border-radius:999px;background:var(--fill);font-size:12.5px}
 .mv b{font-weight:600}
@@ -167,7 +173,7 @@ details.more[open]>summary::after{transform:rotate(180deg)}
 .cause .cn span{font-weight:400;color:var(--ink-2);font-size:12.5px;white-space:nowrap}
 .cause ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2)}
 .meter{height:6px;border-radius:999px;background:var(--fill-strong);overflow:hidden;max-width:240px}
-.meter i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.meter i{display:block;height:100%;background:var(--info);border-radius:999px}
 .hint{font-size:12.5px;color:var(--ink-3)}
 
 /* action bar: always reachable */
@@ -200,7 +206,7 @@ details.more[open]>summary::after{transform:rotate(180deg)}
 .chip{height:34px;padding:0 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:13px;color:var(--ink-2)}
 .chip[aria-pressed="true"]{background:var(--soot);color:#fff;border-color:var(--soot)}
 .slider{display:flex;align-items:center;gap:12px;font-size:14px;flex-wrap:wrap}
-.slider input{accent-color:var(--accent);width:180px}
+.slider input{accent-color:var(--cta);width:180px}
 .pvnums{display:flex;gap:8px;flex-wrap:wrap}
 .pvnums div{background:var(--fill);border-radius:var(--r-card);padding:10px 14px;font-size:12.5px;color:var(--ink-2)}
 .pvnums b{display:block;font-family:var(--display);font-size:22px;color:var(--ink);font-weight:400}
@@ -235,7 +241,7 @@ code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;backgro
 .rep .t{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
 .rep table{min-width:600px;font-size:13px}
 .rep td.r,.rep th.r{text-align:right;font-variant-numeric:tabular-nums}
-.verdict{font-weight:500} .verdict.out{color:var(--accent-edge);background:var(--wash);padding:1px 8px;border-radius:4px} .verdict.na{color:var(--ink-2)}
+.verdict{font-weight:500} .verdict.out{color:var(--hot-ink);background:var(--hot-tint);padding:1px 8px;border-radius:4px} .verdict.na{color:var(--ink-2)}
 .rep .note{font-size:12.5px;color:var(--ink-2)}
 .rep .cause-r{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
 .rep .cause-r b{font-weight:500}
@@ -304,7 +310,7 @@ code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;backgro
 .flow div:first-child{border-top:0}
 .flow b{font-family:var(--display);font-size:20px;font-weight:400;color:var(--ink);font-variant-numeric:tabular-nums}
 .flow .bar{height:6px;border-radius:999px;background:var(--fill-strong);overflow:hidden;margin:4px 0 2px}
-.flow .bar i{display:block;height:100%;background:var(--accent)}
+.flow .bar i{display:block;height:100%;background:var(--ok)}
 
 /* popup sheet */
 .pop{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:16px}
@@ -327,7 +333,7 @@ code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;backgro
 .coach{position:fixed;inset:0;z-index:40}
 .cm-hole{position:fixed;border-radius:14px;box-shadow:0 0 0 9999px rgba(12,10,9,.55);outline:2px solid #fff;outline-offset:2px;transition:left .4s var(--spring),top .4s var(--spring),width .4s var(--spring),height .4s var(--spring);pointer-events:none}
 .cm-tip{position:fixed;width:min(320px,calc(100vw - 32px));background:var(--surface);border-radius:12px;box-shadow:rgba(17,12,46,.18) 0 12px 45px 0;padding:16px 18px 14px;display:flex;flex-direction:column;gap:8px;transition:left .4s var(--spring),top .4s var(--spring)}
-.cm-tip .k{font-size:12px;color:var(--accent-edge);font-weight:500}
+.cm-tip .k{font-size:12px;color:var(--cta);font-weight:500}
 .cm-tip h4{margin:0;font-size:16.5px;font-family:var(--display);font-weight:500;letter-spacing:-.01em;line-height:1.35}
 .cm-tip p{font-size:13.5px;color:var(--ink-2);line-height:1.55}
 .cm-f{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px}
@@ -340,11 +346,11 @@ code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;backgro
 .cm-skip{font-size:12.5px;color:var(--ink-2);padding:4px 2px}
 
 /* ===== v7: validation screen (banner, segmented+badge, threshold steppers w/ inline error, tooltips, snackbar, bottom sheet, empty state) ===== */
-.vbanner{display:flex;gap:12px;align-items:flex-start;background:#eef7fd;border:1px solid #cfe6f8;border-radius:var(--r-card);padding:12px 12px 12px 16px;color:var(--ink)}
-.vbanner svg{width:18px;height:18px;flex:none;margin-top:2px;color:var(--accent-edge)}
+.vbanner{display:flex;gap:12px;align-items:flex-start;background:var(--info-tint);border:1px solid var(--info-line);border-radius:var(--r-card);padding:12px 12px 12px 16px;color:var(--ink)}
+.vbanner svg{width:18px;height:18px;flex:none;margin-top:2px;color:var(--info)}
 .vbanner b{font-weight:500}
-.vbanner p{font-size:13.5px;color:#3d4a55}
-.vbanner .x{margin-left:auto;width:30px;height:30px;border-radius:999px;display:grid;place-items:center;color:#3d4a55;flex:none}
+.vbanner p{font-size:13.5px;color:#28425e}
+.vbanner .x{margin-left:auto;width:30px;height:30px;border-radius:999px;display:grid;place-items:center;color:#28425e;flex:none}
 .vbanner .x:hover{background:rgba(255,255,255,.6)}
 .vseg{display:inline-flex;padding:3px;border-radius:999px;background:var(--fill-strong);align-self:flex-start}
 .vseg button{height:36px;padding:0 16px;border-radius:999px;font-size:14px;color:var(--ink-2);display:inline-flex;align-items:center;gap:6px}
@@ -443,7 +449,7 @@ code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;backgro
         <div class="col">
           <section class="card" id="heatcard"><div class="card-h"><h3>공정 상태 한눈에</h3><span>가로 로트 1→50 · 세로 측정 값 · 진할수록 평소와 달라요</span></div>
             <div class="heatwrap"><svg id="heat" role="img" aria-label="로트별 공정 상태 히트맵"></svg></div>
-            <div class="hlegend"><span><i style="background:#efedec"></i>평소와 비슷</span><span><i style="background:rgba(59,166,241,.22)"></i>조금 다름</span><span><i style="background:rgba(59,166,241,.6)"></i>다름</span><span><i style="background:rgba(59,166,241,1)"></i>크게 다름</span><span><i style="background:#fff;outline:1.6px solid var(--ink);outline-offset:-1.6px"></i>알림 (누르면 열려요)</span><span><i style="background:#fff;border:1px dashed var(--ink-3)"></i>값 없음</span></div>
+            <div class="hlegend"><span><i style="background:#efedec"></i>평소와 비슷</span><span><i style="background:rgba(244,119,37,.22)"></i>조금 다름</span><span><i style="background:rgba(244,119,37,.6)"></i>다름</span><span><i style="background:rgba(244,119,37,1)"></i>크게 다름</span><span><i style="background:#fff;outline:1.6px solid var(--ink);outline-offset:-1.6px"></i>알림 (누르면 열려요)</span><span><i style="background:#fff;border:1px dashed var(--ink-3)"></i>값 없음</span></div>
           </section>
           <section class="card" id="tilecard"><div class="card-h"><h3>알림</h3><span>급한 순 · 누르면 자세히 열려요</span></div><div class="tiles" id="tiles"></div></section>
         </div>
@@ -648,7 +654,7 @@ function renderHeat(){
       s+=`<text x="${L-10}" y="${y+ch*.72}" text-anchor="end" font-size="${fs}" fill="var(--ink)">${NAME[c]}</text>`;
       for(let l=F;l<=50;l++){const v=S.m[l], x=xs(l)+1, w=cw-2, e=ring[c+'|'+l];
         if(v==null){ s+=`<rect x="${x}" y="${y}" width="${w}" height="${ch}" rx="3" fill="#fff" stroke="var(--ink-3)" stroke-dasharray="2 2" data-c="${c}" data-l="${l}" data-z="na"${e?` data-id="${e.id}"`:''}/>`; continue; }
-        const z=(v-S.mu)/S.sd, a=Math.abs(z), fill=a<2?'#efedec':`rgba(59,166,241,${Math.min(1,.22+(a-2)/8*.78).toFixed(2)})`;
+        const z=(v-S.mu)/S.sd, a=Math.abs(z), fill=a<2?'#efedec':`rgba(244,119,37,${Math.min(1,.22+(a-2)/8*.78).toFixed(2)})`;
         s+=`<rect x="${x}" y="${y}" width="${w}" height="${ch}" rx="3" fill="${fill}" data-c="${c}" data-l="${l}" data-z="${z.toFixed(1)}"${e?` data-id="${e.id}" stroke="${state.acked[e.id]?'var(--ink-3)':'var(--ink)'}" stroke-width="1.6"`:''}/>`;}
       y+=ch+rg;});
     y+=gi===0?24:0;});
@@ -733,7 +739,7 @@ function drawLot(svg,e){
   const x=j=>L+(W-L-R)*(j+.5)/ls.length, y=v=>T+(H-T-B)*(1-(v-ymin)/(ymax-ymin));
   const fmt=v=>Math.abs(v)<.1?v.toFixed(4):Math.abs(v)<10?v.toFixed(2):v.toFixed(1);
   let s=`<rect x="${L}" y="${y(S.hi)}" width="${W-L-R}" height="${y(S.lo)-y(S.hi)}" fill="var(--band)"/>`;
-  [S.hi,S.lo].forEach(v=>s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--accent-edge)" stroke-dasharray="5 4"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--ink-2)">${fmt(v)}</text>`);
+  [S.hi,S.lo].forEach(v=>s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--ok)" stroke-dasharray="5 4"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--ink-2)">${fmt(v)}</text>`);
   s+=`<line x1="${L}" x2="${W-R}" y1="${y(S.mu)}" y2="${y(S.mu)}" stroke="var(--muted)"/><text x="${L-8}" y="${y(S.mu)+4}" text-anchor="end" font-size="11" fill="var(--ink-3)">평균</text>`;
   const step=ls.length>20?2:1;
   ls.forEach((l,j)=>{ if(j%step===0||e.lots.includes(l)) s+=`<text x="${x(j)}" y="${H-8}" text-anchor="middle" font-size="11" fill="${e.lots.includes(l)?'var(--ink)':'var(--ink-3)'}" ${e.lots.includes(l)?'font-weight="600"':''}>${l}</text>`; });
@@ -756,7 +762,7 @@ function drawChart(svg, col, win, hot, k, k2){
   const x=j=>L+(W-L-R)*(j+.5)/idx.length, y=v=>T+(H-T-B)*(1-(Math.min(Math.max(v,ymin),ymax)-ymin)/(ymax-ymin));
   const fmt=v=>Math.abs(v)>=1e6?v.toExponential(2):Math.abs(v)<.1?v.toFixed(4):Math.abs(v)<10?v.toFixed(2):v.toFixed(0);
   let s=`<rect x="${L}" y="${y(hi)}" width="${W-L-R}" height="${y(lo)-y(hi)}" fill="var(--band)"/>`;
-  [hi,lo].forEach(v=>s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--accent-edge)" stroke-dasharray="5 4"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--ink-2)">${fmt(v)}</text>`);
+  [hi,lo].forEach(v=>s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--ok)" stroke-dasharray="5 4"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--ink-2)">${fmt(v)}</text>`);
   s+=`<line x1="${L}" x2="${W-R}" y1="${y(C.mean)}" y2="${y(C.mean)}" stroke="var(--muted)"/><text x="${L-8}" y="${y(C.mean)+4}" text-anchor="end" font-size="11" fill="var(--ink-3)">평균</text>`;
   if(k2){ [C.mean+k2*C.sd,C.mean-k2*C.sd].forEach(v=>{ if(v>ymin&&v<ymax) s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--sev-crit)" stroke-width="1.4" stroke-dasharray="6 4"/><text x="${W-R}" y="${y(v)-4}" text-anchor="end" font-size="11" fill="var(--sev-crit)">긴급 ${fmt(v)}</text>`; }); }
   let prev=null; const step=Math.ceil((win[1]-win[0]+1)/(W<760?7:12));
@@ -767,7 +773,7 @@ function drawChart(svg, col, win, hot, k, k2){
   runs.forEach(([a,b])=>{const xa=L+(W-L-R)*a/idx.length, xb=L+(W-L-R)*(b+1)/idx.length;
     s+=`<rect x="${xa}" y="${T}" width="${xb-xa}" height="${H-T-B}" fill="var(--fill)" stroke="var(--ink-3)" stroke-dasharray="3 3"/><text x="${(xa+xb)/2}" y="${T+18}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink-2)">값 없음</text>`;});
   idx.forEach((i,j)=>{ const v=C.inj[i]; if(v==null) return; const h=hot(i);
-    if(v>=cap){ s+=`<path d="M${x(j)} ${T+2}l-5 9h10z" fill="var(--accent)"/><text x="${x(j)+8}" y="${T+11}" font-size="11.5" font-weight="600" fill="var(--accent-edge)">${fmt(v)} (차트 위로 벗어남)</text>`; return; }
+    if(v>=cap){ s+=`<path d="M${x(j)} ${T+2}l-5 9h10z" fill="var(--accent)"/><text x="${x(j)+8}" y="${T+11}" font-size="11.5" font-weight="600" fill="var(--hot-ink)">${fmt(v)} (차트 위로 벗어남)</text>`; return; }
     s+=h?`<circle cx="${x(j)}" cy="${y(v)}" r="3.8" fill="var(--accent)"/>`:`<circle cx="${x(j)}" cy="${y(v)}" r="2.3" fill="var(--ink-3)" opacity=".7"/>`; });
   svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.innerHTML=s;
 }

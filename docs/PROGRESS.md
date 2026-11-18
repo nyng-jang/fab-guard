@@ -2,6 +2,15 @@
 
 지금까지 한 일. 가장 최근 항목이 위에 있습니다.
 
+## 2026-11-18 · 목업 색을 SK 색상 체계로 재구성
+
+**한 일**
+- 나영이 준 SK 주요·보조 색상으로 목업 색을 다시 짬. 색마다 역할 하나: Red 행동·긴급, Orange 평소와 다른 데이터, Teal 정상·완료, Blue 안내, Navy 선택, Yellow 주의, Purple 센서 의심(ADR 0017). Green은 대비가 낮아 보류.
+
+**산출물**
+- `mockup/wafer-alert-center.html`, 게시본 Version 8: https://claude.ai/artifact/7j1b7jVZAh8ee9EqXk4YS5
+- `docs/adr/0017-sk-color-palette.md`
+
 ## 2026-11-18 · 목업 검증 화면 다듬기
 
 **한 일**
