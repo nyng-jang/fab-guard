@@ -2,6 +2,17 @@
 
 지금까지 한 일. 가장 최근 항목이 위에 있습니다.
 
+## 2026-11-18 · 목업 보고서 내려받기 (DOCX, PDF, MD, TXT)
+
+**한 일**
+- 보고서 페이지 아래 막대에 "내려받기" 메뉴 추가. 지금 화면의 보고서(담당자가 적은 칸과 고른 판정 포함)를 파일로 저장.
+- DOCX: JSZip으로 Word 문서를 직접 만듦(제목, 메타 표, 데이터 표, 목록, 맑은 고딕). MD·TXT: 같은 내용을 글로. PDF: html2canvas + jsPDF로 보고서 화면을 A4에 담음(관리도 그림 포함, 글자는 이미지라 선택·검색 안 됨).
+- 게시본은 claude.ai 파일 저장 기능(`downloads`)으로 저장하고, 쓸 수 없는 화면에서는 버튼을 숨김. 형식은 저장 허용 목록에 맞춰 .doc 대신 .docx.
+- 확인: LibreOffice로 DOCX를 열어 보고, PDF 1·2쪽을 그림으로 확인.
+
+**산출물**
+- `mockup/wafer-alert-center.html`, 게시본 Version 10: https://claude.ai/artifact/7j1b7jVZAh8ee9EqXk4YS5
+
 ## 2026-11-18 · 목업 담당자 화면에 UI 미니 사전 패턴 적용
 
 **한 일**

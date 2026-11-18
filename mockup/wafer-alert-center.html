@@ -461,6 +461,16 @@ code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;backgro
   .bellpop::before{content:"";display:block;width:40px;height:5px;border-radius:999px;background:var(--fill-strong);margin:4px auto 6px}
 }
 @keyframes sheetup2{from{transform:translateY(100%)}}
+
+/* ===== v10: report download menu ===== */
+.dlw{position:relative}
+.dlmenu{position:absolute;right:0;bottom:calc(100% + 8px);width:240px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);box-shadow:rgba(17,12,46,.14) 0 12px 40px 0;padding:6px;display:flex;flex-direction:column;z-index:8;animation:drop .25s var(--spring)}
+.dlmenu button{display:flex;align-items:center;gap:10px;text-align:left;padding:9px 10px;border-radius:8px;font-size:13.5px}
+.dlmenu button:hover,.dlmenu button:focus-visible{background:var(--fill)}
+.dlmenu .ext{flex:none;width:42px;height:24px;border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:600;letter-spacing:.03em;color:#fff}
+.dlmenu small{display:block;color:var(--ink-2);font-size:11.5px}
+.dlmenu .mh{font-size:12px;color:var(--ink-2);padding:6px 10px 4px}
+.btn.busy{opacity:.6;pointer-events:none}
 </style>
 
 <div class="wrap">
@@ -560,7 +570,13 @@ code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;backgro
         <div class="v"><b>원인 판정</b>
           <div class="seg" role="group" aria-label="원인 판정" id="r-seg"><button aria-pressed="false" data-v="일치">AI 후보 일치</button><button aria-pressed="false" data-v="불일치">불일치</button><button aria-pressed="false" data-v="미확정">미확정</button></div>
           <span class="hint" id="r-hint">판정을 고르면 승인할 수 있어요</span></div>
-        <div class="bs"><button class="btn soft" id="r-cancel">나중에</button><button class="btn pri" id="r-ok" disabled>승인</button></div>
+        <div class="bs"><span class="dlw" id="dlw" hidden><button class="btn" id="r-dl" aria-haspopup="menu" aria-expanded="false">내려받기</button>
+          <div class="dlmenu" id="dlmenu" role="menu" hidden><span class="mh">지금 화면의 보고서를 파일로 받아요</span>
+            <button role="menuitem" data-fmt="docx"><span class="ext" style="background:var(--sk-blue)">DOCX</span><span>Word 문서<small>편집해서 제출할 때</small></span></button>
+            <button role="menuitem" data-fmt="pdf"><span class="ext" style="background:var(--sk-red)">PDF</span><span>PDF<small>관리도 포함, 화면 그대로</small></span></button>
+            <button role="menuitem" data-fmt="md"><span class="ext" style="background:var(--sk-navy)">MD</span><span>마크다운<small>위키·깃허브에 붙일 때</small></span></button>
+            <button role="menuitem" data-fmt="txt"><span class="ext" style="background:var(--ink-2)">TXT</span><span>텍스트<small>메일 본문에 붙일 때</small></span></button></div></span>
+          <button class="btn soft" id="r-cancel">나중에</button><button class="btn pri" id="r-ok" disabled>승인</button></div>
       </div>
     </div>
   </main>
@@ -1062,6 +1078,121 @@ $('#bsheet').addEventListener('click',ev=>{ if(ev.target.closest('#bs-close')) c
   sh.addEventListener('pointermove',ev=>{ if(y0==null) return; dy=Math.max(0,ev.clientY-y0); sh.style.transform=`translate(-50%,${dy}px)`; });
   sh.addEventListener('pointerup',()=>{ if(y0==null) return; y0=null; if(dy>90) closeSheet(); sh.style.transition='transform .3s cubic-bezier(.2,.8,.2,1)'; sh.style.transform=''; setTimeout(()=>{sh.style.transition='';sh.style.animation='';},320); });
 })();
+
+/* ---------- report export: DOCX / PDF / MD / TXT ---------- */
+let DL=null;
+(async()=>{ try{ DL=window.claude&&window.claude.use?await window.claude.use('downloads'):null; }catch(_){ DL=null; } $('#dlw').hidden=!DL; })();
+const T=el=>(el.textContent||'').replace(/\s+/g,' ').trim();
+function reportBlocks(){
+  const root=$('#rep'), out=[];
+  out.push({t:'no',text:T(root.querySelector('.rep-h .no'))});
+  out.push({t:'title',text:T(root.querySelector('.rep-h h2'))+' ['+T(root.querySelector('.stamp'))+']'});
+  out.push({t:'kv',rows:[...root.querySelectorAll('.meta > div')].map(d=>[T(d.querySelector('dt')),T(d.querySelector('dd'))])});
+  root.querySelectorAll(':scope > .s').forEach(sec=>{
+    const walk=el=>{ for(const c of el.children){
+      if(c.matches('h3')) out.push({t:'h',text:T(c).replace(/^(\d)/,'$1. ')});
+      else if(c.matches('.chartbox')) out.push({t:'note',text:'['+T(c.querySelector('.say'))+' · 그림은 PDF에 포함]'});
+      else if(c.matches('.t')){ const rows=[...c.querySelectorAll('tr')].map(r=>[...r.children].map(T)); out.push({t:'table',rows}); }
+      else if(c.matches('ul')) c.querySelectorAll(':scope > li').forEach(li=>out.push({t:'li',text:T(li)}));
+      else if(c.matches('.cause-r')){ out.push({t:'b',text:T(c.querySelector('b'))+(c.querySelector('.note')?' '+T(c.querySelector('.note')):'')}); c.querySelectorAll('li').forEach(li=>out.push({t:'li',text:T(li)})); }
+      else if(c.matches('label.f')){ const ta=c.querySelector('textarea'), fc=c.firstChild; out.push({t:'field',label:(fc.textContent||'').replace(/\s+/g,' ').replace(/(\S)\(/,'$1 (').trim(),value:(ta&&ta.value.trim())||''}); }
+      else if(c.matches('.sign')){ const v=$('#r-seg [aria-pressed="true"]'); out.push({t:'kv',rows:[...c.children].map(d=>{const k=T({textContent:d.firstChild.textContent}); let val=T(d.querySelector('b')); if(!val&&k==='원인 판정'&&v) val=v.dataset.v+' (미승인)'; return [k,val||'-'];})}); }
+      else if(c.matches('p')) out.push({t:c.classList.contains('note')?'note':'p',text:T(c)});
+      else if(c.matches('b')) out.push({t:'b',text:T(c)});
+      else walk(c);
+    }};
+    walk(sec);
+  });
+  return out;
+}
+function toMD(B){ const L=[]; const cell=x=>String(x).replace(/\|/g,'\\|');
+  B.forEach(b=>{ switch(b.t){
+    case 'no': L.push(`<sub>${b.text}</sub>`,''); break;
+    case 'title': L.push('# '+b.text,''); break;
+    case 'kv': L.push('| 항목 | 내용 |','|---|---|',...b.rows.map(r=>`| ${cell(r[0])} | ${cell(r[1])} |`),''); break;
+    case 'h': L.push('## '+b.text,''); break;
+    case 'p': L.push(b.text,''); break;
+    case 'note': L.push('> '+b.text,''); break;
+    case 'b': L.push('**'+b.text+'**',''); break;
+    case 'li': L.push('- '+b.text); if(!B[B.indexOf(b)+1]||B[B.indexOf(b)+1].t!=='li') L.push(''); break;
+    case 'table': L.push('| '+b.rows[0].map(cell).join(' | ')+' |','|'+b.rows[0].map(()=>'---').join('|')+'|',...b.rows.slice(1).map(r=>'| '+r.map(cell).join(' | ')+' |'),''); break;
+    case 'field': L.push(`**${b.label}**`,'',b.value||'_(미기재)_',''); break; }});
+  return L.join('\n'); }
+function toTXT(B){ const L=[];
+  B.forEach((b,i)=>{ switch(b.t){
+    case 'no': L.push(b.text); break;
+    case 'title': L.push(b.text,'='.repeat(40),''); break;
+    case 'kv': b.rows.forEach(r=>L.push(`${r[0]}: ${r[1]}`)); L.push(''); break;
+    case 'h': L.push('■ '+b.text); break;
+    case 'p': case 'b': L.push(b.text); break;
+    case 'note': L.push('※ '+b.text); break;
+    case 'li': L.push('  - '+b.text); break;
+    case 'table': b.rows.forEach(r=>L.push('  '+r.join(' | '))); break;
+    case 'field': L.push(`${b.label}: ${b.value||'(미기재)'}`); break; }
+    if(B[i+1]&&B[i+1].t==='h') L.push(''); });
+  return L.join('\r\n'); }
+function loadScript(src){ return new Promise((ok,no)=>{ const s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=()=>no(new Error('load '+src)); document.head.appendChild(s); }); }
+async function toDOCX(B){
+  if(!window.JSZip) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+  const x=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const font='<w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic" w:cs="Malgun Gothic"/>';
+  const run=(t,o={})=>`<w:r><w:rPr>${font}${o.b?'<w:b/>':''}${o.c?`<w:color w:val="${o.c}"/>`:''}<w:sz w:val="${o.sz||20}"/></w:rPr><w:t xml:space="preserve">${x(t)}</w:t></w:r>`;
+  const para=(t,o={})=>`<w:p><w:pPr><w:spacing w:before="${o.before||0}" w:after="${o.after??80}"/>${o.ind?'<w:ind w:left="360" w:hanging="200"/>':''}${o.border?'<w:pBdr><w:bottom w:val="single" w:sz="12" w:space="4" w:color="0C0A09"/></w:pBdr>':''}</w:pPr>${run(t,o)}</w:p>`;
+  const tbl=(rows,head)=>`<w:tbl><w:tblPr><w:tblW w:w="5000" w:type="pct"/><w:tblBorders>${['top','left','bottom','right','insideH','insideV'].map(k=>`<w:${k} w:val="single" w:sz="4" w:color="D6D3D1"/>`).join('')}</w:tblBorders><w:tblCellMar><w:left w:w="100" w:type="dxa"/><w:right w:w="100" w:type="dxa"/></w:tblCellMar></w:tblPr>`+
+    rows.map((r,i)=>`<w:tr>${r.map((c,j)=>`<w:tc><w:tcPr>${(head&&i===0)||(!head&&j===0)?'<w:shd w:val="clear" w:color="auto" w:fill="F5F5F4"/>':''}</w:tcPr><w:p><w:pPr><w:spacing w:before="40" w:after="40"/></w:pPr>${run(c,{b:(head&&i===0)||(!head&&j===0),sz:18})}</w:p></w:tc>`).join('')}</w:tr>`).join('')+`</w:tbl>${para('',{after:60})}`;
+  let body='';
+  B.forEach(b=>{ switch(b.t){
+    case 'no': body+=para(b.text,{sz:16,c:'78716C'}); break;
+    case 'title': body+=para(b.text,{sz:32,b:true,border:true,after:200}); break;
+    case 'kv': body+=tbl(b.rows,false); break;
+    case 'h': body+=para(b.text,{sz:26,b:true,before:200,after:100}); break;
+    case 'p': body+=para(b.text); break;
+    case 'note': body+=para(b.text,{sz:18,c:'78716C'}); break;
+    case 'b': body+=para(b.text,{b:true}); break;
+    case 'li': body+=para('• '+b.text,{ind:true,after:40}); break;
+    case 'table': body+=tbl(b.rows,true); break;
+    case 'field': body+=para(b.label,{b:true,before:80,after:40})+para(b.value||'(미기재)',{c:b.value?undefined:'A8A29E'}); break; }});
+  const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="567" w:footer="567" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  const z=new JSZip(), NF={createFolders:false};
+  z.file('[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>',NF);
+  z.file('_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>',NF);
+  z.file('word/document.xml',doc,NF);
+  return await z.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+}
+async function toPDF(){
+  if(!window.html2canvas) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+  if(!window.jspdf) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+  const el=$('#m-rep .paper');
+  const canvas=await html2canvas(el,{scale:2,backgroundColor:'#ffffff',useCORS:true,windowWidth:960});
+  const {jsPDF}=window.jspdf; const pdf=new jsPDF({unit:'mm',format:'a4',compress:true});
+  const pw=210, ph=297, m=10, iw=pw-2*m, ih=ph-2*m, pxPerMm=canvas.width/iw, sliceH=Math.floor(ih*pxPerMm);
+  for(let y=0,pg=0;y<canvas.height;y+=sliceH,pg++){
+    const h=Math.min(sliceH,canvas.height-y), c=document.createElement('canvas'); c.width=canvas.width; c.height=h;
+    c.getContext('2d').drawImage(canvas,0,y,canvas.width,h,0,0,canvas.width,h);
+    if(pg) pdf.addPage(); pdf.addImage(c.toDataURL('image/jpeg',.92),'JPEG',m,m,iw,h/pxPerMm);
+  }
+  return pdf.output('blob');
+}
+function reportFileBase(){ const no=T($('#rep .rep-h .no')).split(' ')[0]; const t=T($('#rep .rep-h h2')).replace(/[\\/:*?"<>|]/g,'').slice(0,40); return `${no}_${t}`; }
+async function exportReport(fmt,btn){
+  $('#dlmenu').hidden=true; $('#r-dl').setAttribute('aria-expanded','false'); if(!DL) return;
+  $('#r-dl').classList.add('busy'); $('#r-dl').textContent='만드는 중…';
+  try{
+    const B=reportBlocks(); let data;
+    if(fmt==='md') data=toMD(B); else if(fmt==='txt') data='﻿'+toTXT(B); else if(fmt==='docx') data=await toDOCX(B); else data=await toPDF();
+    await DL.save({filename:`${reportFileBase()}.${fmt}`,data});
+    toast(`${fmt.toUpperCase()} 파일을 내려받았어요`);
+  }catch(err){
+    const c=err&&err.code;
+    if(c==='declined'){} else if(c==='rate_limited') toast('저장 창이 이미 열려 있어요. 잠시 뒤 다시 눌러 주세요');
+    else if(c==='unavailable'||c==='not_granted'||c==='capability_disabled'||c==='capability_removed'){ $('#dlw').hidden=true; toast('이 화면에서는 파일 저장을 쓸 수 없어요'); }
+    else if(c==='extension_not_enabled') toast(`${fmt.toUpperCase()} 형식은 여기서 저장할 수 없어요`);
+    else toast('파일을 만들지 못했어요. 잠시 뒤 다시 시도해 주세요');
+  }finally{ $('#r-dl').classList.remove('busy'); $('#r-dl').textContent='내려받기'; }
+}
+$('#r-dl').addEventListener('click',ev=>{ ev.stopPropagation(); const open=$('#dlmenu').hidden; $('#dlmenu').hidden=!open; $('#r-dl').setAttribute('aria-expanded',String(open)); if(open) $('#dlmenu button').focus(); });
+$('#dlmenu').addEventListener('click',ev=>{ const b=ev.target.closest('[data-fmt]'); if(b) exportReport(b.dataset.fmt,b); });
+document.addEventListener('click',ev=>{ if(!$('#dlmenu').hidden&&!ev.target.closest('#dlw')){ $('#dlmenu').hidden=true; $('#r-dl').setAttribute('aria-expanded','false'); } });
 
 /* toggles + toast */
 $$('.toggle').forEach(t=>t.addEventListener('click',()=>{ if(t.disabled) return; const on=t.getAttribute('aria-checked')!=='true'; t.setAttribute('aria-checked',String(on)); toast(`${t.getAttribute('aria-label')}: ${on?'켰어요':'껐어요'}`); }));
