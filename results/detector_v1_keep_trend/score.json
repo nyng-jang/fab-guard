@@ -25,33 +25,52 @@
       {
         "lot_id": "LOT_0034",
         "kind": "process_anomaly",
-        "evidence": "로트 평균 focus_offset z=+4.4, leakage_current z=+3.9, deposition_rate z=-3.7"
+        "evidence": "로트 평균 focus_offset z=+4.4, leakage_current z=+3.9, deposition_rate z=-3.7",
+        "grade": "warning",
+        "grade_reasons": "원인 후보 있음"
       },
       {
         "lot_id": "LOT_0040",
         "kind": "process_anomaly",
-        "evidence": "웨이퍼 3장 평균 defect_count z=+3.8, defect_density z=+3.3, thickness_uniformity z=+3.3"
+        "evidence": "웨이퍼 3장 평균 defect_count z=+3.8, defect_density z=+3.3, thickness_uniformity z=+3.3",
+        "grade": "info",
+        "grade_reasons": "원인 불명(계측 값만 변함)"
       },
       {
         "lot_id": "LOT_0040",
         "kind": "process_anomaly",
-        "evidence": "로트 평균 leakage_current z=+6.1, deposition_rate z=-4.0"
+        "evidence": "로트 평균 leakage_current z=+6.1, deposition_rate z=-4.0",
+        "grade": "warning",
+        "grade_reasons": "원인 후보 있음|반복 장비"
       },
       {
         "lot_id": "LOT_0045",
         "kind": "process_anomaly",
-        "evidence": "로트 평균 focus_offset z=+6.4, defect_count z=+4.5, defect_density z=+4.4, thickness_uniformity z=+4.2"
+        "evidence": "로트 평균 focus_offset z=+6.4, defect_count z=+4.5, defect_density z=+4.4, thickness_uniformity z=+4.2",
+        "grade": "warning",
+        "grade_reasons": "원인 후보 있음|반복 장비"
       },
       {
         "lot_id": "LOT_0047",
         "kind": "process_anomaly",
-        "evidence": "로트 평균 focus_offset z=+7.0, defect_count z=+5.5, defect_density z=+5.1, deposition_rate z=-4.9, thickness_uniformity z=+4.9, etch_rate z=+4.2"
+        "evidence": "로트 평균 focus_offset z=+7.0, defect_count z=+5.5, defect_density z=+5.1, deposition_rate z=-4.9, thickness_uniformity z=+4.9, etch_rate z=+4.2",
+        "grade": "warning",
+        "grade_reasons": "원인 후보 있음|반복 장비"
       },
       {
         "lot_id": "LOT_0050",
         "kind": "process_anomaly",
-        "evidence": "로트 평균 defect_density z=+7.7, thickness_uniformity z=+7.5, defect_count z=+6.9, focus_offset z=+6.6, deposition_rate z=-6.2"
+        "evidence": "로트 평균 defect_density z=+7.7, thickness_uniformity z=+7.5, defect_count z=+6.9, focus_offset z=+6.6, deposition_rate z=-6.2",
+        "grade": "warning",
+        "grade_reasons": "원인 후보 있음|반복 장비"
       }
+    ],
+    "false_alert_lots_urgent_warning": [
+      "LOT_0034",
+      "LOT_0040",
+      "LOT_0045",
+      "LOT_0047",
+      "LOT_0050"
     ]
   },
   "events": [
@@ -71,6 +90,18 @@
         "order": 3,
         "lot_id": "LOT_0036",
         "shift_sigma": 1.5
+      },
+      "grade_eval": {
+        "intended": "warning_to_urgent",
+        "grades": [
+          "urgent",
+          "urgent",
+          "urgent",
+          "urgent",
+          "urgent",
+          "urgent"
+        ],
+        "grade_ok": 1.0
       }
     },
     {
@@ -82,7 +113,14 @@
       "detected": true,
       "classified_ok": true,
       "cause_sensor_top1": 1.0,
-      "cause_sensor_any": 1.0
+      "cause_sensor_any": 1.0,
+      "grade_eval": {
+        "intended": "urgent",
+        "grades": [
+          "urgent"
+        ],
+        "grade_ok": 1.0
+      }
     },
     {
       "event_id": "E3",
@@ -93,7 +131,14 @@
       "detected": true,
       "classified_ok": true,
       "cause_sensor_top1": 1.0,
-      "cause_sensor_any": 1.0
+      "cause_sensor_any": 1.0,
+      "grade_eval": {
+        "intended": "sensor_suspect",
+        "grades": [
+          "sensor_check"
+        ],
+        "grade_ok": 1.0
+      }
     },
     {
       "event_id": "E4",
@@ -104,7 +149,14 @@
       "detected": true,
       "classified_ok": true,
       "cause_sensor_top1": 1.0,
-      "cause_sensor_any": 1.0
+      "cause_sensor_any": 1.0,
+      "grade_eval": {
+        "intended": "ingestion_error",
+        "grades": [
+          "data_check"
+        ],
+        "grade_ok": 1.0
+      }
     },
     {
       "event_id": "E5",
@@ -117,7 +169,16 @@
       "cause_sensor_top1": 1.0,
       "cause_sensor_any": 1.0,
       "cause_equipment_hit": 1.0,
-      "recurring_flag_from": "LOT_0044"
+      "recurring_flag_from": "LOT_0044",
+      "grade_eval": {
+        "intended": "urgent",
+        "grades": [
+          "urgent",
+          "urgent",
+          "urgent"
+        ],
+        "grade_ok": 1.0
+      }
     },
     {
       "event_id": "E6",
@@ -129,7 +190,12 @@
       "classified_ok": false,
       "cause_sensor_top1": null,
       "cause_sensor_any": null,
-      "said_unexplained": false
+      "said_unexplained": false,
+      "grade_eval": {
+        "intended": "warning",
+        "grades": [],
+        "grade_ok": 0.0
+      }
     },
     {
       "event_id": "E7",
@@ -159,7 +225,14 @@
       ],
       "wafer_recall": 1.0,
       "wafer_precision": 1.0,
-      "other_alerts_same_lot": []
+      "other_alerts_same_lot": [],
+      "grade_eval": {
+        "intended": "warning",
+        "grades": [
+          "warning"
+        ],
+        "grade_ok": 1.0
+      }
     }
   ]
 }

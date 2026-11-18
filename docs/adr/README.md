@@ -21,3 +21,4 @@
 | [0011](0011-v1-local-file-storage.md) | v1 저장은 저장소 안의 파일, v2 저장소는 나중에 고름 | 확정 |
 | [0012](0012-detector-v1-rules.md) | 탐지기 v1 규칙 | 확정 |
 | [0013](0013-llm-provider-switchable-gemini-default.md) | 분석글 AI는 바꿔 끼울 수 있게, 기본값은 Gemini | 확정 |
+| [0018](0018-alert-grade-rule-points.md) | 알림 등급: 규칙 점수 합산으로 긴급/주의/참고 | 확정 |

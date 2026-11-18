@@ -2,6 +2,23 @@
 
 지금까지 한 일. 가장 최근 항목이 위에 있습니다.
 
+## 2026-11-19 · 알림 등급(긴급/주의/참고) 규칙 점수표
+
+**한 일**
+- 수업자료 10개(4과목 이상탐지 11/2~11/9, 보안 로그 SIEM 실습)를 읽고 공정 데이터에 옮길 기능 16개(F1~F16)를 정리함. 정리 문서: https://claude.ai/artifact/VMiToHW94cx3CJBXZYSAxW . 추천 순서는 TODO에 옮김.
+- 그중 1순위인 F12를 구현: `scripts/grade.py`가 규칙 점수를 더해 긴급(60 이상)/주의(30 이상)/참고를 붙임(ADR 0018). 수신 오류·센서 의심은 점수 없이 따로 분류. `detect.py`가 자동으로 부르고 alerts에 `yield_z`, `grade_score`, `grade`, `grade_reasons` 열 추가. 기존 열 값은 그대로.
+- `score_detector.py`에 등급 채점 추가: 정답지의 의도한 심각도 대비 등급, 깨끗한 로트의 긴급·주의 알림 수.
+
+**결과 수치**
+- 추세 걷어낸 데이터: 사건 7/7이 의도한 심각도와 같은 등급(E1 긴급 6, E2 긴급, E5 긴급 3, E6 주의, E7 주의, E3 센서 점검, E4 수신 오류 확인). 깨끗한 로트의 긴급·주의 0/34(LOT_0034·0040은 참고). 알림 17건 = 긴급 10, 주의 3, 참고 2, 별도 2.
+- 추세를 남긴 데이터: 6/7(E6이 긴급). 깨끗한 로트의 긴급·주의 5/34.
+- 분석글 프롬프트는 바뀌지 않음(template 분석글 재생성 결과 동일).
+
+**산출물**
+- `scripts/grade.py`, `scripts/detect.py`, `scripts/score_detector.py`
+- `results/detector_v1/`, `results/detector_v1_keep_trend/`(alerts, score.json), `reports/score_detector_v1.md`, `reports/score_detector_v1_keep_trend.md`
+- `docs/adr/0018-alert-grade-rule-points.md`
+
 ## 2026-11-10 · Gemini 분석글 실제 실행과 채점
 
 **한 일**

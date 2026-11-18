@@ -34,6 +34,7 @@ fab-guard/
     inject_anomalies.py         더미데이터 생성
     validate_injection.py       기준선 탐지기로 더미데이터 점검
     detect.py                   탐지기 v1 (wafer_injected.csv만 읽음)
+    grade.py                    알림 등급: 규칙 점수 합산 (긴급/주의/참고)
     score_detector.py           탐지기 결과를 정답지와 비교해 채점
     write_analysis.py           알림 근거 묶음으로 분석글 작성 (gemini 기본 / claude / template)
     score_analysis.py           분석글의 판정·원인·근거 밖 주장 채점
@@ -108,6 +109,8 @@ python scripts/score_detector.py --data data/injected_keep_trend --results resul
 ```
 
 탐지기 v1 결과(추세 걷어낸 데이터): 사건 7개 모두 기대한 분류로 탐지, 웨이퍼 탐지율 86.0%, 깨끗한 로트 34개 중 오탐 2개. 규칙은 [ADR 0012](docs/adr/0012-detector-v1-rules.md).
+
+알림마다 규칙 점수를 더해 긴급/주의/참고 등급을 붙입니다(`scripts/grade.py`, `detect.py`가 자동으로 부름). 추세 걷어낸 데이터에서 사건 7개 모두 정답지의 의도한 심각도와 같은 등급이고, 깨끗한 로트 오탐 2개는 참고로 내려가 긴급·주의 오탐은 0/34입니다. 점수표는 [ADR 0018](docs/adr/0018-alert-grade-rule-points.md).
 
 ## 분석글 쓰고 채점하기
 
