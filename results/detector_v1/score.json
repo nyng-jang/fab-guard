@@ -22,14 +22,19 @@
       {
         "lot_id": "LOT_0034",
         "kind": "process_anomaly",
-        "evidence": "로트 평균 pressure z=-3.6"
+        "evidence": "로트 평균 pressure z=-3.6",
+        "grade": "info",
+        "grade_reasons": "로트 규칙에서 걸린 값 1개뿐"
       },
       {
         "lot_id": "LOT_0040",
         "kind": "process_anomaly",
-        "evidence": "로트 평균 leakage_current z=+4.4"
+        "evidence": "로트 평균 leakage_current z=+4.4",
+        "grade": "info",
+        "grade_reasons": "로트 규칙에서 걸린 값 1개뿐"
       }
-    ]
+    ],
+    "false_alert_lots_urgent_warning": []
   },
   "events": [
     {
@@ -48,6 +53,18 @@
         "order": 3,
         "lot_id": "LOT_0036",
         "shift_sigma": 1.5
+      },
+      "grade_eval": {
+        "intended": "warning_to_urgent",
+        "grades": [
+          "urgent",
+          "urgent",
+          "urgent",
+          "urgent",
+          "urgent",
+          "urgent"
+        ],
+        "grade_ok": 1.0
       }
     },
     {
@@ -59,7 +76,14 @@
       "detected": true,
       "classified_ok": true,
       "cause_sensor_top1": 1.0,
-      "cause_sensor_any": 1.0
+      "cause_sensor_any": 1.0,
+      "grade_eval": {
+        "intended": "urgent",
+        "grades": [
+          "urgent"
+        ],
+        "grade_ok": 1.0
+      }
     },
     {
       "event_id": "E3",
@@ -70,7 +94,14 @@
       "detected": true,
       "classified_ok": true,
       "cause_sensor_top1": 1.0,
-      "cause_sensor_any": 1.0
+      "cause_sensor_any": 1.0,
+      "grade_eval": {
+        "intended": "sensor_suspect",
+        "grades": [
+          "sensor_check"
+        ],
+        "grade_ok": 1.0
+      }
     },
     {
       "event_id": "E4",
@@ -81,7 +112,14 @@
       "detected": true,
       "classified_ok": true,
       "cause_sensor_top1": 1.0,
-      "cause_sensor_any": 1.0
+      "cause_sensor_any": 1.0,
+      "grade_eval": {
+        "intended": "ingestion_error",
+        "grades": [
+          "data_check"
+        ],
+        "grade_ok": 1.0
+      }
     },
     {
       "event_id": "E5",
@@ -94,7 +132,16 @@
       "cause_sensor_top1": 1.0,
       "cause_sensor_any": 1.0,
       "cause_equipment_hit": 1.0,
-      "recurring_flag_from": "LOT_0046"
+      "recurring_flag_from": "LOT_0046",
+      "grade_eval": {
+        "intended": "urgent",
+        "grades": [
+          "urgent",
+          "urgent",
+          "urgent"
+        ],
+        "grade_ok": 1.0
+      }
     },
     {
       "event_id": "E6",
@@ -106,7 +153,14 @@
       "classified_ok": true,
       "cause_sensor_top1": null,
       "cause_sensor_any": null,
-      "said_unexplained": true
+      "said_unexplained": true,
+      "grade_eval": {
+        "intended": "warning",
+        "grades": [
+          "warning"
+        ],
+        "grade_ok": 1.0
+      }
     },
     {
       "event_id": "E7",
@@ -138,7 +192,14 @@
       "wafer_precision": 1.0,
       "other_alerts_same_lot": [
         "process_anomaly/lot: 로트 평균 focus_offset z=-4.3, deposition_rate z=+3.7"
-      ]
+      ],
+      "grade_eval": {
+        "intended": "warning",
+        "grades": [
+          "warning"
+        ],
+        "grade_ok": 1.0
+      }
     }
   ]
 }

@@ -18,7 +18,7 @@
      공정 센서 근거가 없으면(모두 |z| < EVIDENCE_Z) '원인 불명'으로 둔다.
      같은 장비·센서가 최근 RECUR_WINDOW 주기 안의 다른 알림에도 원인 후보였으면 '반복 장비'로 표시한다.
 
-긴급/주의 등급은 아직 정하지 않았다(TODO). 알림마다 최대 |z|만 남긴다.
+  8) 등급: scripts/grade.py 의 규칙 점수로 긴급/주의/참고를 붙인다(ADR 0018). 수신 오류·센서 의심은 따로 분류.
 
 사용법:
     python scripts/detect.py
@@ -28,11 +28,12 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
+
+from grade import grade_alerts, write_alerts
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DATA = ROOT / "data" / "injected"
@@ -161,7 +162,7 @@ def run(df: pd.DataFrame):
         for _, r in ingestion[ingestion["lot_id"] == lot].iterrows():
             alerts.append({**base_info, "kind": "ingestion_error", "scope": "lot", "wafers": "",
                            "flagged_sensors": r["sensor"], "cause_sensors": "", "cause_equipment": "",
-                           "cause_status": "", "recurring_equipment": "", "max_abs_z": np.nan,
+                           "cause_status": "", "recurring_equipment": "", "max_abs_z": np.nan, "yield_z": np.nan,
                            "evidence": f"{r['sensor']} 값 {r['missing_wafers']}/{r['lot_wafers']}장 비어 있음"})
 
         # 센서 의심 알림
@@ -171,7 +172,7 @@ def run(df: pd.DataFrame):
             alerts.append({**base_info, "kind": "sensor_suspect", "scope": "wafer", "wafers": df.loc[i, "wafer_id"],
                            "flagged_sensors": c, "cause_sensors": c, "cause_equipment": "",
                            "cause_status": "sensor_suspect", "recurring_equipment": "",
-                           "max_abs_z": round(float(abs(z.loc[i, c])), 2),
+                           "max_abs_z": round(float(abs(z.loc[i, c])), 2), "yield_z": np.nan,
                            "evidence": f"{df.loc[i, 'wafer_id']} {c} z={z.loc[i, c]:+.1f}, 함께 변한 값 없음, 같은 로트 다른 웨이퍼는 평소와 같음"})
 
         # 일부 웨이퍼: 같은 센서로 걸린 웨이퍼가 2장 이상, 로트의 절반 이하, 나머지 웨이퍼는 평소와 같음
@@ -228,9 +229,10 @@ def run(df: pd.DataFrame):
                            "cause_equipment": "|".join(equipment), "cause_status": status,
                            "recurring_equipment": "|".join(recurring),
                            "max_abs_z": round(float(strength[flagged].abs().max()), 2),
+                           "yield_z": round(float(strength["yield"]), 2),
                            "evidence": prefix + ", ".join(ev_parts)})
 
-    alerts = pd.DataFrame(alerts)
+    alerts = grade_alerts(pd.DataFrame(alerts))
     return alerts, wafer_flags, ingestion, lot_z
 
 
@@ -244,15 +246,14 @@ def main():
     alerts, wafer_flags, ingestion, lot_z = run(df)
 
     args.out.mkdir(parents=True, exist_ok=True)
-    alerts.to_csv(args.out / "alerts.csv", index=False)
+    write_alerts(alerts, args.out)
     wafer_flags.to_csv(args.out / "wafer_flags.csv", index=False)
     lot_z.round(3).to_csv(args.out / "lot_z.csv")
-    # 분석글 단계(Claude API)에 넘길 근거 묶음
-    records = json.loads(alerts.to_json(orient="records", force_ascii=False))
-    (args.out / "alerts.json").write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8")
+    # alerts.json 은 분석글 단계에 넘길 근거 묶음 (write_alerts 가 함께 저장)
 
     print(f"알림 {len(alerts)}건 → {args.out}")
     print(alerts["kind"].value_counts().to_string())
+    print(alerts["grade"].value_counts().to_string())
 
 
 if __name__ == "__main__":

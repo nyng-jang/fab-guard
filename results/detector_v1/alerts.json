@@ -13,7 +13,11 @@
     "cause_status": "candidate",
     "recurring_equipment": "",
     "max_abs_z": 18.73,
-    "evidence": "로트 평균 temperature z=+18.7, oxide_thickness z=+14.5, yield z=-8.9"
+    "yield_z": -8.89,
+    "evidence": "로트 평균 temperature z=+18.7, oxide_thickness z=+14.5, yield z=-8.9",
+    "grade_score": 60,
+    "grade": "urgent",
+    "grade_reasons": "원인 후보 있음|yield 함께 하락"
   },
   {
     "lot_id": "LOT_0033",
@@ -29,7 +33,11 @@
     "cause_status": "sensor_suspect",
     "recurring_equipment": "",
     "max_abs_z": 289.33,
-    "evidence": "W019 pressure z=+289.3, 함께 변한 값 없음, 같은 로트 다른 웨이퍼는 평소와 같음"
+    "yield_z": null,
+    "evidence": "W019 pressure z=+289.3, 함께 변한 값 없음, 같은 로트 다른 웨이퍼는 평소와 같음",
+    "grade_score": null,
+    "grade": "sensor_check",
+    "grade_reasons": ""
   },
   {
     "lot_id": "LOT_0034",
@@ -45,7 +53,11 @@
     "cause_status": "candidate",
     "recurring_equipment": "",
     "max_abs_z": 3.64,
-    "evidence": "로트 평균 pressure z=-3.6"
+    "yield_z": -0.44,
+    "evidence": "로트 평균 pressure z=-3.6",
+    "grade_score": 10,
+    "grade": "info",
+    "grade_reasons": "로트 규칙에서 걸린 값 1개뿐"
   },
   {
     "lot_id": "LOT_0035",
@@ -61,7 +73,11 @@
     "cause_status": "unexplained",
     "recurring_equipment": "",
     "max_abs_z": 21.49,
-    "evidence": "로트 평균 defect_density z=+21.5, defect_count z=+18.7, yield z=-6.9"
+    "yield_z": -6.91,
+    "evidence": "로트 평균 defect_density z=+21.5, defect_count z=+18.7, yield z=-6.9",
+    "grade_score": 50,
+    "grade": "warning",
+    "grade_reasons": "원인 불명(계측 값만 변함)|yield 함께 하락"
   },
   {
     "lot_id": "LOT_0036",
@@ -77,7 +93,11 @@
     "cause_status": "candidate",
     "recurring_equipment": "",
     "max_abs_z": 5.37,
-    "evidence": "로트 평균 critical_dimension z=+5.4, yield z=-4.8, etch_rate z=+4.2"
+    "yield_z": -4.82,
+    "evidence": "로트 평균 critical_dimension z=+5.4, yield z=-4.8, etch_rate z=+4.2",
+    "grade_score": 60,
+    "grade": "urgent",
+    "grade_reasons": "원인 후보 있음|yield 함께 하락"
   },
   {
     "lot_id": "LOT_0037",
@@ -93,7 +113,11 @@
     "cause_status": "candidate",
     "recurring_equipment": "ETCH_04:etch_rate:2로트",
     "max_abs_z": 5.92,
-    "evidence": "로트 평균 etch_rate z=+5.9, yield z=-5.8"
+    "yield_z": -5.76,
+    "evidence": "로트 평균 etch_rate z=+5.9, yield z=-5.8",
+    "grade_score": 80,
+    "grade": "urgent",
+    "grade_reasons": "원인 후보 있음|yield 함께 하락|반복 장비"
   },
   {
     "lot_id": "LOT_0038",
@@ -109,7 +133,11 @@
     "cause_status": "",
     "recurring_equipment": "",
     "max_abs_z": null,
-    "evidence": "deposition_rate 값 25/25장 비어 있음"
+    "yield_z": null,
+    "evidence": "deposition_rate 값 25/25장 비어 있음",
+    "grade_score": null,
+    "grade": "data_check",
+    "grade_reasons": ""
   },
   {
     "lot_id": "LOT_0039",
@@ -125,7 +153,11 @@
     "cause_status": "candidate",
     "recurring_equipment": "ETCH_04:etch_rate:3로트",
     "max_abs_z": 7.1,
-    "evidence": "로트 평균 etch_rate z=+7.1, yield z=-6.2, critical_dimension z=+6.1"
+    "yield_z": -6.19,
+    "evidence": "로트 평균 etch_rate z=+7.1, yield z=-6.2, critical_dimension z=+6.1",
+    "grade_score": 80,
+    "grade": "urgent",
+    "grade_reasons": "원인 후보 있음|yield 함께 하락|반복 장비"
   },
   {
     "lot_id": "LOT_0040",
@@ -141,7 +173,11 @@
     "cause_status": "unexplained",
     "recurring_equipment": "",
     "max_abs_z": 4.42,
-    "evidence": "로트 평균 leakage_current z=+4.4"
+    "yield_z": -0.84,
+    "evidence": "로트 평균 leakage_current z=+4.4",
+    "grade_score": 10,
+    "grade": "info",
+    "grade_reasons": "로트 규칙에서 걸린 값 1개뿐"
   },
   {
     "lot_id": "LOT_0041",
@@ -157,7 +193,11 @@
     "cause_status": "candidate",
     "recurring_equipment": "ETCH_04:etch_rate:4로트",
     "max_abs_z": 10.37,
-    "evidence": "로트 평균 etch_rate z=+10.4, critical_dimension z=+9.4, yield z=-8.2"
+    "yield_z": -8.17,
+    "evidence": "로트 평균 etch_rate z=+10.4, critical_dimension z=+9.4, yield z=-8.2",
+    "grade_score": 80,
+    "grade": "urgent",
+    "grade_reasons": "원인 후보 있음|yield 함께 하락|반복 장비"
   },
   {
     "lot_id": "LOT_0042",
@@ -173,7 +213,11 @@
     "cause_status": "candidate",
     "recurring_equipment": "ETCH_04:etch_rate:5로트",
     "max_abs_z": 11.39,
-    "evidence": "로트 평균 etch_rate z=+11.4, critical_dimension z=+7.9, yield z=-7.7, deposition_rate z=+4.8"
+    "yield_z": -7.7,
+    "evidence": "로트 평균 etch_rate z=+11.4, critical_dimension z=+7.9, yield z=-7.7, deposition_rate z=+4.8",
+    "grade_score": 80,
+    "grade": "urgent",
+    "grade_reasons": "원인 후보 있음|yield 함께 하락|반복 장비"
   },
   {
     "lot_id": "LOT_0043",
@@ -189,7 +233,11 @@
     "cause_status": "candidate",
     "recurring_equipment": "ETCH_04:etch_rate:6로트",
     "max_abs_z": 12.89,
-    "evidence": "로트 평균 etch_rate z=+12.9, critical_dimension z=+11.3, yield z=-9.7"
+    "yield_z": -9.75,
+    "evidence": "로트 평균 etch_rate z=+12.9, critical_dimension z=+11.3, yield z=-9.7",
+    "grade_score": 80,
+    "grade": "urgent",
+    "grade_reasons": "원인 후보 있음|yield 함께 하락|반복 장비"
   },
   {
     "lot_id": "LOT_0044",
@@ -205,7 +253,11 @@
     "cause_status": "candidate",
     "recurring_equipment": "",
     "max_abs_z": 16.03,
-    "evidence": "로트 평균 exposure_time z=+16.0, yield z=-9.5, focus_offset z=+9.0, critical_dimension z=+8.4, deposition_rate z=+3.5"
+    "yield_z": -9.52,
+    "evidence": "로트 평균 exposure_time z=+16.0, yield z=-9.5, focus_offset z=+9.0, critical_dimension z=+8.4, deposition_rate z=+3.5",
+    "grade_score": 60,
+    "grade": "urgent",
+    "grade_reasons": "원인 후보 있음|yield 함께 하락"
   },
   {
     "lot_id": "LOT_0046",
@@ -221,7 +273,11 @@
     "cause_status": "candidate",
     "recurring_equipment": "LITHO_01:exposure_time:2로트|LITHO_01:focus_offset:2로트",
     "max_abs_z": 16.2,
-    "evidence": "로트 평균 exposure_time z=+16.2, yield z=-9.0, focus_offset z=+9.0, critical_dimension z=+8.2"
+    "yield_z": -9.04,
+    "evidence": "로트 평균 exposure_time z=+16.2, yield z=-9.0, focus_offset z=+9.0, critical_dimension z=+8.2",
+    "grade_score": 80,
+    "grade": "urgent",
+    "grade_reasons": "원인 후보 있음|yield 함께 하락|반복 장비"
   },
   {
     "lot_id": "LOT_0048",
@@ -237,7 +293,11 @@
     "cause_status": "candidate",
     "recurring_equipment": "LITHO_01:exposure_time:3로트|LITHO_01:focus_offset:3로트",
     "max_abs_z": 15.95,
-    "evidence": "로트 평균 exposure_time z=+15.9, focus_offset z=+9.9, yield z=-9.5, critical_dimension z=+9.4"
+    "yield_z": -9.5,
+    "evidence": "로트 평균 exposure_time z=+15.9, focus_offset z=+9.9, yield z=-9.5, critical_dimension z=+9.4",
+    "grade_score": 80,
+    "grade": "urgent",
+    "grade_reasons": "원인 후보 있음|yield 함께 하락|반복 장비"
   },
   {
     "lot_id": "LOT_0049",
@@ -253,7 +313,11 @@
     "cause_status": "candidate",
     "recurring_equipment": "",
     "max_abs_z": 4.69,
-    "evidence": "웨이퍼 6장 평균 implant_energy z=+4.7"
+    "yield_z": -1.57,
+    "evidence": "웨이퍼 6장 평균 implant_energy z=+4.7",
+    "grade_score": 30,
+    "grade": "warning",
+    "grade_reasons": "원인 후보 있음"
   },
   {
     "lot_id": "LOT_0049",
@@ -269,6 +333,10 @@
     "cause_status": "candidate",
     "recurring_equipment": "DEP_02:deposition_rate:2로트",
     "max_abs_z": 4.35,
-    "evidence": "로트 평균 focus_offset z=-4.3, deposition_rate z=+3.7"
+    "yield_z": -1.81,
+    "evidence": "로트 평균 focus_offset z=-4.3, deposition_rate z=+3.7",
+    "grade_score": 50,
+    "grade": "warning",
+    "grade_reasons": "원인 후보 있음|반복 장비"
   }
 ]

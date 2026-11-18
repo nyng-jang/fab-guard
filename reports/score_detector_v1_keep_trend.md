@@ -22,13 +22,30 @@
 
 원인 센서 적중은 그 사건으로 낸 알림 중 1순위 원인 후보가 심은 센서인 비율입니다. E6은 심은 공정 센서가 없으므로 '원인 불명'이라고 했는지만 봅니다.
 
+## 등급 (ADR 0018)
+
+- 사건 7개 중 6개는 그 사건의 알림이 모두 정답지의 의도한 심각도에 맞는 등급
+- 깨끗한 로트 34개 중 긴급·주의 알림이 난 로트 5개(LOT_0034, LOT_0040, LOT_0045, LOT_0047, LOT_0050)
+
+| 사건 | 의도한 심각도 | 받은 등급 | 맞음 |
+|---|---|---|---|
+| E1 | warning_to_urgent | 긴급 6 | 100% |
+| E2 | urgent | 긴급 1 | 100% |
+| E3 | sensor_suspect | 센서 점검 1 | 100% |
+| E4 | ingestion_error | 수신 오류 확인 1 | 100% |
+| E5 | urgent | 긴급 3 | 100% |
+| E6 | warning | - | 0% |
+| E7 | warning | 주의 1 | 100% |
+
+맞음은 그 사건으로 낸(기대한 분류의) 알림 중 의도한 심각도에 맞는 등급의 비율입니다. warning_to_urgent(E1 드리프트)는 주의와 긴급 모두 맞음으로 봅니다.
+
 ## 깨끗한 로트의 오탐
 
-| 로트 | 알림 종류 | 근거 |
-|---|---|---|
-| LOT_0034 | process_anomaly | 로트 평균 focus_offset z=+4.4, leakage_current z=+3.9, deposition_rate z=-3.7 |
-| LOT_0040 | process_anomaly | 웨이퍼 3장 평균 defect_count z=+3.8, defect_density z=+3.3, thickness_uniformity z=+3.3 |
-| LOT_0040 | process_anomaly | 로트 평균 leakage_current z=+6.1, deposition_rate z=-4.0 |
-| LOT_0045 | process_anomaly | 로트 평균 focus_offset z=+6.4, defect_count z=+4.5, defect_density z=+4.4, thickness_uniformity z=+4.2 |
-| LOT_0047 | process_anomaly | 로트 평균 focus_offset z=+7.0, defect_count z=+5.5, defect_density z=+5.1, deposition_rate z=-4.9, thickness_uniformity z=+4.9, etch_rate z=+4.2 |
-| LOT_0050 | process_anomaly | 로트 평균 defect_density z=+7.7, thickness_uniformity z=+7.5, defect_count z=+6.9, focus_offset z=+6.6, deposition_rate z=-6.2 |
+| 로트 | 알림 종류 | 근거 | 등급 |
+|---|---|---|---|
+| LOT_0034 | process_anomaly | 로트 평균 focus_offset z=+4.4, leakage_current z=+3.9, deposition_rate z=-3.7 | 주의(원인 후보 있음) |
+| LOT_0040 | process_anomaly | 웨이퍼 3장 평균 defect_count z=+3.8, defect_density z=+3.3, thickness_uniformity z=+3.3 | 참고(원인 불명(계측 값만 변함)) |
+| LOT_0040 | process_anomaly | 로트 평균 leakage_current z=+6.1, deposition_rate z=-4.0 | 주의(원인 후보 있음|반복 장비) |
+| LOT_0045 | process_anomaly | 로트 평균 focus_offset z=+6.4, defect_count z=+4.5, defect_density z=+4.4, thickness_uniformity z=+4.2 | 주의(원인 후보 있음|반복 장비) |
+| LOT_0047 | process_anomaly | 로트 평균 focus_offset z=+7.0, defect_count z=+5.5, defect_density z=+5.1, deposition_rate z=-4.9, thickness_uniformity z=+4.9, etch_rate z=+4.2 | 주의(원인 후보 있음|반복 장비) |
+| LOT_0050 | process_anomaly | 로트 평균 defect_density z=+7.7, thickness_uniformity z=+7.5, defect_count z=+6.9, focus_offset z=+6.6, deposition_rate z=-6.2 | 주의(원인 후보 있음|반복 장비) |

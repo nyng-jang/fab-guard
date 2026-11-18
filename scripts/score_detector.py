@@ -7,6 +7,7 @@
   2) 로트 단위: 알림이 난 로트 vs 이상을 심은 로트. 깨끗한 로트의 알림은 오탐
   3) 사건 단위: 잡혔는지, 기대한 분류로 잡혔는지, 원인 후보가 정답 센서·장비를 맞혔는지,
      드리프트(E1)는 몇 번째 로트(몇 σ)부터 잡았는지, 일부 웨이퍼(E7)는 웨이퍼를 얼마나 정확히 짚었는지
+  4) 등급: 사건 알림의 등급이 정답지의 의도한 심각도와 맞는지, 깨끗한 로트에 긴급·주의가 났는지(ADR 0018)
 
 사용법:
     python scripts/score_detector.py
@@ -21,6 +22,8 @@ import json
 from pathlib import Path
 
 import pandas as pd
+
+from grade import GRADE_KO
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DATA = ROOT / "data" / "injected"
@@ -37,6 +40,17 @@ EXPECTED = {
     "unexplained_defect": dict(kind="process_anomaly", scope="lot", cause_status="unexplained"),
     "partial_wafer": dict(kind="process_anomaly", scope="wafer"),
 }
+
+
+# 정답지의 의도한 심각도 → 맞다고 볼 등급 (ADR 0018)
+SEVERITY_OK = {
+    "urgent": {"urgent"},
+    "warning": {"warning"},
+    "warning_to_urgent": {"warning", "urgent"},
+    "sensor_suspect": {"sensor_check"},
+    "ingestion_error": {"data_check"},
+}
+ALERT_GRADES = {"urgent", "warning"}  # 담당자에게 알리는 등급. 참고(info)는 목록에만 남김
 
 
 def split(v) -> list[str]:
@@ -85,9 +99,13 @@ def score(data: Path, results: Path):
         clean_lots_baseline=int(((lot_anom == 0) & (lot_base == 1)).sum()),
         clean_lots_late=int(((lot_anom == 0) & (lot_base == 0)).sum()),
         false_alert_lots=fp_lots,
-        false_alerts=[dict(lot_id=r["lot_id"], kind=r["kind"], evidence=r["evidence"])
+        false_alerts=[dict(lot_id=r["lot_id"], kind=r["kind"], evidence=r["evidence"],
+                           grade=r.get("grade", ""), grade_reasons=r.get("grade_reasons", ""))
                       for _, r in alerts[alerts["lot_id"].isin(fp_lots)].iterrows()],
     )
+    if "grade" in alerts:
+        graded = alerts[alerts["grade"].isin(ALERT_GRADES)]
+        out["lot"]["false_alert_lots_urgent_warning"] = sorted(set(clean_lots) & set(graded["lot_id"]))
 
     # 3) 사건 단위
     ev_rows = []
@@ -101,6 +119,13 @@ def score(data: Path, results: Path):
         else:
             match_ok = match
         lots_hit = sorted(set(match["lot_id"]))
+        if "grade" in alerts:
+            ok = SEVERITY_OK.get(ev["intended_severity"], set())
+            grades = list(match_ok["grade"]) if len(match_ok) else []
+            grade_eval = dict(intended=ev["intended_severity"], grades=grades,
+                              grade_ok=(sum(g in ok for g in grades) / len(grades)) if grades else 0.0)
+        else:
+            grade_eval = None
         injected = set(split(ev["injected_sensors"]))
         r = dict(event_id=ev["event_id"], type=ev["anomaly_type"], name_ko=ev["name_ko"],
                  lots=len(lots), lots_detected=len(lots_hit), detected=bool(lots_hit),
@@ -143,6 +168,8 @@ def score(data: Path, results: Path):
             r["wafer_precision"] = len(tw & pw) / len(pw) if pw else 0.0
             other = ev_alerts[~ev_alerts.index.isin(match.index)]
             r["other_alerts_same_lot"] = [f"{a['kind']}/{a['scope']}: {a['evidence']}" for _, a in other.iterrows()]
+        if grade_eval is not None:
+            r["grade_eval"] = grade_eval
         ev_rows.append(r)
     out["events"] = ev_rows
     return out, alerts
@@ -198,10 +225,27 @@ def render(out, data: Path, results: Path) -> str:
         L += [f"- {s}" for s in part["other_alerts_same_lot"]]
         L.append("")
 
+    if all("grade_eval" in e for e in ev):
+        n_gok = sum(e["grade_eval"]["grade_ok"] == 1.0 for e in ev)
+        fpw = l.get("false_alert_lots_urgent_warning", [])
+        L += ["## 등급 (ADR 0018)", "",
+              f"- 사건 {len(ev)}개 중 {n_gok}개는 그 사건의 알림이 모두 정답지의 의도한 심각도에 맞는 등급",
+              f"- 깨끗한 로트 {l['clean_lots']}개 중 긴급·주의 알림이 난 로트 {len(fpw)}개"
+              + (f"({', '.join(fpw)})" if fpw else ""), "",
+              "| 사건 | 의도한 심각도 | 받은 등급 | 맞음 |", "|---|---|---|---|"]
+        for e in ev:
+            g = e["grade_eval"]
+            cnt = pd.Series(g["grades"]).value_counts()
+            got = ", ".join(f"{GRADE_KO.get(k, k)} {v}" for k, v in cnt.items()) or "-"
+            L.append(f"| {e['event_id']} | {g['intended']} | {got} | {fmt_ratio(g['grade_ok'])} |")
+        L += ["", "맞음은 그 사건으로 낸(기대한 분류의) 알림 중 의도한 심각도에 맞는 등급의 비율입니다. "
+              "warning_to_urgent(E1 드리프트)는 주의와 긴급 모두 맞음으로 봅니다.", ""]
+
     L += ["## 깨끗한 로트의 오탐", ""]
     if l["false_alerts"]:
-        L += ["| 로트 | 알림 종류 | 근거 |", "|---|---|---|"]
-        L += [f"| {a['lot_id']} | {a['kind']} | {a['evidence']} |" for a in l["false_alerts"]]
+        L += ["| 로트 | 알림 종류 | 근거 | 등급 |", "|---|---|---|---|"]
+        L += [f"| {a['lot_id']} | {a['kind']} | {a['evidence']} | "
+              f"{GRADE_KO.get(a.get('grade'), '-')}({a.get('grade_reasons') or '-'}) |" for a in l["false_alerts"]]
     else:
         L.append("없음")
     L.append("")
