@@ -46,10 +46,13 @@ fab-guard/
     validation_report_keep_trend.md  점검 결과 (injected_keep_trend)
     score_detector_v1.md        탐지기 v1 채점 결과
     score_detector_v1_keep_trend.md
+  mockup/
+    wafer-alert-center.html     서비스 화면 목업 (단일 HTML, 브라우저로 열기)
   docs/
     PROGRESS.md
     TODO.md
     adr/                        설계 결정 (결정 하나당 파일 하나)
+    design/DESIGN.md            화면 디자인 기준 (ADR 0016)
 ```
 
 ## 더미데이터 만들기

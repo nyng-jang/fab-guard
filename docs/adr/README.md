@@ -12,7 +12,7 @@
 | [0002](0002-inject-anomalies-for-ground-truth.md) | 합성 데이터에 이상을 직접 심어 정답을 만듦 | 확정 |
 | [0003](0003-external-cloud-and-ai.md) | 외부 클라우드·AI 사용 | 확정 |
 | [0004](0004-genai-only-for-writing.md) | 생성형 AI는 분석글과 리포트 초안에만 사용 | 확정 |
-| [0005](0005-email-alert-1h-escalation.md) | 알림은 메일, 미확인 1시간 후 이관 | 확정 |
+| [0005](0005-email-alert-1h-escalation.md) | 알림은 메일, 미확인 1시간 후 이관 | 대체됨(→ 0014, 이관 시간만) |
 | [0006](0006-defer-login.md) | 로그인 보류 | 확정 |
 | [0007](0007-stack-supabase-plus-python.md) | 스택: Supabase + Python 혼합 | 대체됨(→ 0011 저장, → 0013 분석글 AI) |
 | [0008](0008-baseline-definition.md) | 평소 기준: 앞 25로트, 공정 값 공통·계측 값 노드별 | 확정 |
@@ -21,3 +21,7 @@
 | [0011](0011-v1-local-file-storage.md) | v1 저장은 저장소 안의 파일, v2 저장소는 나중에 고름 | 확정 |
 | [0012](0012-detector-v1-rules.md) | 탐지기 v1 규칙 | 확정 |
 | [0013](0013-llm-provider-switchable-gemini-default.md) | 분석글 AI는 바꿔 끼울 수 있게, 기본값은 Gemini | 확정 |
+| [0014](0014-escalation-30min.md) | 미확인 알림 이관 시간을 30분으로 줄임 | 확정 |
+| [0015](0015-report-format.md) | 리포트는 개조식 정식 보고서 양식 | 확정 |
+| [0016](0016-ui-design-system.md) | 화면 디자인은 docs/design/DESIGN.md를 따름 | 일부 대체됨(→ 0017, 색상만) |
+| [0017](0017-sk-color-palette.md) | 화면 색은 SK 색상 체계로 다시 구성 | 확정 |
