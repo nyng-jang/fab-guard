@@ -3,315 +3,328 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=Inter:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600&display=swap">
 <style>
-/* Layout: quiet analyst's desk on warm paper (DESIGN.md · Seline) — summary first, alert inbox left, one alert's story right.
-   Single light theme by design: stone neutrals + one cyan accent; severity carried by shape and fill, not hue. */
+/* Layout (v4 UX): the operator's question comes first — "what do I check now?" → one alert's conclusion → what to do (always reachable) → evidence on demand.
+   Portfolio validation screens live in a separate mode. DESIGN.md (Seline) tokens; light only; severity colors are the one exception (ADR 0016). */
 :root{
   --bg:#fafaf9; --surface:#ffffff; --fill:#f5f5f4; --fill-strong:#e7e5e4; --line:#e8e6e5; --muted:#d6d3d1;
   --ink:#0c0a09; --ink-2:#78716c; --ink-3:#a8a29e; --soot:#1c1917;
-  --accent:#3ba6f1; --accent-edge:#3398e1; --on-accent:#ffffff; --accent-hover:#3398e1; --wash:#c1e1f7;
-  --go1:#3ba6f1; --go2:#3ba6f1; --go-ink:#3398e1; --go-tint:#c1e1f7;
-  --crit:#3ba6f1; --crit-tint:#c1e1f7; --warn:#8ec9f5; --warn-tint:#f5f5f4;
-  --sens:#78716c; --sens-tint:#f5f5f4; --miss:#78716c; --miss-tint:#f5f5f4;
-  /* severity: the one sanctioned exception to the single-accent rule (ADR 0016) — muted, always paired with shape + word */
+  --accent:#3ba6f1; --accent-edge:#3398e1; --wash:#c1e1f7;
   --sev-crit:#c2362b; --sev-crit-bg:#fdeeec; --sev-crit-line:#f4c7c2;
   --sev-warn:#9a6205; --sev-warn-bg:#fdf4e1; --sev-warn-line:#f1d9a6;
   --sev-sens:#4b5bb8; --sev-sens-bg:#eef0fb; --sev-sens-line:#cfd5f3;
-  --band:rgba(193,225,247,.38); --grid:#f0efee;
-  --shadow:rgba(0,0,0,.05) 0 4px 16px 0; --shadow-knob:rgba(0,0,0,.05) 0 1px 2px 0; --shadow-xl:rgba(17,12,46,.12) 0 12px 45px 0;
-  --r-panel:16px; --r-card:10px; --r-row:10px; --r-item:6px;
+  --band:rgba(193,225,247,.42); --grid:#efedec;
+  --shadow:rgba(0,0,0,.05) 0 4px 16px 0; --shadow-knob:rgba(0,0,0,.06) 0 1px 2px 0; --shadow-up:rgba(0,0,0,.08) 0 -6px 20px -6px;
+  --r-panel:16px; --r-card:10px;
   --font:"Inter","Noto Sans KR",ui-sans-serif,system-ui,sans-serif;
   --display:"Inter Tight","Inter","Noto Sans KR",ui-sans-serif,system-ui,sans-serif;
   --spring:cubic-bezier(.2,.8,.2,1);
   color-scheme:light;
 }
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.64;letter-spacing:.004em;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px;display:flex;flex-direction:column;gap:18px}
-h1,h2,h3{margin:0;text-wrap:balance;line-height:1.25;font-family:var(--display);font-weight:400;letter-spacing:-.02em}
+html{scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.64;letter-spacing:.004em;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.3;font-family:var(--display);font-weight:400;letter-spacing:-.02em}
 p{margin:0}
 .num{font-variant-numeric:tabular-nums}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 
-/* top */
+/* top bar */
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{width:32px;height:32px;display:grid;place-items:center;color:var(--ink)}
-.logo svg{width:22px;height:22px}
-.brand h1{font-size:20px;font-weight:500}
-.brand p{font-size:13px;color:var(--ink-2)}
-.mockpill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:13px;color:var(--ink-2)}
-.mockpill b{color:var(--ink);font-weight:500}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--wash)}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:28px;height:28px;display:grid;place-items:center}
+.logo svg{width:20px;height:20px}
+.brand h1{font-size:19px;font-weight:500}
+.brand .mock{font-size:11.5px;font-weight:500;padding:2px 9px;border-radius:999px;background:var(--fill);color:var(--ink-2);border:1px solid var(--line)}
+.mode{display:inline-flex;padding:3px;border-radius:999px;background:var(--fill);border:1px solid var(--line)}
+.mode button{height:32px;padding:0 14px;border-radius:999px;font-size:13.5px;color:var(--ink-2);white-space:nowrap}
+.mode button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-knob);font-weight:500}
 
-/* summary counters */
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.stat{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow);padding:16px 18px;display:flex;flex-direction:column;gap:2px}
-.stat .k{font-size:13px;color:var(--ink-2)}
-.stat .v{font-family:var(--display);font-size:32px;font-weight:400;letter-spacing:-.025em;line-height:1.25}
-.stat .s{font-size:12.5px;color:var(--ink-3)}
-@media (max-width:720px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* "now" banner: the one question the operator opens the page with */
+.now{display:flex;align-items:center;justify-content:space-between;gap:14px 20px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow);padding:16px 18px 16px 20px}
+.now .q{display:flex;flex-direction:column;gap:2px;min-width:0}
+.now .q h2{font-size:22px}
+.now .q h2 b{font-weight:500}
+.now .q p{font-size:13.5px;color:var(--ink-2)}
+.now .q p strong{color:var(--ink);font-weight:500}
+.now .counts{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.now.clear .q h2::before{content:"✓ ";color:var(--accent-edge)}
 
-/* tabs */
-.tabs{display:inline-flex;gap:6px;overflow-x:auto;max-width:100%}
-.tab{height:36px;padding:0 16px;border-radius:999px;font-weight:400;font-size:14px;color:var(--ink);white-space:nowrap;transition:transform .35s var(--spring),background .2s}
-.tab{border:1px solid var(--line);background:transparent;color:var(--ink)}
-.tab[aria-selected="true"]{background:var(--soot);color:#fff;border-color:var(--soot)}
-.tab:active{transform:scale(.95)}
-.panel[hidden]{display:none}
-
-/* inbox layout */
-.inbox{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:16px;align-items:start}
-@media (max-width:900px){.inbox{grid-template-columns:minmax(0,1fr)}}
-.side{display:flex;flex-direction:column;gap:12px}
-.filters{display:flex;gap:6px;flex-wrap:wrap}
-.chip{border:1px solid var(--line);height:36px;padding:0 14px;border-radius:999px;background:var(--surface);box-shadow:var(--shadow);font-size:13.5px;font-weight:500;color:var(--ink-2);display:inline-flex;align-items:center;gap:6px;transition:transform .35s var(--spring)}
-.chip:active{transform:scale(.93)}
-.chip[aria-pressed="true"]{background:var(--soot);color:#fff;border-color:var(--soot)}
-.list{display:flex;flex-direction:column;gap:8px}
-.row{border:1px solid var(--line);width:100%;text-align:left;background:var(--surface);border-radius:var(--r-row);padding:14px 14px 14px 16px;box-shadow:var(--shadow);display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;transition:transform .35s var(--spring),box-shadow .2s}
-.row:hover{box-shadow:var(--shadow-knob)}
-.row:active{transform:scale(.97)}
-.row[aria-current="true"]{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
-.row .t{font-weight:500;font-size:14.5px;line-height:1.35}
-.row .m{grid-column:2;font-size:12.5px;color:var(--ink-2);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.row .ic{grid-row:span 2;padding-top:2px}
-.row.done{opacity:.6}
-
-/* severity badge: shape + word, never color alone */
+/* severity badge: shape + word + muted hue */
 .sev{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px 0 8px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;border:1px solid transparent}
-.sev svg{width:12px;height:12px}
+.sev svg{width:12px;height:12px;flex:none}
 .sev.crit{background:var(--sev-crit-bg);color:var(--sev-crit);border-color:var(--sev-crit-line)}
 .sev.warn{background:var(--sev-warn-bg);color:var(--sev-warn);border-color:var(--sev-warn-line)}
 .sev.sens{background:var(--sev-sens-bg);color:var(--sev-sens);border-color:var(--sev-sens-line)}
 .sev.miss{background:var(--surface);color:var(--ink-2);border:1px dashed var(--ink-3)}
-.ok{display:inline-flex;align-items:center;gap:4px;color:var(--accent-edge);font-weight:500}
+.sev .n{font-variant-numeric:tabular-nums;margin-left:2px}
+.timer{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;background:var(--fill);color:var(--ink)}
+.timer svg{width:12px;height:12px}
+.timer.hot{background:var(--sev-crit-bg);color:var(--sev-crit)}
+.timer.done{background:var(--wash);color:var(--accent-edge)}
 
-/* settings card */
-.card{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow);padding:18px}
-.card h3{font-size:18px;margin-bottom:8px}
+/* buttons */
+.btn{height:40px;padding:0 18px;border-radius:999px;font-weight:500;font-size:14px;border:1px solid var(--line);background:var(--surface);display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;transition:transform .4s var(--spring),background .2s}
+.btn:active{transform:scale(.96)}
+.btn.pri{background:var(--accent);color:#fff;border-color:var(--accent-edge)}
+.btn.pri:hover{background:var(--accent-edge)}
+.btn.soft{background:var(--fill);border-color:transparent}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2);padding:0 10px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* inbox: list | detail */
+.inbox{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:16px;align-items:start}
+.side{display:flex;flex-direction:column;gap:10px;position:sticky;top:16px}
+.side .lh{display:flex;justify-content:space-between;align-items:baseline;padding:0 4px}
+.side .lh h3{font-size:15px;font-weight:500;font-family:var(--font);letter-spacing:0}
+.side .lh span{font-size:12.5px;color:var(--ink-2)}
+.list{display:flex;flex-direction:column;gap:6px}
+.row{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:transform .35s var(--spring),box-shadow .2s}
+.row:hover{box-shadow:var(--shadow)}
+.row:active{transform:scale(.98)}
+.row[aria-current="true"]{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.row .tp{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.row .t{font-weight:500;font-size:14px;line-height:1.4}
+.row .m{font-size:12.5px;color:var(--ink-2)}
+.row.done{background:transparent;box-shadow:none}
+.row.done .t{color:var(--ink-2)}
+.divider{font-size:12px;color:var(--ink-3);padding:8px 4px 0}
+details.set{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-card);padding:0 14px}
+details.set summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;height:44px;font-size:13.5px;color:var(--ink-2)}
+details.set summary::-webkit-details-marker{display:none}
+details.set summary::after{content:"⌄";transition:transform .3s var(--spring)}
+details.set[open] summary::after{transform:rotate(180deg)}
 .sw{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
-.sw:first-of-type{border-top:0}
 .sw .l{display:flex;flex-direction:column}
-.sw .l b{font-size:14px}
-.sw .l span{font-size:12.5px;color:var(--ink-2)}
-.toggle{position:relative;width:52px;height:32px;border-radius:999px;background:var(--fill-strong);flex:none;transition:background .25s}
-.toggle::after{content:"";position:absolute;top:2px;left:2px;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:var(--shadow-knob);transition:transform .45s var(--spring)}
+.sw .l b{font-size:13.5px;font-weight:500}
+.sw .l span{font-size:12px;color:var(--ink-2)}
+.toggle{position:relative;width:44px;height:26px;border-radius:999px;background:var(--fill-strong);flex:none;transition:background .25s}
+.toggle::after{content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:var(--shadow-knob);transition:transform .45s var(--spring)}
 .toggle[aria-checked="true"]{background:var(--soot)}
-.toggle[aria-checked="true"]::after{transform:translateX(20px)}
+.toggle[aria-checked="true"]::after{transform:translateX(18px)}
 .toggle:disabled{opacity:.45;cursor:not-allowed}
-.soon{font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;background:var(--fill);color:var(--ink-2);margin-left:6px}
+.soon{font-size:11px;font-weight:500;padding:1px 7px;border-radius:999px;background:var(--fill);color:var(--ink-2);margin-left:6px}
 
 /* detail */
-.detail{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-panel);box-shadow:var(--shadow);padding:24px;display:flex;flex-direction:column;gap:18px;min-width:0}
-@media (max-width:560px){.detail{padding:18px;border-radius:var(--r-card)}}
-.dh{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
-.dh .tt{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0;flex:1 1 300px}
-.dh h2{font-size:26px;letter-spacing:-.025em;line-height:1.25}
-.dh .where{font-size:13.5px;color:var(--ink-2)}
-.ring{display:flex;align-items:center;gap:12px;background:var(--fill);border-radius:var(--r-row);padding:10px 14px 10px 10px}
-.ring svg{width:56px;height:56px;flex:none}
-.ring .l{display:flex;flex-direction:column;font-size:12.5px;color:var(--ink-2)}
-.ring .l b{font-size:15px;color:var(--ink)}
-.plain{font-size:16px;line-height:1.6;max-width:62ch}
+.detail{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow);min-width:0;display:flex;flex-direction:column}
+.detail .body{padding:22px 24px 8px;display:flex;flex-direction:column;gap:18px}
+.back{display:none}
+.dh{display:flex;flex-direction:column;gap:10px}
+.dh .tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.dh h2{font-size:25px;letter-spacing:-.025em}
+.dh .where{font-size:13px;color:var(--ink-2)}
+.plain{font-size:15.5px;line-height:1.65;max-width:64ch}
+.track{display:flex;align-items:center;gap:0;font-size:12.5px;color:var(--ink-3);flex-wrap:wrap}
+.track span{display:inline-flex;align-items:center;gap:5px}
+.track span+span::before{content:"";width:18px;height:1px;background:var(--muted);margin:0 8px}
+.track .d{color:var(--ink)}
+.track .d i{color:var(--accent-edge);font-style:normal}
+.track .c{color:var(--ink);font-weight:500}
 
-/* steps */
-.steps{display:flex;gap:6px;flex-wrap:wrap}
-.step{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--ink-3);padding:6px 12px 6px 6px;border-radius:999px;background:var(--fill)}
-.step i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;background:var(--surface);color:var(--ink-3)}
-.step.done{color:var(--ink)}
-.step.done i{background:var(--soot);color:#fff}
-.step.now{color:var(--ink);background:var(--surface);box-shadow:var(--shadow-knob)}
-.step.now i{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+/* "what to do" block */
+.todo{border-radius:var(--r-card);background:var(--fill);padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.todo .lead{display:flex;flex-direction:column;gap:2px}
+.todo .k{font-size:12.5px;color:var(--ink-2)}
+.todo .lead b{font-size:15px;font-weight:500}
+.todo .lead .p{font-size:12.5px;color:var(--ink-2)}
+.todo ol{margin:0;padding:0;list-style:none;counter-reset:a;display:flex;flex-direction:column;gap:6px}
+.todo li{counter-increment:a;display:flex;gap:10px;align-items:flex-start;font-size:14px;background:var(--surface);border-radius:8px;padding:9px 12px}
+.todo li::before{content:counter(a);flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;font-weight:600;background:var(--fill);color:var(--ink-2);margin-top:1px}
+.unknown{font-size:13px;color:var(--ink-2)}
 
-.hl{color:var(--accent-edge);background:var(--wash);padding:0 8px;border-radius:4px}
-/* chart */
-.chartbox{background:var(--fill);border-radius:var(--r-card);padding:14px 14px 8px;min-width:0}
-.chartbox .cap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);padding:0 4px 6px}
-.chartbox .cap b{color:var(--ink)}
+/* evidence */
+.ev-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.ev-h h3{font-size:17px}
+.seg{display:inline-flex;padding:3px;border-radius:999px;background:var(--fill)}
+.seg button{height:30px;padding:0 12px;border-radius:999px;font-size:13px;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);font-weight:500;box-shadow:var(--shadow-knob)}
+.chartbox{border:1px solid var(--line);border-radius:var(--r-card);padding:12px 12px 6px;min-width:0}
+.chartbox .say{font-size:14px;padding:2px 4px 8px}
+.chartbox .say b{font-weight:500}
 .chart{width:100%;height:auto;display:block;overflow:visible}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2);padding:6px 4px 4px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-2);padding:4px 4px 2px}
 .legend span{display:inline-flex;align-items:center;gap:6px}
-.lg-n{width:8px;height:8px;border-radius:50%;background:var(--ink-3)}
-.lg-a{width:9px;height:9px;border-radius:50%;background:var(--crit)}
-.lg-b{width:16px;height:10px;border-radius:3px;background:var(--band);border:1px dashed var(--go-ink)}
-
-.moved{display:flex;gap:8px;flex-wrap:wrap}
-.mv{display:inline-flex;gap:6px;align-items:center;padding:6px 12px;border-radius:999px;background:var(--fill);font-size:13px}
+.lg-n{width:7px;height:7px;border-radius:50%;background:var(--ink-3)}
+.lg-a{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.lg-b{width:16px;height:10px;border-radius:3px;background:var(--band);border:1px dashed var(--accent-edge)}
+.moved{display:flex;gap:6px;flex-wrap:wrap}
+.mv{display:inline-flex;gap:6px;align-items:center;padding:5px 11px;border-radius:999px;background:var(--fill);font-size:12.5px}
 .mv b{font-weight:600}
-.mv .up,.mv .dn{color:var(--ink)}
-
-/* causes */
-.sec{display:flex;flex-direction:column;gap:10px}
-.sec h3{font-size:18px;display:flex;gap:8px;align-items:center}
-.sec h3 small{font-weight:600;color:var(--ink-3);font-size:12.5px}
-.cause{border-radius:var(--r-row);background:var(--fill);overflow:hidden}
-.cause>button{width:100%;text-align:left;padding:14px 16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center}
-.cause .cn{font-weight:500}
-.meter{grid-column:1/-1;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ink-2)}
-.meter .bar{flex:1;height:8px;border-radius:999px;background:var(--fill-strong);overflow:hidden;max-width:220px}
-.meter .bar i{display:block;height:100%;border-radius:999px;background:var(--accent)}
-.chev{width:28px;height:28px;border-radius:50%;background:var(--surface);display:grid;place-items:center;transition:transform .35s var(--spring)}
-.cause[data-open="true"] .chev{transform:rotate(180deg)}
-.ev{padding:0 16px 14px;font-size:14px;color:var(--ink-2);display:flex;flex-direction:column;gap:6px}
-.ev li{margin-left:18px}
-.ev ul{margin:0;padding:0}
-
-/* actions */
-.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.btn{height:40px;padding:0 18px;border-radius:999px;font-weight:500;font-size:14px;border:1px solid var(--line);background:transparent;display:inline-flex;align-items:center;gap:8px;transition:transform .4s var(--spring),background .2s,box-shadow .2s}
-.btn:active{transform:scale(.95)}
-.btn.pri{background:var(--accent);color:#fff;border-color:var(--accent-edge)}
-.btn.pri:hover{background:var(--accent-hover)}
-.btn.out{background:var(--surface);box-shadow:var(--shadow-knob)}
-.btn.sec2{background:var(--fill)}
-.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
-.fb{display:flex;flex-direction:column;gap:8px}
-.seg{display:flex;gap:6px;flex-wrap:wrap}
-.seg button{height:42px;padding:0 16px;border-radius:999px;background:var(--fill);font-weight:500;font-size:14px;transition:transform .35s var(--spring)}
-.seg button:active{transform:scale(.93)}
-.seg button[aria-pressed="true"]{background:var(--soot);color:#fff;border-color:var(--soot)}
+.term{border-bottom:1.5px dotted var(--ink-3);cursor:help;position:relative}
+.term:hover::after,.term:focus::after{content:attr(data-tip);position:absolute;left:0;bottom:calc(100% + 8px);width:max-content;max-width:240px;padding:8px 12px;border-radius:6px;background:var(--soot);color:#fff;font-size:12.5px;font-weight:400;line-height:1.45;z-index:5;white-space:normal}
+details.more{border-top:1px solid var(--line);padding-top:4px}
+details.more>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;height:44px;font-size:14px;font-weight:500}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary small{font-weight:400;color:var(--ink-2);font-size:12.5px;margin-left:8px}
+details.more>summary::after{content:"⌄";color:var(--ink-2);transition:transform .3s var(--spring)}
+details.more[open]>summary::after{transform:rotate(180deg)}
+.more .in{display:flex;flex-direction:column;gap:10px;padding-bottom:12px}
+.cause{border:1px solid var(--line);border-radius:var(--r-card);padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.cause .cn{display:flex;justify-content:space-between;gap:10px;font-weight:500}
+.cause .cn span{font-weight:400;color:var(--ink-2);font-size:12.5px;white-space:nowrap}
+.cause ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2)}
+.meter{height:6px;border-radius:999px;background:var(--fill-strong);overflow:hidden;max-width:240px}
+.meter i{display:block;height:100%;background:var(--accent);border-radius:999px}
 .hint{font-size:12.5px;color:var(--ink-3)}
 
-/* tooltip for terms */
-.term{border-bottom:1.5px dotted var(--ink-3);cursor:help;position:relative}
-.term:hover::after,.term:focus::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);width:max-content;max-width:240px;padding:8px 12px;border-radius:6px;background:var(--soot);color:#fff;font-size:12.5px;font-weight:400;line-height:1.4;z-index:5;white-space:normal}
+/* action bar: always reachable */
+.actbar{position:sticky;bottom:0;z-index:4;margin-top:auto;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line);border-radius:0 0 var(--r-panel) var(--r-panel);box-shadow:var(--shadow-up);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px)) 24px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.actbar .st{font-size:13px;color:var(--ink-2);min-width:0}
+.actbar .st b{color:var(--ink);font-weight:500}
+.actbar .bs{display:flex;gap:8px;flex-wrap:wrap}
 
-/* preview tab */
-.pv{display:flex;flex-direction:column;gap:14px}
-.ctrl{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
-.slider{display:flex;align-items:center;gap:12px;font-size:14px}
+@media (max-width:900px){
+  .inbox{grid-template-columns:minmax(0,1fr)}
+  .side{position:static}
+  .inbox[data-view="list"] .detail{display:none}
+  .inbox[data-view="detail"] .side{display:none}
+  .back{display:inline-flex;align-self:flex-start;margin:-6px 0 -4px -10px}
+  .detail .body{padding:18px 16px 8px}
+  .actbar{padding-left:16px;border-radius:0 0 var(--r-card) var(--r-card)}
+  .actbar .bs{width:100%}
+  .actbar .bs .btn{flex:1}
+  .detail{border-radius:var(--r-card)}
+  .now .q h2{font-size:19px}
+}
+
+/* validation mode */
+.vtabs{display:inline-flex;gap:6px}
+.vtab{height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:transparent;font-size:13.5px}
+.vtab[aria-selected="true"]{background:var(--soot);color:#fff;border-color:var(--soot)}
+.vnote{font-size:13.5px;color:var(--ink-2);max-width:70ch}
+.panel-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{height:34px;padding:0 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:13px;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--soot);color:#fff;border-color:var(--soot)}
+.slider{display:flex;align-items:center;gap:12px;font-size:14px;flex-wrap:wrap}
 .slider input{accent-color:var(--accent);width:180px}
-.pvnums{display:flex;gap:10px;flex-wrap:wrap}
-.pvnums div{background:var(--fill);border-radius:var(--r-row);padding:10px 14px;font-size:13px;color:var(--ink-2)}
-.pvnums b{display:block;font-family:var(--display);font-size:24px;color:var(--ink);font-weight:400;letter-spacing:-.02em}
-
-/* table */
-.tbl{border:1px solid var(--line);overflow-x:auto;border-radius:var(--r-card);background:var(--surface);box-shadow:var(--shadow)}
-table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
-th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.pvnums{display:flex;gap:8px;flex-wrap:wrap}
+.pvnums div{background:var(--fill);border-radius:var(--r-card);padding:10px 14px;font-size:12.5px;color:var(--ink-2)}
+.pvnums b{display:block;font-family:var(--display);font-size:22px;color:var(--ink);font-weight:400}
+.tbl{border:1px solid var(--line);overflow-x:auto;border-radius:var(--r-card);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+.tbl table{min-width:760px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-size:12.5px;color:var(--ink-2);font-weight:500;background:var(--fill)}
 tr:last-child td{border-bottom:0}
 code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;background:var(--fill);padding:1px 6px;border-radius:6px}
 
-/* report document */
-.rep{display:flex;flex-direction:column;gap:18px;font-family:var(--font);font-size:14px;line-height:1.65}
+/* report page */
+.rpage{max-width:880px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:12px}
+.rpage .paper{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow);padding:32px 36px}
+@media (max-width:640px){.rpage .paper{padding:20px 16px;border-radius:var(--r-card)}}
+.rep{display:flex;flex-direction:column;gap:20px;font-size:14px;line-height:1.65}
 .rep-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:12px}
 .rep-h .no{font-size:12px;color:var(--ink-2);letter-spacing:.04em}
 .rep-h h2{font-size:24px;letter-spacing:-.025em;margin-top:2px}
 .stamp{font-size:12px;font-weight:500;padding:4px 10px;border-radius:999px;border:1.5px solid var(--ink-2);color:var(--ink-2);white-space:nowrap}
-.stamp.ok{border-color:var(--go-ink);color:var(--go-ink)}
-.meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.stamp.ok{border-color:var(--accent-edge);color:var(--accent-edge)}
+.meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:0}
 .meta div{padding:8px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
 .meta div:nth-child(4n){border-right:0}
-.meta dt{font-size:11.5px;color:var(--ink-2)} .meta dd{margin:0;font-weight:600;font-size:13.5px;overflow-wrap:anywhere}
-@media (max-width:640px){.meta{grid-template-columns:repeat(2,minmax(0,1fr))}.meta div:nth-child(2n){border-right:0}}
-.rep h3{font-size:18px;display:flex;gap:8px;align-items:baseline}
-.rep h3 .n{font-weight:400;color:var(--ink-3)}
+.meta div:nth-last-child(-n+4){border-bottom:0}
+.meta dt{font-size:11.5px;color:var(--ink-2)} .meta dd{margin:0;font-weight:500;font-size:13.5px;overflow-wrap:anywhere}
+@media (max-width:640px){.meta{grid-template-columns:repeat(2,minmax(0,1fr))}.meta div:nth-child(4n){border-right:1px solid var(--line)}.meta div:nth-child(2n){border-right:0}.meta div:nth-last-child(-n+4){border-bottom:1px solid var(--line)}.meta div:nth-last-child(-n+2){border-bottom:0}}
+.rep h3{font-size:17px;display:flex;gap:8px;align-items:baseline}
+.rep h3 .n{color:var(--ink-3)}
 .rep .s{display:flex;flex-direction:column;gap:8px}
 .rep ul{margin:0;padding-left:20px}
-.rep .t{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
-.rep table{min-width:620px;font-size:13px}
+.rep .t{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.rep table{min-width:600px;font-size:13px}
 .rep td.r,.rep th.r{text-align:right;font-variant-numeric:tabular-nums}
-.verdict{font-weight:500} .verdict.out{color:var(--accent-edge);background:var(--wash);padding:1px 8px;border-radius:4px} .verdict.edge{color:var(--ink)} .verdict.na{color:var(--ink-2)}
+.verdict{font-weight:500} .verdict.out{color:var(--accent-edge);background:var(--wash);padding:1px 8px;border-radius:4px} .verdict.na{color:var(--ink-2)}
 .rep .note{font-size:12.5px;color:var(--ink-2)}
-.rep .cause-r{border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.rep .cause-r{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
 .rep .cause-r b{font-weight:500}
-.rep label.f{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:13px}
-.rep .chartbox{background:var(--fill)}
+.rep label.f{display:flex;flex-direction:column;gap:6px;font-weight:500;font-size:13px}
+.rep textarea{width:100%;min-height:72px;border-radius:10px;border:1px solid var(--line);background:var(--fill);padding:12px 14px;font:inherit;font-size:14px;line-height:1.6;color:var(--ink);resize:vertical}
 .sign{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.sign div{border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:12.5px;color:var(--ink-2)}
-.sign b{display:block;color:var(--ink);font-size:13.5px;min-height:20px}
+.sign div{border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:12.5px;color:var(--ink-2)}
+.sign b{display:block;color:var(--ink);font-size:13.5px;font-weight:500;min-height:20px}
 @media (max-width:640px){.sign{grid-template-columns:minmax(0,1fr)}}
-/* dialog + toast */
-.scrim{position:fixed;inset:0;background:rgba(20,20,20,.32);display:grid;place-items:center;padding:16px;z-index:20}
-.scrim[hidden]{display:none!important}
-.dialog{width:min(860px,100%);max-height:calc(100% - 32px);overflow:auto;background:var(--surface);border-radius:var(--r-panel);box-shadow:var(--shadow-knob);padding:24px;display:flex;flex-direction:column;gap:14px;animation:rise .45s var(--spring)}
-.dialog h2{font-size:20px}
-.dialog textarea{width:100%;min-height:72px;border-radius:var(--r-row);border:0;background:var(--fill);padding:14px;font:inherit;font-size:14px;line-height:1.6;color:var(--ink);resize:vertical}
-@keyframes rise{from{transform:translateY(10px) scale(.94);opacity:0}to{transform:none;opacity:1}}
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);min-height:56px;max-width:calc(100% - 32px);padding:8px 8px 8px 20px;border-radius:999px;background:var(--soot);color:#fff;display:flex;align-items:center;gap:14px;font-weight:500;font-size:14px;box-shadow:var(--shadow);z-index:30;animation:rise .45s var(--spring)}
-.toast[hidden]{display:none!important}
-.toast button{height:36px;padding:0 14px;border-radius:999px;background:transparent;border:1px solid rgba(255,255,255,.3);color:inherit;font-weight:500}
-.foot{font-size:12.5px;color:var(--ink-3);text-align:center}
+.rbar{position:sticky;bottom:12px;z-index:4;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
+.rbar .v{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px}
+.rbar .v b{font-weight:500}
+.rbar .bs{display:flex;gap:8px}
+@media (max-width:640px){.rbar .bs{width:100%}.rbar .bs .btn{flex:1}}
+
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);min-height:52px;max-width:calc(100% - 32px);padding:8px 8px 8px 20px;border-radius:999px;background:var(--soot);color:#fff;display:flex;align-items:center;gap:14px;font-weight:500;font-size:14px;box-shadow:var(--shadow);z-index:30;animation:rise .45s var(--spring)}
+.toast button{height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:inherit;font-weight:500}
+@keyframes rise{from{transform:translate(-50%,10px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+.foot{font-size:12px;color:var(--ink-3);text-align:center}
 </style>
 
 <div class="wrap">
   <header class="top">
     <div class="brand"><div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2.4 1.3-3.6 2.3-4.8.3 1.9 1.2 2.8 2.2 3.3C11 7.5 11.5 4.5 12 2z" fill="currentColor"/></svg></div>
-      <div><h1>웨이퍼 알림센터</h1><p>공정 데이터를 지켜보다가 이상이 생기면 알려드려요</p></div></div>
-    <div class="mockpill"><span class="dot" aria-hidden="true"></span><span><b>목업</b> · 합성 데이터에 이상 7건을 심은 미리보기</span></div>
+      <h1>웨이퍼 알림센터</h1><span class="mock">목업</span></div>
+    <div class="mode" role="group" aria-label="화면 고르기">
+      <button aria-pressed="true" data-mode="ops">담당자 화면</button>
+      <button aria-pressed="false" data-mode="val">검증 화면</button>
+    </div>
   </header>
 
-  <section class="stats" aria-label="요약">
-    <div class="stat"><span class="k">지켜본 로트</span><span class="v num">50</span><span class="s">웨이퍼 1,250장 · 하루 1로트 재생</span></div>
-    <div class="stat"><span class="k">발견한 이상</span><span class="v num" id="st-all">7</span><span class="s">앞 25로트는 평소 기준으로 사용</span></div>
-    <div class="stat"><span class="k">확인을 기다리는 알림</span><span class="v num" id="st-wait">7</span><span class="s">30분 안에 확인이 없으면 다음 담당자에게</span></div>
-    <div class="stat"><span class="k">값이 안 들어온 센서</span><span class="v num">1</span><span class="s">공정 이상과 따로 알려요</span></div>
-  </section>
-
-  <nav class="tabs" role="tablist" aria-label="화면 전환">
-    <button class="tab" role="tab" aria-selected="true" data-tab="inbox" id="t-inbox">알림함</button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="preview" id="t-preview">데이터 미리보기</button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="key" id="t-key">정답지</button>
-  </nav>
-
-  <!-- INBOX -->
-  <section class="panel" id="p-inbox" role="tabpanel" aria-labelledby="t-inbox">
-    <div class="inbox">
-      <div class="side">
-        <div class="filters" role="group" aria-label="알림 거르기">
-          <button class="chip" aria-pressed="true" data-f="all">전체</button>
-          <button class="chip" aria-pressed="false" data-f="crit">긴급</button>
-          <button class="chip" aria-pressed="false" data-f="warn">주의</button>
-          <button class="chip" aria-pressed="false" data-f="other">센서·수신</button>
-        </div>
-        <div class="list" id="list"></div>
-        <div class="card">
-          <h3>알림 받는 방법</h3>
-          <div class="sw"><div class="l"><b>메일로 받기</b><span>담당자 메일로 바로 보내요</span></div><button class="toggle" role="switch" aria-checked="true" id="sw-mail" aria-label="메일로 받기"></button></div>
-          <div class="sw"><div class="l"><b>슬랙으로 받기<span class="soon">준비 중</span></b><span>메일이 안정되면 추가할 예정이에요</span></div><button class="toggle" role="switch" aria-checked="false" disabled aria-label="슬랙으로 받기 (준비 중)"></button></div>
-          <div class="sw"><div class="l"><b>확인 없으면 넘기기</b><span>30분 뒤 다음 담당자에게 알려요</span></div><button class="toggle" role="switch" aria-checked="true" id="sw-esc" aria-label="확인 없으면 넘기기"></button></div>
-        </div>
+  <!-- OPERATOR -->
+  <main id="m-ops">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <section class="now" id="now" aria-live="polite"></section>
+      <div class="inbox" id="inbox" data-view="list">
+        <aside class="side" aria-label="알림 목록">
+          <div class="lh"><h3>알림</h3><span>급한 순</span></div>
+          <div class="list" id="list"></div>
+          <details class="set"><summary>알림 받는 방법 · 메일, 30분 뒤 넘기기</summary>
+            <div class="sw"><div class="l"><b>메일로 받기</b><span>담당자 메일로 바로 보내요</span></div><button class="toggle" role="switch" aria-checked="true" aria-label="메일로 받기"></button></div>
+            <div class="sw"><div class="l"><b>슬랙으로 받기<span class="soon">준비 중</span></b><span>메일이 안정되면 추가할 예정이에요</span></div><button class="toggle" role="switch" aria-checked="false" disabled aria-label="슬랙으로 받기 (준비 중)"></button></div>
+            <div class="sw"><div class="l"><b>확인 없으면 넘기기</b><span>30분 뒤 다음 담당자에게 알려요</span></div><button class="toggle" role="switch" aria-checked="true" aria-label="확인 없으면 넘기기"></button></div>
+          </details>
+        </aside>
+        <article class="detail" id="detail" aria-live="polite"></article>
       </div>
-      <article class="detail" id="detail" aria-live="polite"></article>
     </div>
-  </section>
+  </main>
 
-  <!-- PREVIEW -->
-  <section class="panel" id="p-preview" role="tabpanel" aria-labelledby="t-preview" hidden>
-    <div class="detail pv">
-      <div class="dh"><div class="tt"><h2>심은 이상이 데이터에서 <span class="hl">어떻게 보이나요</span></h2>
-        <p class="where">센서를 고르고 기준선을 움직여 보세요. 긴급·주의 기준을 정할 때 이 화면을 써요.</p></div></div>
-      <div class="filters" role="group" aria-label="센서 고르기" id="pv-sensors"></div>
-      <div class="ctrl">
+  <!-- VALIDATION (portfolio) -->
+  <main id="m-val" hidden>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <p class="vnote">이 화면은 담당자용이 아니라 <b>탐지 로직 검증용</b>이에요. 합성 데이터에 정답을 아는 이상 7건을 심었고, 서비스가 그것을 제대로 잡는지 확인해요.</p>
+      <div class="vtabs" role="tablist" aria-label="검증 화면">
+        <button class="vtab" role="tab" aria-selected="true" data-v="pv">데이터 미리보기</button>
+        <button class="vtab" role="tab" aria-selected="false" data-v="key">정답지</button>
+      </div>
+      <section id="v-pv" class="panel-card">
+        <h2 style="font-size:21px">심은 이상이 데이터에서 어떻게 보이나요</h2>
+        <p class="vnote">센서를 고르고 기준선을 움직여 보세요. 긴급·주의 기준을 정할 때 쓰는 화면이에요.</p>
+        <div class="chips" role="group" aria-label="센서 고르기" id="pv-sensors"></div>
         <label class="slider" for="pv-k"><span>기준선 <span class="term" tabindex="0" data-tip="평소 값이 퍼진 정도예요. 숫자가 클수록 기준이 느슨해서 알림이 덜 와요.">표준편차</span> ×</span><input type="range" id="pv-k" min="2" max="5" step="0.5" value="3"><b class="num" id="pv-kv">3.0</b></label>
-      </div>
-      <div class="pvnums" id="pv-nums"></div>
-      <div class="chartbox"><div class="cap"><span id="pv-cap"></span><span>가로: 웨이퍼 순서(로트 1 → 50)</span></div><svg class="chart" id="pv-chart" role="img"></svg>
-        <div class="legend"><span><i class="lg-b"></i>평소 범위</span><span><i class="lg-n"></i>정상 웨이퍼</span><span><i class="lg-a"></i>이상을 심은 웨이퍼</span></div></div>
+        <div class="pvnums" id="pv-nums"></div>
+        <div class="chartbox"><p class="say" id="pv-cap"></p><svg class="chart" id="pv-chart" role="img"></svg>
+          <div class="legend"><span><i class="lg-b"></i>평소 범위</span><span><i class="lg-n"></i>정상 웨이퍼</span><span><i class="lg-a"></i>이상을 심은 웨이퍼</span></div></div>
+      </section>
+      <section id="v-key" hidden>
+        <div class="tbl"><table><thead><tr><th>사건</th><th>유형</th><th>대상</th><th>심은 값</th><th>함께 변한 값</th><th>정답 원인</th><th>서비스가 해야 할 반응</th></tr></thead><tbody id="keybody"></tbody></table></div>
+        <p class="hint" style="margin-top:10px">실제 생성 때는 이 표가 <code>anomaly_events.csv</code>, 웨이퍼별 정답은 <code>wafer_labels.csv</code>로 저장돼요.</p>
+      </section>
     </div>
-  </section>
+  </main>
 
-  <!-- KEY -->
-  <section class="panel" id="p-key" role="tabpanel" aria-labelledby="t-key" hidden>
-    <div class="tbl"><table><thead><tr><th>사건</th><th>유형</th><th>대상</th><th>심은 값</th><th>함께 변한 값</th><th>정답 원인</th><th>서비스가 해야 할 반응</th></tr></thead><tbody id="keybody"></tbody></table></div>
-    <p class="hint" style="margin-top:10px">실제 생성 때는 이 표가 <code>anomaly_events.csv</code>, 웨이퍼별 정답은 <code>wafer_labels.csv</code>로 저장돼요.</p>
-  </section>
+  <!-- REPORT PAGE -->
+  <main id="m-rep" hidden>
+    <div class="rpage">
+      <button class="btn ghost" id="r-back" style="align-self:flex-start">← 알림으로 돌아가기</button>
+      <div class="paper"><div class="rep" id="rep"></div></div>
+      <div class="rbar">
+        <div class="v"><b>원인 판정</b>
+          <div class="seg" role="group" aria-label="원인 판정" id="r-seg"><button aria-pressed="false" data-v="일치">AI 후보 일치</button><button aria-pressed="false" data-v="불일치">불일치</button><button aria-pressed="false" data-v="미확정">미확정</button></div>
+          <span class="hint" id="r-hint">판정을 고르면 승인할 수 있어요</span></div>
+        <div class="bs"><button class="btn soft" id="r-cancel">나중에</button><button class="btn pri" id="r-ok" disabled>승인</button></div>
+      </div>
+    </div>
+  </main>
 
-  <p class="foot">목업 화면이에요. 수치는 원본 데이터에 이상을 심어 계산한 미리보기이고, 원인 후보 문장은 예시예요.</p>
-</div>
-
-<div class="scrim" id="dlg" hidden>
-  <div class="dialog" role="dialog" aria-modal="true" aria-label="이상 발생 보고서">
-    <div class="rep" id="rep"></div>
-    <div class="fb"><b style="font-size:14px">원인 판정</b>
-      <div class="seg" role="group" aria-label="원인 판정" id="dlg-seg">
-        <button aria-pressed="false" data-v="일치">AI 원인 후보 일치</button><button aria-pressed="false" data-v="불일치">불일치</button><button aria-pressed="false" data-v="미확정">미확정</button></div>
-      <span class="hint" id="dlg-hint">원인 판정 선택 후 승인 가능. 판정 결과는 다음 분석에 반영됨.</span></div>
-    <div class="actions"><button class="btn pri" id="dlg-ok" disabled>승인</button><button class="btn sec2" id="dlg-cancel">닫기</button></div>
-  </div>
+  <p class="foot">목업 화면이에요. 수치는 원본 데이터에 이상을 심어 계산한 미리보기이고, 원인 후보와 권고 조치 문장은 예시예요.</p>
 </div>
 <div class="toast" id="toast" role="status" hidden><span id="toast-m"></span><button id="toast-undo">되돌리기</button></div>
 
@@ -320,17 +333,18 @@ code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;backgro
 const D = JSON.parse(document.getElementById('data').textContent);
 const N = D.lot.length;
 const SEV = {
-  crit:{w:'긴급',svg:'<svg viewBox="0 0 12 12"><path d="M6 1L11.2 10.5H.8z" fill="currentColor"/></svg>'},
-  warn:{w:'주의',svg:'<svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="currentColor"/></svg>'},
-  sens:{w:'센서 의심',svg:'<svg viewBox="0 0 12 12"><rect x="1.5" y="1.5" width="9" height="9" rx="2" fill="currentColor"/></svg>'},
-  miss:{w:'수신 오류',svg:'<svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2.4 2"/></svg>'}
+  crit:{w:'긴급',r:0,svg:'<svg viewBox="0 0 12 12"><path d="M6 1L11.2 10.5H.8z" fill="currentColor"/></svg>'},
+  warn:{w:'주의',r:1,svg:'<svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="currentColor"/></svg>'},
+  sens:{w:'센서 의심',r:2,svg:'<svg viewBox="0 0 12 12"><rect x="1.5" y="1.5" width="9" height="9" rx="2" fill="currentColor"/></svg>'},
+  miss:{w:'수신 오류',r:2,svg:'<svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2.4 2"/></svg>'}
 };
-const NAME = {etch_rate:'식각 속도',critical_dimension:'선폭(CD)',temperature:'공정 온도',pressure:'압력',deposition_rate:'증착 속도',focus_offset:'초점 오차',defect_count:'결함 수',implant_energy:'이온주입 에너지',vth:'문턱전압(Vth)',yield:'수율'};
+const CLOCK='<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.8" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6 3.4V6l1.8 1.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
+const NAME = {etch_rate:'식각 속도',critical_dimension:'선폭(CD)',temperature:'공정 온도',pressure:'압력',deposition_rate:'증착 속도',focus_offset:'초점 오차',defect_count:'결함 수',implant_energy:'이온주입 에너지',vth:'문턱전압(Vth)',oxide_thickness:'산화막 두께',yield:'수율'};
 const E = [
  {id:5,sev:'crit',lots:[44,46,48],col:'focus_offset',win:[36,50],moved:['critical_dimension','yield'],
   title:'노광 장비 LITHO_01을 쓴 로트 3개에서 초점이 어긋났어요',
   plain:'LOT_0044, 0046, 0048에서 초점 오차가 평소보다 크게 벌어졌고, 같은 로트의 선폭이 넓어지고 수율이 떨어졌어요. 세 로트의 공통점은 노광 장비 LITHO_01이에요.',
-  causes:[{n:'노광 장비 LITHO_01의 초점 보정 문제',p:82,ev:['초점 오차가 튄 세 로트 모두 LITHO_01을 사용','다른 노광 장비를 쓴 로트 사이(0045, 0047)는 정상','노광 시간도 함께 늘어남']},{n:'해당 제품의 레시피 문제',p:14,ev:['세 로트의 제품이 CPU, GPU, GPU로 달라서 근거가 약함']}],
+  causes:[{n:'노광 장비 LITHO_01의 초점 보정 문제',p:82,ev:['초점 오차가 튄 세 로트 모두 LITHO_01을 사용','다른 노광 장비를 쓴 로트 사이(0045, 0047)는 정상','노광 시간도 함께 늘어남']},{n:'해당 제품의 레시피 문제',p:14,ev:['세 로트의 제품이 서로 달라서 근거가 약함']}],
   key:{type:'장비 공통 문제',target:'LOT_0044·0046·0048 전체',inj:'focus_offset +3σ, exposure_time +2σ',cause:'LITHO_01',react:'여러 로트의 공통 장비를 원인으로'}, mins:12},
  {id:7,sev:'warn',lots:[49],col:'implant_energy',win:[44,50],waf:[20,25],moved:['vth','yield'],
   title:'LOT_0049 웨이퍼 6장만 이온주입 에너지가 높아요',
@@ -340,155 +354,29 @@ const E = [
  {id:1,sev:'warn',lots:[27,29,36,37,39,41,42,43],col:'etch_rate',win:[20,45],moved:['critical_dimension','yield'],
   title:'식각 장비 ETCH_04의 식각 속도가 로트마다 조금씩 오르고 있어요',
   plain:'ETCH_04를 쓴 로트에서만 식각 속도가 계속 올라가고 있어요. 한 번에 튄 게 아니라 서서히 변하는 중이라, 지금 손보면 큰 불량을 막을 수 있어요.',
-  causes:[{n:'식각 장비 ETCH_04의 상태 변화(드리프트)',p:88,ev:['ETCH_04를 쓴 로트 8개에서 순서대로 상승','다른 식각 장비 4대는 평소 범위','선폭이 함께 넓어지고 수율이 떨어짐']},{n:'측정 센서의 영점 이동',p:9,ev:['선폭과 수율도 같이 변해서 센서만의 문제는 아닌 것으로 보임']}],
+  causes:[{n:'식각 장비 ETCH_04의 상태 변화(드리프트)',p:88,ev:['ETCH_04를 쓴 로트 8개에서 순서대로 상승','다른 식각 장비는 평소 범위','선폭이 함께 넓어지고 수율이 떨어짐']},{n:'측정 센서의 영점 이동',p:9,ev:['선폭과 수율도 같이 변해서 센서만의 문제는 아닌 것으로 보임']}],
   key:{type:'서서히 변함',target:'ETCH_04 로트 8개 (27~43)',inj:'etch_rate +0.5σ → +4σ',cause:'ETCH_04',react:'몇 번째 로트부터 잡는지 측정'}, mins:26},
- {id:4,sev:'miss',lots:[38],col:'deposition_rate',win:[34,42],moved:[],
+ {id:4,sev:'miss',lots:[38],col:'deposition_rate',win:[30,44],moved:[],
   title:'LOT_0038의 증착 속도 값이 들어오지 않았어요',
   plain:'증착 속도 센서 값이 비어 있어요. 0으로 채우지 않고 "수신 오류"로 따로 알려드려요. 나머지 17개 값으로는 분석을 계속하고 있어요.',
   causes:[{n:'센서 연결 또는 데이터 전송 문제',p:90,ev:['한 센서만 25장 전부 비어 있음','같은 로트의 다른 값은 정상 수신']}],
   key:{type:'수신 오류',target:'LOT_0038 전체',inj:'deposition_rate 값 비움',cause:'수집 경로',react:'별도 알림, 나머지 분석은 계속'}, mins:18},
- {id:6,sev:'warn',lots:[35],col:'defect_count',win:[30,40],moved:['yield'],
+ {id:6,sev:'warn',lots:[35],col:'defect_count',win:[26,44],moved:['yield'],
   title:'LOT_0035에서 결함이 늘었는데, 공정 값은 정상이에요',
   plain:'결함 수가 평소보다 크게 늘고 수율이 떨어졌어요. 그런데 공정 값 9개는 모두 평소 범위라 데이터 안에서는 원인을 찾지 못했어요.',
-  causes:[{n:'원인 불명 (데이터 내 근거 없음)',p:0,ev:['공정 값 9개 모두 평소 범위','검사 장비, 원자재, 오염처럼 데이터 밖 요인을 확인해 보세요']}],
+  causes:[{n:'원인 불명 (데이터 안에 근거 없음)',p:0,ev:['공정 값 9개 모두 평소 범위','검사 장비, 원자재, 오염처럼 데이터 밖 요인을 확인해야 함']}],
   key:{type:'원인 불명 결함',target:'LOT_0035 전체',inj:'defect_count +4σ (공정 값 그대로)',cause:'없음 (데이터 밖)',react:'근거 없으면 "원인 불명"이라 말하기'}, mins:7},
  {id:3,sev:'sens',lots:[33],col:'pressure',win:[30,36],waf:[7,7],moved:[],
   title:'LOT_0033 웨이퍼 1장에서 압력 값이 튀었어요',
   plain:'W007 한 장에서만 압력이 평소의 10배로 찍혔어요. 같은 로트의 다른 웨이퍼와 다른 값은 모두 정상이라, 공정보다는 센서 문제일 가능성이 높아요.',
   causes:[{n:'압력 센서의 순간 오류',p:85,ev:['한 장, 한 센서에서만 발생','결과 값(선폭, 수율)은 정상']}],
   key:{type:'센서 튐',target:'LOT_0033 W007',inj:'pressure ×10',cause:'센서',react:'공정 이상이 아니라 센서 의심으로'}, mins:24},
- {id:2,sev:'crit',lots:[31],col:'temperature',win:[26,36],moved:['oxide_thickness','yield'],
+ {id:2,sev:'crit',lots:[31],col:'temperature',win:[22,40],moved:['oxide_thickness','yield'],
   title:'LOT_0031의 공정 온도가 갑자기 높아졌어요',
   plain:'LOT_0031의 25장 모두에서 공정 온도가 평소보다 크게 높았고, 산화막이 두꺼워지고 수율이 떨어졌어요. 바로 앞뒤 로트는 정상이라 이 로트에서 갑자기 생긴 일이에요.',
   causes:[{n:'온도 제어 이상',p:76,ev:['25장 전부에서 같은 크기로 상승','산화막 두께가 함께 증가']},{n:'온도 센서 보정 문제',p:16,ev:['산화막이 실제로 변해서 센서만의 문제일 가능성은 낮음']}],
   key:{type:'급변',target:'LOT_0031 전체',inj:'temperature +5σ',cause:'온도 (LOT_0031)',react:'긴급 후보로'}, mins:3}
 ];
-NAME.oxide_thickness='산화막 두께';
-const state = {sel:E[0].id, filter:'all', acked:{}, fb:{}};
-const $ = s=>document.querySelector(s);
-const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const badge = s=>`<span class="sev ${s}">${SEV[s].svg}${SEV[s].w}</span>`;
-const lotStr = l=>'LOT_00'+String(l).padStart(2,'0');
-const dateOf = l=>{const d=new Date(Date.UTC(2023,0,l));return `${d.getUTCMonth()+1}월 ${d.getUTCDate()}일`;};
-const isInj = (e,i)=>{ if(!e.lots.includes(D.lot[i])) return false; if(!e.waf) return true; const w=i%25+1; return w>=e.waf[0]&&w<=e.waf[1]; };
-
-function renderList(){
-  const f=state.filter;
-  const items=E.filter(e=>f==='all'||(f==='other'?(e.sev==='sens'||e.sev==='miss'):e.sev===f));
-  $('#list').innerHTML = items.map(e=>{
-    const ack=state.acked[e.id];
-    const last=Math.max(...e.lots);
-    return `<button class="row${ack?' done':''}" data-id="${e.id}" aria-current="${state.sel===e.id}">
-      <span class="ic">${badge(e.sev)}</span><span class="t">${esc(e.title)}</span>
-      <span class="m"><span>${lotStr(last)} · ${dateOf(last)}</span>${ack?'<span class="ok">✓ 확인함</span>':`<span>확인 대기 · ${e.mins}분 남음</span>`}</span></button>`;}).join('') || '<p class="hint">이 조건의 알림이 없어요.</p>';
-  $('#st-wait').textContent = E.filter(e=>!state.acked[e.id]).length;
-}
-function ring(e){
-  const ack=state.acked[e.id], r=24, c=2*Math.PI*r, frac=ack?1:e.mins/30;
-  return `<div class="ring"><svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="${r}" fill="none" stroke="var(--fill-strong)" stroke-width="6"/>
-  <circle cx="28" cy="28" r="${r}" fill="none" stroke="${ack?'var(--accent)':(e.mins<10?'var(--sev-crit)':'var(--ink)')}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c*frac} ${c}" transform="rotate(-90 28 28)"/>
-  <text x="28" y="33" text-anchor="middle" font-size="14" font-weight="500" fill="var(--ink)">${ack?'✓':e.mins}</text></svg>
-  <span class="l">${ack?'<b>확인했어요</b><span>다른 담당자에게 넘기지 않아요</span>':`<b>${e.mins}분 남음</b><span>확인이 없으면 다음 담당자에게 넘겨요</span>`}</span></div>`;
-}
-function stepsHtml(e){
-  const ack=state.acked[e.id], fb=state.fb[e.id];
-  const st=[['감지',1],['원인 분석',1],['담당자 확인',ack?1:0],['리포트',fb?1:0]];
-  let cur=st.findIndex(s=>!s[1]);
-  return `<div class="steps" aria-label="처리 단계">${st.map((s,i)=>`<span class="step ${s[1]?'done':(i===cur?'now':'')}"><i>${s[1]?'✓':i+1}</i>${s[0]}</span>`).join('')}</div>`;
-}
-function movedHtml(e){
-  const cols=[e.col,...e.moved];
-  return `<div class="moved">${cols.map(c=>{const C=D.cols[c]; if(!C) return '';
-    const idx=[...Array(N).keys()].filter(i=>isInj(e,i)); const v=idx.map(i=>C.inj[i]).filter(x=>x!=null);
-    if(!v.length) return `<span class="mv">${NAME[c]} <b>값 없음</b></span>`;
-    const z=(v.reduce((a,b)=>a+b,0)/v.length-C.mean)/C.sd;
-    return `<span class="mv">${NAME[c]} <b class="${z>0?'up':'dn'}">${z>0?'▲ +':'▼ '}${z.toFixed(1)}</b> 표준편차</span>`;}).join('')}</div>`;
-}
-function renderDetail(){
-  const e=E.find(x=>x.id===state.sel); const ack=state.acked[e.id];
-  const tools=D.tools.find(t=>t[0]===lotStr(Math.max(...e.lots)));
-  $('#detail').innerHTML = `
-  <div class="dh"><div class="tt">${badge(e.sev)}<h2>${esc(e.title)}</h2>
-    <span class="where">${e.lots.length>1?`로트 ${e.lots.length}개 · 마지막 `:''}${lotStr(Math.max(...e.lots))} · ${dateOf(Math.max(...e.lots))} · 장비 ${tools.slice(1,5).join(', ')} · ${tools[5]}</span></div>${ring(e)}</div>
-  ${stepsHtml(e)}
-  <p class="plain">${esc(e.plain)}</p>
-  <div class="chartbox"><div class="cap"><span><b>${NAME[e.col]}</b> · 로트 ${e.win[0]}~${e.win[1]}의 웨이퍼별 값</span><span><span class="term" tabindex="0" data-tip="앞 25로트(1월 1일~25일)로 계산한 평소 범위예요. 평균 ± 표준편차 3배.">평소 범위</span> 밖이면 파란 점</span></div>
-    <svg class="chart" id="d-chart" role="img" aria-label="${NAME[e.col]} 차트"></svg>
-    <div class="legend"><span><i class="lg-b"></i>평소 범위</span><span><i class="lg-n"></i>다른 웨이퍼</span><span><i class="lg-a"></i>이번 알림의 웨이퍼</span></div></div>
-  <div class="sec"><h3>함께 변한 값 <small>평소 평균과의 차이</small></h3>${movedHtml(e)}</div>
-  <div class="sec"><h3>AI가 찾은 원인 후보 <small>정답이 아니라 후보예요. 판단은 담당자가 해요.</small></h3>
-    ${e.causes.map((c,i)=>`<div class="cause" data-open="${i===0}"><button aria-expanded="${i===0}" data-c="${i}"><span class="cn">${esc(c.n)}</span><span class="chev" aria-hidden="true">⌄</span>
-      <span class="meter">${c.p?`<span class="bar"><i style="width:${c.p}%"></i></span><span class="num">가능성 ${c.p}%</span>`:'<span>가능성을 매길 근거가 없어요</span>'}</span></button>
-      <div class="ev" ${i===0?'':'hidden'}><b style="color:var(--ink);font-size:13px">왜 이렇게 판단했나요?</b><ul>${c.ev.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>`).join('')}</div>
-  <div class="actions">
-    <button class="btn ${ack?'sec2':'pri'}" id="b-ack">${ack?'확인 취소':'확인했어요'}</button>
-    <button class="btn out" id="b-rep">${state.fb[e.id]?'보고서 보기':'보고서 초안 만들기'}</button>
-    ${state.fb[e.id]?`<span class="ok">✓ 보고서 승인 완료 · 원인 판정 ${state.fb[e.id]}</span>`:''}
-  </div>`;
-  drawChart($('#d-chart'), e.col, e.win, i=>isInj(e,i), 3);
-}
-function drawChart(svg, col, win, hot, k){
-  const C=D.cols[col]; const W=760,H=240,L=54,R=14,T=14,B=30;
-  const idx=[...Array(N).keys()].filter(i=>D.lot[i]>=win[0]&&D.lot[i]<=win[1]);
-  const lo=C.mean-k*C.sd, hi=C.mean+k*C.sd;
-  const vals=idx.map(i=>C.inj[i]).filter(v=>v!=null);
-  const cap=C.mean+12*C.sd, flo=C.mean-12*C.sd;
-  let ymin=Math.min(lo,...vals.filter(v=>v>flo)), ymax=Math.max(hi,...vals.filter(v=>v<cap));
-  const pad=(ymax-ymin)*.08; ymin-=pad; ymax+=pad;
-  const x=j=>L+(W-L-R)*(j+.5)/idx.length, y=v=>T+(H-T-B)*(1-(Math.min(Math.max(v,ymin),ymax)-ymin)/(ymax-ymin));
-  const fmt=v=>Math.abs(v)>=1e6?v.toExponential(2):Math.abs(v)<.01?v.toFixed(4):Math.abs(v)<10?v.toFixed(2):v.toFixed(0);
-  let s=`<rect x="${L}" y="${y(hi)}" width="${W-L-R}" height="${y(lo)-y(hi)}" fill="var(--band)"/>`;
-  s+=`<line x1="${L}" x2="${W-R}" y1="${y(hi)}" y2="${y(hi)}" stroke="var(--accent-edge)" stroke-dasharray="5 4"/><line x1="${L}" x2="${W-R}" y1="${y(lo)}" y2="${y(lo)}" stroke="var(--accent-edge)" stroke-dasharray="5 4"/>`;
-  s+=`<line x1="${L}" x2="${W-R}" y1="${y(C.mean)}" y2="${y(C.mean)}" stroke="var(--ink-3)"/>`;
-  s+=`<text x="${L-8}" y="${y(hi)+4}" text-anchor="end" font-size="11" fill="var(--ink-2)">${fmt(hi)}</text><text x="${L-8}" y="${y(lo)+4}" text-anchor="end" font-size="11" fill="var(--ink-2)">${fmt(lo)}</text><text x="${L-8}" y="${y(C.mean)+4}" text-anchor="end" font-size="11" fill="var(--ink-3)">평균</text>`;
-  // lot dividers + labels
-  let prev=null; idx.forEach((i,j)=>{ if(D.lot[i]!==prev){ prev=D.lot[i]; const xx=L+(W-L-R)*j/idx.length;
-    s+=`<line x1="${xx}" x2="${xx}" y1="${T}" y2="${H-B}" stroke="var(--grid)"/>`;
-    const step=Math.ceil((win[1]-win[0]+1)/12); if((D.lot[i]-win[0])%step===0) s+=`<text x="${xx+3}" y="${H-10}" font-size="11" fill="var(--ink-3)">${D.lot[i]}</text>`;}});
-  // missing bands
-  let runs=[]; idx.forEach((i,j)=>{ if(C.inj[i]==null){ if(runs.length&&runs[runs.length-1][1]===j-1) runs[runs.length-1][1]=j; else runs.push([j,j]); }});
-  runs.forEach(([a,b])=>{const xa=L+(W-L-R)*a/idx.length, xb=L+(W-L-R)*(b+1)/idx.length;
-    s+=`<rect x="${xa}" y="${T}" width="${xb-xa}" height="${H-T-B}" fill="var(--fill)" stroke="var(--ink-3)" stroke-dasharray="3 3"/><text x="${(xa+xb)/2}" y="${T+18}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--miss)">값 없음</text>`;});
-  idx.forEach((i,j)=>{ const v=C.inj[i]; if(v==null) return; const h=hot(i), out=v>hi||v<lo;
-    const r=h?3.6:2.4, fill=h?(out?'var(--crit)':'var(--warn)'):(out?'var(--ink-2)':'var(--ink-3)');
-    if(v>=cap){ s+=`<path d="M${x(j)} ${T+2}l-5 9h10z" fill="var(--crit)"/><text x="${x(j)+8}" y="${T+11}" font-size="11.5" font-weight="700" fill="var(--crit)">${fmt(v)} (차트 위로 벗어남)</text>`; return; }
-    s+=`<circle cx="${x(j)}" cy="${y(v)}" r="${r}" fill="${fill}" ${h?'':'opacity=".75"'}/>`; });
-  svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.innerHTML=s;
-}
-// preview tab
-const PV={col:'etch_rate'}; const PVC=['etch_rate','temperature','pressure','deposition_rate','focus_offset','defect_count','implant_energy','critical_dimension','yield'];
-$('#pv-sensors').innerHTML=PVC.map(c=>`<button class="chip" aria-pressed="${c===PV.col}" data-c="${c}">${NAME[c]}</button>`).join('');
-function renderPV(){
-  const k=+$('#pv-k').value; $('#pv-kv').textContent=k.toFixed(1); const C=D.cols[PV.col];
-  const lo=C.mean-k*C.sd, hi=C.mean+k*C.sd; let a=0,b=0,c=0,m=0; const hotPV=i=>D.ev[i]>0&&(E.find(e=>e.id===D.ev[i]).col===PV.col||E.find(e=>e.id===D.ev[i]).moved.includes(PV.col));
-  for(let i=0;i<N;i++){const v=C.inj[i]; if(v==null){m++;continue;} const out=v>hi||v<lo; if(D.lot[i]<=25){ if(out)a++; } else if(hotPV(i)){ if(out)b++; } else if(out) c++;}
-  $('#pv-nums').innerHTML=`<div><b class="num">${a}</b>평소 구간에서 기준을 넘은 장 (오탐 후보)</div><div><b class="num">${b} / ${[...Array(N).keys()].filter(hotPV).length}</b>이 값에 이상을 심은 웨이퍼 중 기준을 넘은 장</div><div><b class="num">${c}</b>뒤 구간 정상 웨이퍼 중 넘은 장</div>${m?`<div><b class="num">${m}</b>값이 없는 장</div>`:''}`;
-  $('#pv-cap').innerHTML=`<b>${NAME[PV.col]}</b> · 전체 1,250장`;
-  drawChart($('#pv-chart'), PV.col, [1,50], i=>D.ev[i]>0 && (E.find(e=>e.id===D.ev[i]).col===PV.col || E.find(e=>e.id===D.ev[i]).moved.includes(PV.col)), k);
-}
-$('#pv-sensors').addEventListener('click',ev=>{const b=ev.target.closest('[data-c]'); if(!b) return; PV.col=b.dataset.c; document.querySelectorAll('#pv-sensors .chip').forEach(x=>x.setAttribute('aria-pressed',x===b)); renderPV();});
-$('#pv-k').addEventListener('input',renderPV);
-// key
-$('#keybody').innerHTML=[...E].sort((a,b)=>a.id-b.id).map(e=>`<tr><td><b>E${e.id}</b></td><td>${badge(e.sev)}<br><span style="font-size:12.5px">${e.key.type}</span></td><td>${e.key.target}</td><td><code>${e.key.inj}</code></td><td>${e.moved.map(m=>NAME[m]).join(', ')||'없음'}</td><td><b>${e.key.cause}</b></td><td>${e.key.react}</td></tr>`).join('');
-// tabs
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t)); document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!=='p-'+t.dataset.tab); if(t.dataset.tab==='preview') renderPV();}));
-// list/filter
-$('#list').addEventListener('click',ev=>{const b=ev.target.closest('.row'); if(!b) return; state.sel=+b.dataset.id; renderList(); renderDetail(); if(innerWidth<900) $('#detail').scrollIntoView({behavior:'smooth',block:'start'});});
-document.querySelector('.filters').addEventListener('click',ev=>{const b=ev.target.closest('[data-f]'); if(!b) return; state.filter=b.dataset.f; document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',x===b)); renderList();});
-// toggles
-document.querySelectorAll('.toggle').forEach(t=>t.addEventListener('click',()=>{ if(t.disabled) return; const on=t.getAttribute('aria-checked')!=='true'; t.setAttribute('aria-checked',on); toast(`${t.getAttribute('aria-label')}: ${on?'켰어요':'껐어요'}`); }));
-// toast
-let undoFn=null, tmr=null;
-function toast(m,undo){ $('#toast-m').textContent=m; undoFn=undo||null; $('#toast-undo').hidden=!undo; $('#toast').hidden=false; clearTimeout(tmr); tmr=setTimeout(()=>$('#toast').hidden=true,4500); }
-$('#toast-undo').addEventListener('click',()=>{ if(undoFn) undoFn(); $('#toast').hidden=true; });
-// detail actions
-$('#detail').addEventListener('click',ev=>{
-  const c=ev.target.closest('[data-c]'); if(c){ const box=c.parentElement, open=box.dataset.open!=='true'; box.dataset.open=open; c.setAttribute('aria-expanded',open); box.querySelector('.ev').hidden=!open; return; }
-  const e=E.find(x=>x.id===state.sel);
-  if(ev.target.closest('#b-ack')){ const was=!!state.acked[e.id]; state.acked[e.id]=!was; renderList(); renderDetail();
-    if(!was) toast('확인했어요. 다른 담당자에게 넘기지 않아요.',()=>{state.acked[e.id]=false; renderList(); renderDetail();}); else toast('확인을 취소했어요.'); }
-  if(ev.target.closest('#b-rep')) openDlg(e);
-});
 const REP={
  5:{rt:'LITHO_01 사용 로트 초점 오차 관리 상한 초과',sum:'LITHO_01을 사용한 3개 로트(LOT_0044·0046·0048)에서 초점 오차가 관리 상한을 초과함. 동일 로트의 선폭(CD) 증가 및 수율 저하 동반.',act:['LITHO_01 투입 중지 및 초점 보정(포커스 캘리브레이션) 실시','LITHO_01 처리 대기 로트 홀드','보정 후 모니터 웨이퍼로 초점 오차 재확인']},
  7:{rt:'LOT_0049 일부 웨이퍼 이온주입 에너지 상승',sum:'LOT_0049 W020~W025(6매)에서 이온주입 에너지가 관리 상한을 초과함. 해당 웨이퍼의 문턱전압 상승 및 수율 저하 동반. 동일 로트 W001~W019는 관리 범위 내.',act:['해당 6매 홀드 및 전기 특성 재측정','IMP_01 로트 후반부 처리 조건(빔 에너지 설정) 점검','IMP_01 다음 로트 초기 웨이퍼 모니터링 강화']},
@@ -498,16 +386,195 @@ const REP={
  3:{rt:'LOT_0033 W007 압력 값 이상 (센서 오류 추정)',sum:'LOT_0033 W007 1매에서 압력 값이 평소 대비 약 10배로 기록됨. 동일 로트 타 웨이퍼, 타 항목, 결과 값(선폭·수율) 모두 정상으로 센서 오류로 추정함.',act:['압력 센서 점검 및 해당 시점 장비 로그 확인','재발 시 센서 교체 검토','해당 값은 공정 이상 판정에서 제외']},
  2:{rt:'LOT_0031 공정 온도 급상승',sum:'LOT_0031 전 웨이퍼(25매)에서 공정 온도가 관리 상한을 크게 초과함. 산화막 두께 증가 및 수율 저하 동반. 전후 로트는 정상으로 해당 로트에 국한된 급변.',act:['해당 로트 홀드 및 산화막 두께 재측정','온도 제어계(히터, 열전대) 점검','점검 완료 전 동일 조건 투입 중지']}
 };
-const isoOf=l=>{const d=new Date(Date.UTC(2023,0,l));return d.toISOString().slice(0,10);};
+
+const state = {sel:null, acked:{}, fb:{}, chart:{}, mode:'ops'};
+const $ = s=>document.querySelector(s);
+const $$ = s=>[...document.querySelectorAll(s)];
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const badge = (s,n)=>`<span class="sev ${s}">${SEV[s].svg}${SEV[s].w}${n!=null?`<span class="n">${n}</span>`:''}</span>`;
+const lotStr = l=>'LOT_00'+String(l).padStart(2,'0');
+const dateOf = l=>{const d=new Date(Date.UTC(2023,0,l));return `${d.getUTCMonth()+1}월 ${d.getUTCDate()}일`;};
+const isoOf=l=>new Date(Date.UTC(2023,0,l)).toISOString().slice(0,10);
+const isInj = (e,i)=>{ if(!e.lots.includes(D.lot[i])) return false; if(!e.waf) return true; const w=i%25+1; return w>=e.waf[0]&&w<=e.waf[1]; };
+const byId = id=>E.find(e=>e.id===id);
+const timer = e=>state.acked[e.id]?`<span class="timer done">✓ 확인함</span>`:`<span class="timer ${e.mins<10?'hot':''}">${CLOCK}${e.mins}분 남음</span>`;
+const sorted = ()=>[...E].sort((a,b)=>(!!state.acked[a.id]-!!state.acked[b.id])||(SEV[a.sev].r-SEV[b.sev].r)||(a.mins-b.mins));
+const narrow = ()=>matchMedia('(max-width:900px)').matches;
+
+// lot-level series: each lot's mean, compared with the spread of lot means in the clean period (lots 1–25)
+const LOTS=[...new Set(D.lot)];
+function lotSeries(col){
+  const C=D.cols[col], m={};
+  LOTS.forEach(l=>{const v=[]; for(let i=0;i<N;i++) if(D.lot[i]===l&&C.inj[i]!=null) v.push(C.inj[i]); m[l]=v.length?v.reduce((a,b)=>a+b,0)/v.length:null;});
+  const base=LOTS.filter(l=>l<=25&&m[l]!=null).map(l=>m[l]); const mu=base.reduce((a,b)=>a+b,0)/base.length;
+  const sd=Math.sqrt(base.reduce((a,b)=>a+(b-mu)**2,0)/(base.length-1));
+  return {m,mu,sd,lo:mu-3*sd,hi:mu+3*sd};
+}
+
+/* ---------- now banner ---------- */
+function renderNow(){
+  const open=sorted().filter(e=>!state.acked[e.id]);
+  const el=$('#now');
+  if(!open.length){ el.className='now clear'; el.innerHTML=`<div class="q"><h2>지금 확인할 알림이 없어요</h2><p>새 이상이 생기면 메일로 알려드려요.</p></div>`; return; }
+  el.className='now';
+  const top=open[0], cnt=s=>open.filter(e=>s.includes(e.sev)).length;
+  const c=cnt(['crit']), w=cnt(['warn']), o=cnt(['sens','miss']);
+  el.innerHTML=`<div class="q"><h2>지금 확인할 알림 <b class="num">${open.length}건</b></h2>
+    <p>가장 급한 건 <strong>${esc(top.title.replace(/요$/,'요'))}</strong> · ${top.mins}분 안에 확인이 없으면 다음 담당자에게 넘어가요</p></div>
+    <div class="counts">${c?badge('crit',c):''}${w?badge('warn',w):''}${o?`<span class="sev miss">센서·수신<span class="n">${o}</span></span>`:''}
+    <button class="btn pri" id="go-top" data-id="${top.id}">가장 급한 알림 보기</button></div>`;
+}
+
+/* ---------- list ---------- */
+function renderList(){
+  const items=sorted(); let doneShown=false;
+  $('#list').innerHTML=items.map(e=>{
+    const ack=state.acked[e.id], last=Math.max(...e.lots);
+    let pre=''; if(ack&&!doneShown){doneShown=true; pre='<p class="divider">확인한 알림</p>';}
+    return `${pre}<button class="row${ack?' done':''}" data-id="${e.id}" aria-current="${state.sel===e.id}">
+      <span class="tp">${badge(e.sev)}${timer(e)}</span><span class="t">${esc(e.title)}</span>
+      <span class="m">${e.lots.length>1?`로트 ${e.lots.length}개 · 마지막 `:''}${lotStr(last)} · ${dateOf(last)}</span></button>`;}).join('');
+}
+
+/* ---------- detail ---------- */
+function chartSay(e){
+  const ack=state.acked[e.id], mode=state.chart[e.id];
+  if(e.sev==='miss') return `<b>${lotStr(e.lots[0])}</b>은 이 값이 비어 있어요. 앞뒤 로트는 정상으로 들어왔어요.`;
+  if(mode==='lot'){ const S=lotSeries(e.col); const out=e.lots.filter(l=>S.m[l]!=null&&(S.m[l]>S.hi||S.m[l]<S.lo)).length;
+    if(e.id===1){ const firstOut=e.lots.find(l=>S.m[l]>S.hi||S.m[l]<S.lo); return `ETCH_04 로트 8개 중 <b>${out}개</b>가 평소 범위를 넘었어요. ${firstOut?`처음 넘은 건 <b>${lotStr(firstOut)}</b>이고, 그 전부터 조금씩 올라가고 있었어요.`:''}`; }
+    return e.lots.length>1?`알림 로트 ${e.lots.length}개 중 <b>${out}개</b>의 평균이 평소 범위를 벗어났어요.`:`<b>${lotStr(e.lots[0])}</b>의 평균이 평소 범위를 ${out?'크게 벗어났어요':'벗어나지 않았어요'}.`; }
+  const C=D.cols[e.col], idx=[...Array(N).keys()].filter(i=>isInj(e,i)), out=idx.filter(i=>C.inj[i]!=null&&Math.abs(C.inj[i]-C.mean)>3*C.sd).length;
+  return `이번 알림의 웨이퍼 ${idx.length}장 중 <b>${out}장</b>이 평소 범위를 벗어났어요.${e.waf&&e.waf[0]!==e.waf[1]?' 같은 로트의 나머지 웨이퍼는 범위 안이에요.':''}`;
+}
+function movedHtml(e){
+  return [e.col,...e.moved].map(c=>{const C=D.cols[c]; if(!C) return '';
+    const v=[...Array(N).keys()].filter(i=>isInj(e,i)).map(i=>C.inj[i]).filter(x=>x!=null);
+    if(!v.length) return `<span class="mv">${NAME[c]} <b>값 없음</b></span>`;
+    const z=(v.reduce((a,b)=>a+b,0)/v.length-C.mean)/C.sd;
+    return `<span class="mv">${NAME[c]} <b>${z>0?'▲ +':'▼ '}${z.toFixed(1)}</b><span class="term" tabindex="0" data-tip="평소 값이 퍼진 정도(표준편차)의 몇 배만큼 벗어났는지예요. 3을 넘으면 평소와 확실히 달라요.">σ</span></span>`;}).join('');
+}
+function renderDetail(){
+  const e=byId(state.sel); if(!e){$('#detail').innerHTML='';return;}
+  const ack=state.acked[e.id], fb=state.fb[e.id], last=Math.max(...e.lots), tools=D.tools.find(t=>t[0]===lotStr(last));
+  if(!state.chart[e.id]) state.chart[e.id]=(e.waf||e.sev==='miss')?'wafer':'lot';
+  const top=e.causes[0], unknown=!top.p;
+  const tr=[['감지',1],['원인 분석',1],['담당자 확인',ack],['보고서',fb]]; const cur=tr.findIndex(s=>!s[1]);
+  $('#detail').innerHTML=`
+  <div class="body">
+    <button class="btn ghost back" id="d-back">← 알림 목록</button>
+    <div class="dh">
+      <div class="tags">${badge(e.sev)}${timer(e)}</div>
+      <h2>${esc(e.title)}</h2>
+      <span class="where">${e.lots.length>1?`로트 ${e.lots.length}개 · 마지막 `:''}${lotStr(last)} · ${dateOf(last)} · ${tools[5]} · 장비 ${tools.slice(1,5).join(', ')}</span>
+    </div>
+    <p class="plain">${esc(e.plain)}</p>
+    <div class="todo">
+      <div class="lead"><span class="k">${unknown?'원인':'가장 유력한 원인 (AI 후보)'}</span>
+        <b>${esc(top.n)}</b>${unknown?'<span class="p">데이터 안에서 근거를 찾지 못해서, 아래 항목을 직접 확인해야 해요.</span>':`<span class="p">가능성 ${top.p}% · 판단은 담당자가 해요</span>`}</div>
+      <div class="lead"><span class="k">권고 조치</span></div>
+      <ol>${REP[e.id].act.map(a=>`<li>${esc(a)}</li>`).join('')}</ol>
+    </div>
+    <div class="ev-h"><h3>근거</h3>
+      ${e.sev==='miss'?'':`<div class="seg" role="group" aria-label="차트 보기"><button aria-pressed="${state.chart[e.id]==='lot'}" data-ch="lot">로트 평균</button><button aria-pressed="${state.chart[e.id]==='wafer'}" data-ch="wafer">웨이퍼별</button></div>`}</div>
+    <div class="chartbox"><p class="say">${chartSay(e)}</p>
+      <svg class="chart" id="d-chart" role="img" aria-label="${NAME[e.col]} 차트"></svg>
+      <div class="legend"><span><i class="lg-b"></i><span class="term" tabindex="0" data-tip="앞 25로트(1월 1일~25일)로 계산한 평소 범위예요. 평균 ± 표준편차 3배.">평소 범위</span></span><span><i class="lg-a"></i>이번 알림 ${state.chart[e.id]==='lot'?'로트':'웨이퍼'}</span><span><i class="lg-n"></i>그 밖</span><span>· ${NAME[e.col]}, 로트 ${e.win[0]}~${e.win[1]}</span></div></div>
+    <div><p class="hint" style="margin-bottom:6px">함께 변한 값 · 평소 평균과의 차이</p><div class="moved">${movedHtml(e)}</div></div>
+    <details class="more"><summary><span>원인 후보 전체와 판단 근거<small>${e.causes.length}개</small></span></summary>
+      <div class="in">${e.causes.map(c=>`<div class="cause"><div class="cn">${esc(c.n)}<span>${c.p?`가능성 ${c.p}%`:'가능성을 매길 근거 없음'}</span></div>${c.p?`<div class="meter"><i style="width:${c.p}%"></i></div>`:''}<ul>${c.ev.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}
+      <p class="hint">AI가 탐지기 근거만 보고 쓴 후보예요. 정답이 아니에요.</p></div></details>
+  </div>
+  <div class="actbar">
+    <div class="st"><div class="track" aria-label="처리 단계">${tr.map((s,i)=>`<span class="${s[1]?'d':(i===cur?'c':'')}">${s[1]?'<i>✓</i>':''}${s[0]}</span>`).join('')}</div></div>
+    <div class="bs">
+      <button class="btn ${ack?'soft':'pri'}" id="b-ack">${ack?'확인 취소':'확인했어요'}</button>
+      <button class="btn ${ack&&!fb?'pri':''}" id="b-rep">${fb?'보고서 보기':'보고서 쓰기'}</button>
+    </div>
+  </div>`;
+  if(state.chart[e.id]==='lot') drawLot($('#d-chart'),e); else drawChart($('#d-chart'),e.col,e.win,i=>isInj(e,i),3);
+}
+
+/* lot-mean chart: one line, the alert's lots marked */
+function drawLot(svg,e){
+  const S=lotSeries(e.col), W=760,H=220,L=54,R=14,T=16,B=28;
+  const ls=LOTS.filter(l=>l>=e.win[0]&&l<=e.win[1]); const vals=ls.map(l=>S.m[l]).filter(v=>v!=null);
+  let ymin=Math.min(S.lo,...vals), ymax=Math.max(S.hi,...vals); const pad=(ymax-ymin)*.1; ymin-=pad; ymax+=pad;
+  const x=j=>L+(W-L-R)*(j+.5)/ls.length, y=v=>T+(H-T-B)*(1-(v-ymin)/(ymax-ymin));
+  const fmt=v=>Math.abs(v)<.1?v.toFixed(4):Math.abs(v)<10?v.toFixed(2):v.toFixed(1);
+  let s=`<rect x="${L}" y="${y(S.hi)}" width="${W-L-R}" height="${y(S.lo)-y(S.hi)}" fill="var(--band)"/>`;
+  [S.hi,S.lo].forEach(v=>s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--accent-edge)" stroke-dasharray="5 4"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--ink-2)">${fmt(v)}</text>`);
+  s+=`<line x1="${L}" x2="${W-R}" y1="${y(S.mu)}" y2="${y(S.mu)}" stroke="var(--muted)"/><text x="${L-8}" y="${y(S.mu)+4}" text-anchor="end" font-size="11" fill="var(--ink-3)">평균</text>`;
+  const step=ls.length>20?2:1;
+  ls.forEach((l,j)=>{ if(j%step===0||e.lots.includes(l)) s+=`<text x="${x(j)}" y="${H-8}" text-anchor="middle" font-size="11" fill="${e.lots.includes(l)?'var(--ink)':'var(--ink-3)'}" ${e.lots.includes(l)?'font-weight="600"':''}>${l}</text>`; });
+  let d='', pen=false; ls.forEach((l,j)=>{const v=S.m[l]; if(v==null){pen=false;return;} d+=(pen?'L':'M')+x(j)+' '+y(v); pen=true;});
+  s+=`<path d="${d}" fill="none" stroke="var(--ink-3)" stroke-width="1.5" stroke-linejoin="round"/>`;
+  ls.forEach((l,j)=>{const v=S.m[l]; const hot=e.lots.includes(l);
+    if(v==null){ s+=`<text x="${x(j)}" y="${T+14}" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--ink-2)">값 없음</text><line x1="${x(j)}" x2="${x(j)}" y1="${T+20}" y2="${H-B}" stroke="var(--ink-3)" stroke-dasharray="3 3"/>`; return; }
+    s+= hot?`<circle cx="${x(j)}" cy="${y(v)}" r="6" fill="var(--accent)" stroke="#fff" stroke-width="2"/>`:`<circle cx="${x(j)}" cy="${y(v)}" r="3.2" fill="var(--ink-3)"/>`; });
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.innerHTML=s;
+}
+/* wafer-level chart (each dot = one wafer) */
+function drawChart(svg, col, win, hot, k){
+  const C=D.cols[col]; const W=760,H=230,L=54,R=14,T=16,B=28;
+  const idx=[...Array(N).keys()].filter(i=>D.lot[i]>=win[0]&&D.lot[i]<=win[1]);
+  const lo=C.mean-k*C.sd, hi=C.mean+k*C.sd;
+  const vals=idx.map(i=>C.inj[i]).filter(v=>v!=null);
+  const cap=C.mean+12*C.sd, flo=C.mean-12*C.sd;
+  let ymin=Math.min(lo,...vals.filter(v=>v>flo)), ymax=Math.max(hi,...vals.filter(v=>v<cap));
+  const pad=(ymax-ymin)*.08; ymin-=pad; ymax+=pad;
+  const x=j=>L+(W-L-R)*(j+.5)/idx.length, y=v=>T+(H-T-B)*(1-(Math.min(Math.max(v,ymin),ymax)-ymin)/(ymax-ymin));
+  const fmt=v=>Math.abs(v)>=1e6?v.toExponential(2):Math.abs(v)<.1?v.toFixed(4):Math.abs(v)<10?v.toFixed(2):v.toFixed(0);
+  let s=`<rect x="${L}" y="${y(hi)}" width="${W-L-R}" height="${y(lo)-y(hi)}" fill="var(--band)"/>`;
+  [hi,lo].forEach(v=>s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--accent-edge)" stroke-dasharray="5 4"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--ink-2)">${fmt(v)}</text>`);
+  s+=`<line x1="${L}" x2="${W-R}" y1="${y(C.mean)}" y2="${y(C.mean)}" stroke="var(--muted)"/><text x="${L-8}" y="${y(C.mean)+4}" text-anchor="end" font-size="11" fill="var(--ink-3)">평균</text>`;
+  let prev=null; const step=Math.ceil((win[1]-win[0]+1)/12);
+  idx.forEach((i,j)=>{ if(D.lot[i]!==prev){ prev=D.lot[i]; const xx=L+(W-L-R)*j/idx.length;
+    s+=`<line x1="${xx}" x2="${xx}" y1="${T}" y2="${H-B}" stroke="var(--grid)"/>`;
+    if((D.lot[i]-win[0])%step===0) s+=`<text x="${xx+3}" y="${H-8}" font-size="11" fill="var(--ink-3)">${D.lot[i]}</text>`;}});
+  let runs=[]; idx.forEach((i,j)=>{ if(C.inj[i]==null){ if(runs.length&&runs[runs.length-1][1]===j-1) runs[runs.length-1][1]=j; else runs.push([j,j]); }});
+  runs.forEach(([a,b])=>{const xa=L+(W-L-R)*a/idx.length, xb=L+(W-L-R)*(b+1)/idx.length;
+    s+=`<rect x="${xa}" y="${T}" width="${xb-xa}" height="${H-T-B}" fill="var(--fill)" stroke="var(--ink-3)" stroke-dasharray="3 3"/><text x="${(xa+xb)/2}" y="${T+18}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink-2)">값 없음</text>`;});
+  idx.forEach((i,j)=>{ const v=C.inj[i]; if(v==null) return; const h=hot(i);
+    if(v>=cap){ s+=`<path d="M${x(j)} ${T+2}l-5 9h10z" fill="var(--accent)"/><text x="${x(j)+8}" y="${T+11}" font-size="11.5" font-weight="600" fill="var(--accent-edge)">${fmt(v)} (차트 위로 벗어남)</text>`; return; }
+    s+=h?`<circle cx="${x(j)}" cy="${y(v)}" r="3.8" fill="var(--accent)"/>`:`<circle cx="${x(j)}" cy="${y(v)}" r="2.3" fill="var(--ink-3)" opacity=".7"/>`; });
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.innerHTML=s;
+}
+
+function select(id,scroll){
+  state.sel=id; $('#inbox').dataset.view='detail'; renderList(); renderDetail();
+  if(scroll||narrow()) $('#detail').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function renderOps(){ renderNow(); renderList(); renderDetail(); }
+
+$('#now').addEventListener('click',ev=>{const b=ev.target.closest('#go-top'); if(b) select(+b.dataset.id,true);});
+$('#list').addEventListener('click',ev=>{const b=ev.target.closest('.row'); if(b) select(+b.dataset.id);});
+$('#detail').addEventListener('click',ev=>{
+  const e=byId(state.sel);
+  const ch=ev.target.closest('[data-ch]'); if(ch){ state.chart[e.id]=ch.dataset.ch; renderDetail(); return; }
+  if(ev.target.closest('#d-back')){ $('#inbox').dataset.view='list'; scrollTo({top:0,behavior:'smooth'}); return; }
+  if(ev.target.closest('#b-ack')){ const was=!!state.acked[e.id]; state.acked[e.id]=!was; renderOps();
+    if(!was){ const next=sorted().find(x=>!state.acked[x.id]);
+      toast(next?'확인했어요. 다음 담당자에게 넘기지 않아요.':'모든 알림을 확인했어요.',()=>{state.acked[e.id]=false; renderOps();}); }
+    else toast('확인을 취소했어요.'); }
+  if(ev.target.closest('#b-rep')) openReport(e);
+});
+
+/* ---------- report page ---------- */
 const fmtN=v=>v==null?'–':Math.abs(v)>=1e6?v.toExponential(3):Math.abs(v)<.01?v.toFixed(4):Math.abs(v)<10?v.toFixed(3):v.toFixed(1);
-function openDlg(e){
+function showMode(m){
+  state.mode=m; $('#m-ops').hidden=m!=='ops'; $('#m-val').hidden=m!=='val'; $('#m-rep').hidden=m!=='rep';
+  $$('.mode button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===(m==='rep'?'ops':m))));
+  if(m==='val') renderPV();
+  scrollTo({top:0});
+}
+function openReport(e){
   const R=REP[e.id], last=Math.max(...e.lots), first=Math.min(...e.lots), tools=D.tools.find(t=>t[0]===lotStr(last));
   const idx=[...Array(N).keys()].filter(i=>isInj(e,i)); const fb=state.fb[e.id];
   const cols=[e.col,...e.moved.filter(c=>c!=='yield')];
   const row=c=>{const C=D.cols[c], v=idx.map(i=>C.inj[i]).filter(x=>x!=null); const ucl=C.mean+3*C.sd, lcl=C.mean-3*C.sd;
     if(!v.length) return `<tr><td>${NAME[c]}</td><td class="r">${fmtN(C.mean)}</td><td class="r">${fmtN(lcl)} ~ ${fmtN(ucl)}</td><td class="r">–</td><td class="r">–</td><td><span class="verdict na">미수신</span></td></tr>`;
-    const m=v.reduce((a,b)=>a+b,0)/v.length, mx=Math.max(...v), z=(m-C.mean)/C.sd, out=v.filter(x=>x>ucl||x<lcl).length;
-    const vd=out?`<span class="verdict out">이탈 ${out}/${v.length}매</span>`:Math.abs(z)>=2?'<span class="verdict edge">경계</span>':'<span class="verdict">정상</span>';
+    const m=v.reduce((a,b)=>a+b,0)/v.length, z=(m-C.mean)/C.sd, out=v.filter(x=>x>ucl||x<lcl).length;
+    const vd=out?`<span class="verdict out">이탈 ${out}/${v.length}매</span>`:Math.abs(z)>=2?'<span class="verdict">경계</span>':'<span class="verdict">정상</span>';
     return `<tr><td>${NAME[c]}</td><td class="r">${fmtN(C.mean)}</td><td class="r">${fmtN(lcl)} ~ ${fmtN(ucl)}</td><td class="r">${fmtN(m)}</td><td class="r">${z>=0?'+':''}${z.toFixed(1)}σ</td><td>${vd}</td></tr>`;};
   const Y=D.cols.yield, yv=idx.map(i=>Y.inj[i]), ym=yv.reduce((a,b)=>a+b,0)/yv.length;
   const sameLots=[...Array(N).keys()].filter(i=>e.lots.includes(D.lot[i])&&!isInj(e,i));
@@ -518,35 +585,64 @@ function openDlg(e){
     <div><dt>발생 일자</dt><dd>${first===last?isoOf(last):isoOf(first)+' ~ '+isoOf(last)}</dd></div>
     <div><dt>등급</dt><dd>${SEV[e.sev].w} (임시 기준)</dd></div>
     <div><dt>대상</dt><dd>${e.lots.length>1?`로트 ${e.lots.length}개`:lotStr(last)} · 웨이퍼 ${idx.length}매</dd></div>
-    <div><dt>기술 노드 · 제품</dt><dd>${tools[5]}</dd></div>
+    <div><dt>기술 노드</dt><dd>${tools[5]}</dd></div>
     <div><dt>식각</dt><dd>${tools[1]}</dd></div><div><dt>노광</dt><dd>${tools[2]}</dd></div><div><dt>증착</dt><dd>${tools[3]}</dd></div><div><dt>이온주입</dt><dd>${tools[4]}</dd></div>
   </dl>
   <div class="s"><h3><span class="n">1</span>개요</h3><p>${esc(R.sum)}</p></div>
   <div class="s"><h3><span class="n">2</span>감지 기준</h3><ul><li>기준 구간: LOT_0001~0025 (2023-01-01 ~ 01-25), 웨이퍼 625매</li><li>관리 한계: 기준 구간 평균 ± 3σ</li><li>감지 시각 기준 미확인 시 30분 후 차순위 담당자에게 이관</li></ul></div>
   <div class="s"><h3><span class="n">3</span>데이터 분석</h3>
     <div class="t"><table><thead><tr><th>항목</th><th class="r">기준 평균</th><th class="r">관리 범위 (LCL ~ UCL)</th><th class="r">발생 평균</th><th class="r">편차</th><th>판정</th></tr></thead><tbody>${cols.map(row).join('')}</tbody></table></div>
-    <div class="chartbox"><div class="cap"><span><b>관리도: ${NAME[e.col]}</b> · LOT ${e.win[0]}~${e.win[1]}</span><span>점선: 관리 한계(±3σ)</span></div><svg class="chart" id="rep-chart" role="img" aria-label="관리도"></svg></div></div>
+    <div class="chartbox"><p class="say"><b>관리도: ${NAME[e.col]}</b> · LOT ${e.win[0]}~${e.win[1]} · 점선은 관리 한계(±3σ)</p><svg class="chart" id="rep-chart" role="img" aria-label="관리도"></svg></div></div>
   <div class="s"><h3><span class="n">4</span>영향 평가</h3><ul>
     <li>대상 웨이퍼 평균 수율 ${(ym*100).toFixed(1)}% (기준 구간 평균 ${(Y.mean*100).toFixed(1)}%, ${((ym-Y.mean)*100).toFixed(1)}%p)</li>
     ${sameLots.length?`<li>동일 로트 비대상 웨이퍼 ${sameLots.length}매 평균 수율 ${(sameLots.map(i=>Y.inj[i]).reduce((a,b)=>a+b,0)/sameLots.length*100).toFixed(1)}%</li>`:''}
     <li>영향 범위: ${e.lots.length>1?`동일 장비 사용 로트 ${e.lots.length}개`:(idx.length<25?`로트 내 일부 웨이퍼 ${idx.length}매`:'단일 로트 전체')}</li></ul>
     <p class="note">수율은 기술 노드별 수준 차이가 있어 노드별 기준 비교가 필요함 (본 목업은 전체 기준).</p></div>
   <div class="s"><h3><span class="n">5</span>원인 분석 (AI 후보)</h3>
-    ${e.causes.map((c,i)=>`<div class="cause-r"><b>${i+1}. ${esc(c.n)}</b>${c.p?` <span class="note">· 추정 가능성 ${c.p}%</span>`:''}<ul>${c.ev.map(x=>`<li>${esc(x.replace(/요$/,'').replace(/보세요$/,'볼 것'))}</li>`).join('')}</ul></div>`).join('')}
+    ${e.causes.map((c,i)=>`<div class="cause-r"><b>${i+1}. ${esc(c.n)}</b>${c.p?` <span class="note">· 추정 가능성 ${c.p}%</span>`:''}<ul>${c.ev.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}
     <p class="note">AI 후보는 판단 보조 자료이며, 최종 원인은 담당자 판정에 따름.</p></div>
   <div class="s"><h3><span class="n">6</span>조치 사항</h3>
-    <b style="font-size:13px">권고 조치 (AI 제안)</b><ul>${R.act.map(a=>`<li>${esc(a)}</li>`).join('')}</ul>
+    <b style="font-size:13px;font-weight:500">권고 조치 (AI 제안)</b><ul>${R.act.map(a=>`<li>${esc(a)}</li>`).join('')}</ul>
     <label class="f" for="rep-act">실시 조치 (담당자 기재)<textarea id="rep-act" placeholder="예: 조치 시각, 홀드한 로트, 실시한 점검 내용"></textarea></label>
     <label class="f" for="rep-prev">재발 방지 대책 (담당자 기재)<textarea id="rep-prev" placeholder="예: 감시 항목 추가, 점검 주기 변경"></textarea></label></div>
   <div class="s"><h3><span class="n">7</span>판정 및 승인</h3>
     <div class="sign"><div>원인 판정<b>${fb||''}</b></div><div>승인자<b>${fb?'담당자 (로그인 기능 보류)':''}</b></div><div>승인 일시<b>${fb?isoOf(last)+' 승인':''}</b></div></div></div>`;
-  document.querySelectorAll('#dlg-seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===fb))); $('#dlg-ok').disabled=!fb;
-  $('#dlg').hidden=false; drawChart($('#rep-chart'), e.col, e.win, i=>isInj(e,i), 3); $('#dlg-cancel').focus({preventScroll:true}); $('#dlg .dialog').scrollTop=0;
+  $$('#r-seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===fb)));
+  $('#r-ok').disabled=!fb; $('#r-ok').textContent=fb?'승인됨':'승인'; $('#r-hint').textContent=fb?'승인한 보고서예요. 판정을 바꾸면 다시 승인해요.':'판정을 고르면 승인할 수 있어요';
+  showMode('rep'); drawChart($('#rep-chart'), e.col, e.win, i=>isInj(e,i), 3);
 }
-$('#dlg-seg').addEventListener('click',ev=>{const b=ev.target.closest('button'); if(!b) return; document.querySelectorAll('#dlg-seg button').forEach(x=>x.setAttribute('aria-pressed',x===b)); $('#dlg-ok').disabled=false; $('#dlg-hint').textContent='승인 시 보고서와 판정 결과가 함께 저장됨.';});
-$('#dlg-ok').addEventListener('click',()=>{const v=document.querySelector('#dlg-seg [aria-pressed="true"]').dataset.v; const e=E.find(x=>x.id===state.sel); state.fb[e.id]=v; state.acked[e.id]=true; $('#dlg').hidden=true; renderList(); renderDetail(); toast(`보고서 승인 완료 · 원인 판정 ${v}`,()=>{delete state.fb[e.id]; renderDetail();});});
-$('#dlg-cancel').addEventListener('click',()=>$('#dlg').hidden=true);
-$('#dlg').addEventListener('click',ev=>{ if(ev.target.id==='dlg') $('#dlg').hidden=true; });
-document.addEventListener('keydown',ev=>{ if(ev.key==='Escape') $('#dlg').hidden=true; });
-renderList(); renderDetail();
+$('#r-seg').addEventListener('click',ev=>{const b=ev.target.closest('button'); if(!b) return; $$('#r-seg button').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); $('#r-ok').disabled=false; $('#r-ok').textContent='승인'; $('#r-hint').textContent='판정 결과는 다음 분석에 반영돼요';});
+$('#r-ok').addEventListener('click',()=>{const v=$('#r-seg [aria-pressed="true"]').dataset.v; const e=byId(state.sel); state.fb[e.id]=v; state.acked[e.id]=true; showMode('ops'); renderOps(); if(narrow()) $('#detail').scrollIntoView({block:'start'});
+  toast(`보고서 승인 완료 · 원인 판정 ${v}`,()=>{delete state.fb[e.id]; renderOps();});});
+const closeRep=()=>{showMode('ops'); renderOps(); if(narrow()) $('#detail').scrollIntoView({block:'start'});};
+$('#r-back').addEventListener('click',closeRep); $('#r-cancel').addEventListener('click',closeRep);
+document.addEventListener('keydown',ev=>{ if(ev.key==='Escape'&&state.mode==='rep') closeRep(); });
+
+/* ---------- mode switch + validation ---------- */
+$$('.mode button').forEach(b=>b.addEventListener('click',()=>{ showMode(b.dataset.mode); if(b.dataset.mode==='ops') renderOps(); }));
+$$('.vtab').forEach(t=>t.addEventListener('click',()=>{ $$('.vtab').forEach(x=>x.setAttribute('aria-selected',String(x===t))); $('#v-pv').hidden=t.dataset.v!=='pv'; $('#v-key').hidden=t.dataset.v!=='key'; }));
+const PV={col:'etch_rate'}; const PVC=['etch_rate','temperature','pressure','deposition_rate','focus_offset','defect_count','implant_energy','critical_dimension','yield'];
+$('#pv-sensors').innerHTML=PVC.map(c=>`<button class="chip" aria-pressed="${c===PV.col}" data-c="${c}">${NAME[c]}</button>`).join('');
+const hotPV=i=>D.ev[i]>0&&(byId(D.ev[i]).col===PV.col||byId(D.ev[i]).moved.includes(PV.col));
+function renderPV(){
+  const k=+$('#pv-k').value; $('#pv-kv').textContent=k.toFixed(1); const C=D.cols[PV.col];
+  const lo=C.mean-k*C.sd, hi=C.mean+k*C.sd; let a=0,b=0,c=0,m=0;
+  for(let i=0;i<N;i++){const v=C.inj[i]; if(v==null){m++;continue;} const out=v>hi||v<lo; if(D.lot[i]<=25){ if(out)a++; } else if(hotPV(i)){ if(out)b++; } else if(out) c++;}
+  $('#pv-nums').innerHTML=`<div><b class="num">${a}</b>평소 구간에서 기준을 넘은 장 (오탐 후보)</div><div><b class="num">${b} / ${[...Array(N).keys()].filter(hotPV).length}</b>이 값에 이상을 심은 웨이퍼 중 기준을 넘은 장</div><div><b class="num">${c}</b>뒤 구간 정상 웨이퍼 중 넘은 장</div>${m?`<div><b class="num">${m}</b>값이 없는 장</div>`:''}`;
+  $('#pv-cap').innerHTML=`<b>${NAME[PV.col]}</b> · 웨이퍼 1,250장 (가로: 로트 1 → 50)`;
+  drawChart($('#pv-chart'), PV.col, [1,50], hotPV, k);
+}
+$('#pv-sensors').addEventListener('click',ev=>{const b=ev.target.closest('[data-c]'); if(!b) return; PV.col=b.dataset.c; $$('#pv-sensors .chip').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); renderPV();});
+$('#pv-k').addEventListener('input',renderPV);
+$('#keybody').innerHTML=[...E].sort((a,b)=>a.id-b.id).map(e=>`<tr><td><b>E${e.id}</b></td><td>${badge(e.sev)}<br><span style="font-size:12.5px">${e.key.type}</span></td><td>${e.key.target}</td><td><code>${e.key.inj}</code></td><td>${e.moved.map(m=>NAME[m]).join(', ')||'없음'}</td><td><b>${e.key.cause}</b></td><td>${e.key.react}</td></tr>`).join('');
+
+/* toggles + toast */
+$$('.toggle').forEach(t=>t.addEventListener('click',()=>{ if(t.disabled) return; const on=t.getAttribute('aria-checked')!=='true'; t.setAttribute('aria-checked',String(on)); toast(`${t.getAttribute('aria-label')}: ${on?'켰어요':'껐어요'}`); }));
+let undoFn=null, tmr=null;
+function toast(m,undo){ $('#toast-m').textContent=m; undoFn=undo||null; $('#toast-undo').hidden=!undo; $('#toast').hidden=false; clearTimeout(tmr); tmr=setTimeout(()=>$('#toast').hidden=true,4500); }
+$('#toast-undo').addEventListener('click',()=>{ if(undoFn) undoFn(); $('#toast').hidden=true; });
+
+state.sel=sorted()[0].id;
+if(!narrow()) $('#inbox').dataset.view='detail';
+renderOps();
 </script>
